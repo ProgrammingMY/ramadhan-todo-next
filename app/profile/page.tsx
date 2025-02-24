@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import PushNotificationManager from "../_components/push-notification-manager";
 import InstallPrompt from "../_components/install-prompt";
 import LoginModal from "../_components/login-modal";
 
@@ -57,11 +56,10 @@ export default function Profile() {
               <button
                 key={index}
                 onClick={() => handlePictureSelect(picture)}
-                className={`p-2 border rounded-lg ${
-                  selectedPicture === picture
+                className={`p-2 border rounded-lg ${selectedPicture === picture
                     ? "border-blue-500"
                     : "border-gray-200"
-                }`}
+                  }`}
               >
                 <Image
                   src={picture}
@@ -94,7 +92,6 @@ export default function Profile() {
             </button>
           </div>
         </div>
-        <PushNotificationManager />
         <InstallPrompt />
         <LoginModal />
       </div>

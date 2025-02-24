@@ -5,14 +5,14 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "dev:pwa": "next dev --experimental-https",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:seed": "tsx db/seed.ts"
+    "db:seed": "tsx db/seed.ts",
+    "dev": "next dev",
+    "dev:pwa": "next dev --experimental-https",
+    "lint": "next lint",
+    "start": "next start"
   },
   "dependencies": {
     "@serwist/next": "latest",
@@ -26,7 +26,9 @@
     "postgres": "^3.4.5",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "react-rewards": "^2.1.0",
     "serwist": "latest",
+    "sst": "3.9.10",
     "tailwindcss": "^4.0.8",
     "web-push": "^3.6.7"
   },
@@ -35,6 +37,7 @@
     "@types/node": "22.10.1",
     "@types/react": "19.0.0",
     "@types/react-dom": "19.0.0",
+    "@types/web-push": "^3.6.4",
     "drizzle-kit": "^0.30.4",
     "tsx": "^4.19.3",
     "typescript": "5.6.3"

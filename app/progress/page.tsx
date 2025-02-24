@@ -1,16 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-
-interface DayProgress {
-  date: string;
-  completionRate: number;
-}
-
-interface TaskProgress {
-  date: string;
-  completed: boolean;
-}
+import { TaskProgress } from "../libs/types";
+import { DayProgress } from "../libs/types";
+import { calculateCompletionRate } from "../libs/completion-rate";
 
 // emoji codes
 // 🌿 - Seedling
@@ -26,14 +19,6 @@ export default function Progress() {
   const [monthProgress, setMonthProgress] = useState<DayProgress[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Function to calculate completion rate for a specific date
-  const calculateCompletionRate = (tasks: TaskProgress[], date: string) => {
-    const dayTasks = tasks.filter((task) => task.date === date);
-    if (dayTasks.length === 0) return 0;
-
-    const completedTasks = dayTasks.filter((task) => task.completed).length;
-    return Math.round((completedTasks / 8) * 100);
-  };
 
   // Function to generate initial progress data
   const generateInitialProgress = () => {
@@ -55,7 +40,9 @@ export default function Progress() {
     try {
       // get user from local storage
       const user = localStorage.getItem("user");
-      const { id } = JSON.parse(user as string);
+
+      let tasks: TaskProgress[] = [];
+
       // get today's date
       const today = new Date();
       const yearMonth = today
@@ -64,13 +51,20 @@ export default function Progress() {
         .split("-")
         .slice(0, 2)
         .join("-");
-      // Try to fetch from API
-      const response = await fetch(
-        `/api/progress?yearMonth=${yearMonth}&id=${id}`
-      );
-      if (!response.ok) throw new Error("API fetch failed");
 
-      const tasks: TaskProgress[] = await response.json();
+      if (navigator.onLine && user) {
+        const { id } = JSON.parse(user as string);
+
+        // Try to fetch from API
+        const response = await fetch(
+          `/api/progress?yearMonth=${yearMonth}&id=${id}`
+        );
+        if (!response.ok) throw new Error("API fetch failed");
+        tasks = await response.json();
+      } else {
+        // Try to get from localStorage
+        tasks = JSON.parse(localStorage.getItem("monthProgress") || "[]");
+      }
 
       // Calculate completion rates for each day
       const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -177,9 +171,8 @@ export default function Progress() {
             <div
               key={dateStr}
               className="w-12 h-16 flex items-center justify-center relative group"
-              title={`${dateStr}: ${
-                dayProgress?.completionRate || 0
-              }% completed`}
+              title={`${dateStr}: ${dayProgress?.completionRate || 0
+                }% completed`}
             >
               {getPlantStage(Number(dayProgress?.completionRate) || 0)}
               <span className="absolute -top-5 opacity-0 group-hover:opacity-100 transition-opacity text-xs text-white/90 bg-black/50 px-2 rounded">
@@ -206,7 +199,7 @@ export default function Progress() {
 
   return (
     <div className="container mx-auto flex flex-col items-center gap-6 p-8">
-      <h1 className="text-3xl font-bold mb-6 text-white/90">My Todo Garden</h1>
+      <h1 className="text-3xl md:text-5xl font-bold mb-6 text-white/90">My Ramadhan Garden</h1>
 
       <div className="mb-4 bg-white/10 p-4 rounded-lg backdrop-blur-sm">
         <div className="flex items-center gap-6 text-sm">
