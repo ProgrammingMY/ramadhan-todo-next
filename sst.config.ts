@@ -20,6 +20,9 @@ export default $config({
     new sst.aws.Nextjs("ramadhan-todo-next", {
       environment: {
         DATABASE_URL: db_conn.value
+      },
+      domain: {
+        name: "ramadhan.programmingmy.com",
       }
     });
   },

@@ -18,7 +18,28 @@ const serwist = new Serwist({
   skipWaiting: true,
   clientsClaim: true,
   navigationPreload: true,
-  runtimeCaching: defaultCache
+  runtimeCaching: [
+    ...defaultCache,
+  ]
 });
+
+// Add fetch event listener to handle API requests
+// self.addEventListener('fetch', (event) => {
+//   const request = event.request;
+
+//   // Check if it's an API request
+//   if (request.url.includes('/api/') || request.headers.get('x-api-request')) {
+//     // For API requests, only try network
+//     event.respondWith(
+//       fetch(request).catch(error => {
+//         console.error('API fetch failed:', error);
+//         return new Response(JSON.stringify({ error: 'Network error' }), {
+//           status: 503,
+//           headers: { 'Content-Type': 'application/json' }
+//         });
+//       })
+//     );
+//   }
+// });
 
 serwist.addEventListeners();

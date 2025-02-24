@@ -3,7 +3,8 @@ import { Todo } from '../libs/types';
 
 const TodoItem = ({ todo, onToggle }: { todo: Todo; onToggle: (id: number) => void }) => {
     const { reward, isAnimating } = useReward(`reward-${todo.id}`, "confetti", {
-      startVelocity: 10
+      startVelocity: 10,
+      zIndex: 500
     });
   
     const handleClick = () => {

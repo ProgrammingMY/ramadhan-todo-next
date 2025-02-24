@@ -19,11 +19,13 @@ export function TodoList() {
         const today = new Date().toISOString().split("T")[0];
 
         if (navigator.onLine && user) {
+          // Add timeout to API requests
           // Try to fetch from API first
           const { id, username } = JSON.parse(user as string);
           const response = await fetch(
-            `/api/todos?id=${id}&name=${username}&date=${today}`
+            `/api/todos?id=${id}&name=${username}&date=${today}`,
           );
+
           if (response.ok) {
             const data = await response.json();
             // if undefined, complete to false

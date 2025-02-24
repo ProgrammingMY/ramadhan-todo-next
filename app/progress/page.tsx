@@ -185,7 +185,7 @@ export default function Progress() {
       tiersOfPots.push(
         <div
           key={`tier-${tier}`}
-          className="flex gap-4 justify-center items-end relative"
+          className="flex justify-center items-end relative"
         >
           {/* Shelf decoration */}
           <div className="absolute -bottom-3 w-full h-1 bg-emerald-900/30 rounded-md shadow-md" />
