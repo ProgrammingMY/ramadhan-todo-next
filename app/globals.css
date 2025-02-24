@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@layer components {
+  .hover\:scale-102:hover {
+    transform: scale(1.02);
+  }
+
+  .animate-confetti {
+    width: 8px;
+    height: 8px;
+    transform-origin: center;
+    animation: confetti 2s ease-out forwards;
+  }
+}
+
+@layer base {
+    body {
+        background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+      /* Indigo to Blue gradient representing growth and stability */
+      color: white;  /* Making text white for better contrast */
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: 700;
+        letter-spacing: -0.025em;
+      }
+
+      .todo-list-container {
+        min-height: 100vh;
+        padding: 2rem 1rem;
+      }
+  }
+
+  @keyframes confetti {
+    0% {
+      opacity: 1;
+      transform: translate(0, 0) rotate(0deg);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(
+        calc(random(-1, 1) * 250px),
+        calc(100px + random(0, 1) * 250px)
+      ) rotate(calc(random(-1, 1) * 720deg));
+    }
+  }
+
+  .animate-confetti:nth-child(even) {
+    animation-duration: 1.5s;
+    animation-delay: 0.1s;
+  }
+  
+  .animate-confetti:nth-child(3n) {
+    animation-duration: 2.3s;
+    animation-delay: 0.2s;
+  }
+  
+  .animate-confetti:nth-child(4n) {
+    animation-duration: 1.8s;
+    animation-delay: 0.3s;
+  }
+  
+  .animate-confetti:nth-child(5n) {
+    animation-duration: 2.1s;
+    animation-delay: 0.15s;
+  }
