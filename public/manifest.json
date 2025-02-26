@@ -1,6 +1,6 @@
 {
-  "name": "Ramadhan App Todo List",
-  "short_name": "Ramadhan App",
+  "name": "Ramadhan Garden",
+  "short_name": "Ramadhan Garden",
   "icons": [
     {
       "src": "/icons/android-chrome-192x192.png",
@@ -14,9 +14,9 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#FFFFFF",
-  "background_color": "#FFFFFF",
-  "start_url": "/",
+  "theme_color": "#289672",
+  "background_color": "#e8f6ef",
   "display": "standalone",
-  "orientation": "portrait"
+  "orientation": "portrait",
+  "start_url": "/"
 }

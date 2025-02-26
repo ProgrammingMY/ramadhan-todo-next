@@ -1,6 +1,6 @@
 import { defaultCache } from "@serwist/next/worker";
 import type { PrecacheEntry, SerwistGlobalConfig } from "serwist";
-import { Serwist } from "serwist";
+import { CacheFirst, NetworkFirst, Serwist } from "serwist";
 
 declare global {
   interface WorkerGlobalScope extends SerwistGlobalConfig {
@@ -20,26 +20,49 @@ const serwist = new Serwist({
   navigationPreload: true,
   runtimeCaching: [
     ...defaultCache,
-  ]
+    {
+      matcher({ request }) {
+        return request.destination === "document";
+      },
+      handler: new NetworkFirst({
+        cacheName: "pages",
+      })
+    },
+    {
+      matcher({ request }) {
+        return request.destination === "script";
+      },
+      handler: new CacheFirst({
+        cacheName: "scripts",
+      })
+    },
+    {
+      matcher({ request }) {
+        return request.destination === "style";
+      },
+      handler: new CacheFirst({
+        cacheName: "styles",
+      })
+    },
+    {
+      matcher({ request }) {
+        return request.url.includes("/api/") || request.headers.get("x-api-request");
+      },
+      handler: new NetworkFirst({
+        cacheName: "api",
+      })
+    }
+  ],
+  fallbacks: {
+    entries: [
+      {
+        url: "/~offline",
+        matcher({ request }) {
+          return request.destination === "document";
+        }
+      }
+    ]
+  }
 });
-
-// Add fetch event listener to handle API requests
-// self.addEventListener('fetch', (event) => {
-//   const request = event.request;
-
-//   // Check if it's an API request
-//   if (request.url.includes('/api/') || request.headers.get('x-api-request')) {
-//     // For API requests, only try network
-//     event.respondWith(
-//       fetch(request).catch(error => {
-//         console.error('API fetch failed:', error);
-//         return new Response(JSON.stringify({ error: 'Network error' }), {
-//           status: 503,
-//           headers: { 'Content-Type': 'application/json' }
-//         });
-//       })
-//     );
-//   }
-// });
 
 serwist.addEventListeners();

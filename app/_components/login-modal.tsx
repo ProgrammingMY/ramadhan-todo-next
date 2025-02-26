@@ -2,6 +2,19 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@radix-ui/react-label";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default function LoginModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -58,98 +71,72 @@ export default function LoginModal() {
 
   return (
     <div>
-      <button
+      <Button
         onClick={() => setIsOpen(true)}
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        variant={"outline"}
+        className="px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/80"
       >
         Login
-      </button>
+      </Button>
 
-      {isOpen && (
-        <div className="fixed inset-0 bg-black/85 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold">
-                {isLogin ? "Login" : "Sign Up"}
-              </h2>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                ✕
-              </button>
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label
-                  htmlFor="username"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Username
-                </label>
-                <input
-                  type="text"
-                  id="username"
-                  className="mt-1 text-black block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  required
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  className="mt-1 text-black block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  required
-                />
-              </div>
-
-              {!isLogin && (
-                <div>
-                  <label
-                    htmlFor="confirmPassword"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Confirm Password
-                  </label>
-                  <input
-                    type="password"
-                    id="confirmPassword"
-                    className="mt-1 text-black block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{isLogin ? "Login" : "Sign Up"}</DialogTitle>
+          </DialogHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="username">Username</Label>
+                  <Input
+                    type="text"
+                    id="username"
+                    required
                   />
                 </div>
-              )}
 
-              <button
-                type="submit"
-                className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-              >
-                {isLogin ? "Login" : "Sign Up"}
-              </button>
+                <div className="space-y-2">
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    type="password"
+                    id="password"
+                    required
+                  />
+                </div>
 
-              <div className="text-center text-sm text-gray-600">
-                {isLogin
-                  ? "Don't have an account? "
-                  : "Already have an account? "}
-                <button
+                {!isLogin && (
+                  <div className="space-y-2">
+                    <Label htmlFor="confirmPassword">Confirm Password</Label>
+                    <Input
+                      type="password"
+                      id="confirmPassword"
+                    />
+                  </div>
+                )}
+
+                <Button
+                  type="submit"
+                  className="w-full bg-blue-500 text-white hover:bg-blue-600"
+                >
+                  {isLogin ? "Login" : "Sign Up"}
+                </Button>
+              </form>
+            </CardContent>
+            <CardFooter>
+              <div className="w-full text-center text-sm text-gray-600">
+                {isLogin ? "Don't have an account? " : "Already have an account? "}
+                <Button
                   type="button"
                   onClick={() => setIsLogin(!isLogin)}
+                  variant="link"
                   className="text-blue-500 hover:text-blue-600"
                 >
                   {isLogin ? "Sign Up" : "Login"}
-                </button>
+                </Button>
               </div>
-            </form>
-          </div>
-        </div>
-      )}
+            </CardFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

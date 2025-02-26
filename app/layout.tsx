@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Quicksand } from "next/font/google";
+import { Quicksand, Noto_Naskh_Arabic } from "next/font/google";
 import type { ReactNode } from "react";
 import "./globals.css";
 import BottomNavBar from "./_components/navbar";
@@ -11,6 +11,13 @@ const quicksand = Quicksand({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
+});
+
+const notoNaskhArabic = Noto_Naskh_Arabic({
+  subsets: ["arabic"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-noto-arabic",
 });
 
 export const metadata: Metadata = {
@@ -63,7 +70,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             }
             `}</style>
       </head>
-      <body className="min-h-screen ">
+      <body className="min-h-screen">
         <main className="pb-20">{children}</main>
         <BottomNavBar />
       </body>

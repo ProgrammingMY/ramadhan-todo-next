@@ -5,6 +5,10 @@
 
 declare module "sst" {
   export interface Resource {
+    "CLOUDFLARE_ZONE": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
     "DATABASE_URL": {
       "type": "sst.sst.Secret"
       "value": string

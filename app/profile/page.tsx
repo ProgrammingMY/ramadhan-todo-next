@@ -1,21 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import InstallPrompt from "../_components/install-prompt";
 import LoginModal from "../_components/login-modal";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
-const PROFILE_PICTURES = [
-  "/avatars/avatar1.png",
-  "/avatars/avatar2.png",
-  "/avatars/avatar3.png",
-  "/avatars/avatar4.png",
-  // Add more avatar paths as needed
-];
 
 export default function Profile() {
   const [name, setName] = useState("User Name");
-  const [selectedPicture, setSelectedPicture] = useState(PROFILE_PICTURES[0]);
   const [isEditingName, setIsEditingName] = useState(false);
 
   const handleNameSave = () => {
@@ -30,9 +24,28 @@ export default function Profile() {
   };
 
   const handlePictureSelect = (picture: string) => {
-    setSelectedPicture(picture);
     // Here you would typically save the selected picture to your backend/storage
   };
+
+  useEffect(() => {
+    // get user name from local storage
+    const user = localStorage.getItem("user");
+    if (user) {
+      setName(JSON.parse(user).username);
+    }
+
+    if (!user) {
+      setName("dummy");
+    }
+
+    const getTest = async () => {
+      const res = await fetch("/api/test");
+      const data = await res.json();
+      console.log(data);
+    }
+
+    getTest();
+  }, []);
 
   return (
     <div className="max-w-2xl mx-auto p-6">
@@ -40,7 +53,7 @@ export default function Profile() {
 
       <div className="space-y-8">
         {/* Profile Picture Section */}
-        <div>
+        {/* <div>
           <h2 className="text-xl font-semibold mb-4">Profile Picture</h2>
           <div className="mb-4">
             <Image
@@ -71,25 +84,25 @@ export default function Profile() {
               </button>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Name Section */}
         <div>
           <h2 className="text-xl font-semibold mb-4">Name</h2>
           <div className="flex gap-2">
-            <input
+            <Input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="border rounded px-3 py-2"
               disabled={!isEditingName}
             />
-            <button
+            <Button
               onClick={handleNameSave}
-              className="bg-blue-500 text-white px-4 py-2 rounded"
+              variant={isEditingName ? "default" : "outline"}
             >
               {isEditingName ? "Save" : "Edit"}
-            </button>
+            </Button>
           </div>
         </div>
         <InstallPrompt />

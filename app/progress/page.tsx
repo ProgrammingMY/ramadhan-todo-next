@@ -4,21 +4,28 @@ import { useState, useEffect } from "react";
 import { TaskProgress } from "../libs/types";
 import { DayProgress } from "../libs/types";
 import { calculateCompletionRate } from "../libs/completion-rate";
+import Image from "next/image";
+import level1 from "/public/flowers/1.png";
+import level2 from "/public/flowers/2.png";
+import level3 from "/public/flowers/3.png";
+import level4 from "/public/flowers/4.png";
+import level5 from "/public/flowers/5.png";
+import { Card } from "@/components/ui/card";
 
-// emoji codes
-// 🌿 - Seedling
-// 🌱 - Growing plant
-// 🌸 - Blooming flower
+
 const PLANT_STAGES = [
-  { emoji: "🌿", minCompletionRate: 1, maxCompletionRate: 66 },
-  { emoji: "🌱", minCompletionRate: 66, maxCompletionRate: 99 },
-  { emoji: "🌸", minCompletionRate: 99, maxCompletionRate: 100 },
+  { plant: level1, minCompletionRate: 1, maxCompletionRate: 20 },
+  { plant: level2, minCompletionRate: 20, maxCompletionRate: 40 },
+  { plant: level3, minCompletionRate: 40, maxCompletionRate: 60 },
+  { plant: level4, minCompletionRate: 60, maxCompletionRate: 99 },
+  { plant: level5, minCompletionRate: 99, maxCompletionRate: 100 },
+
 ];
 
 export default function Progress() {
   const [monthProgress, setMonthProgress] = useState<DayProgress[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [name, setName] = useState("");
 
   // Function to generate initial progress data
   const generateInitialProgress = () => {
@@ -104,6 +111,12 @@ export default function Progress() {
   };
 
   useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      setName(JSON.parse(user).username);
+    }
+
+
     const loadProgress = async () => {
       setIsLoading(true);
       const progress = await fetchProgressData();
@@ -125,18 +138,18 @@ export default function Progress() {
       return (
         <div className="flex flex-col items-center group">
           <span className="text-2xl transform group-hover:scale-110 transition-transform drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">
-            {stage.emoji}
+            <Image src={stage.plant} alt="Plant" width={48} height={48} />
           </span>
           {/* Flower pot */}
-          <div className="h-2 w-6 bg-orange-800/70 rounded-full mt-1" />
+          <div className="h-2 w-6 bg-orange-800/70 rounded-full mt-[-1px] z-10" />
         </div>
       );
     }
     return (
       <div className="flex flex-col items-center group" title="Empty plot">
         {/* Empty pot */}
-        <span className="invisible text-2xl">🌿</span>
-        <div className="h-2 w-6 bg-orange-800/70 rounded-full mt-1" />
+        <Image src={level1} className="invisible" alt="Empty pot" width={48} height={48} />
+        <div className="h-2 w-6 bg-orange-800/70 rounded-full mt-[-1px] z-10" />
       </div>
     );
   };
@@ -170,13 +183,14 @@ export default function Progress() {
           tierPots.push(
             <div
               key={dateStr}
-              className="w-12 h-16 flex items-center justify-center relative group"
+              className="w-12 h-16 flex flex-col items-center justify-center relative group"
               title={`${dateStr}: ${dayProgress?.completionRate || 0
                 }% completed`}
             >
               {getPlantStage(Number(dayProgress?.completionRate) || 0)}
-              <span className="absolute -top-5 opacity-0 group-hover:opacity-100 transition-opacity text-xs text-white/90 bg-black/50 px-2 rounded">
-                Day {dayIndex + 1}
+              {/* Day number - positioned below the pot */}
+              <span className="text-xs text-primary-foreground mt-1">
+                {dayIndex + 1}
               </span>
             </div>
           );
@@ -188,7 +202,6 @@ export default function Progress() {
           className="flex justify-center items-end relative"
         >
           {/* Shelf decoration */}
-          <div className="absolute -bottom-3 w-full h-1 bg-emerald-900/30 rounded-md shadow-md" />
           {tierPots}
         </div>
       );
@@ -199,37 +212,39 @@ export default function Progress() {
 
   return (
     <div className="container mx-auto flex flex-col items-center gap-6 p-8">
-      <h1 className="text-3xl md:text-5xl font-bold mb-6 text-white/90">My Ramadhan Garden</h1>
+      <h1 className="text-3xl md:text-5xl font-bold mb-6 text-primary">{name ? `${name}'s` : "My"} Ramadhan Garden</h1>
 
-      <div className="mb-4 bg-white/10 p-4 rounded-lg backdrop-blur-sm">
+      <div className="mb-4 bg-slate-300 p-4 rounded-lg backdrop-blur-sm">
         <div className="flex items-center gap-6 text-sm">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-emerald-900/30 rounded-md flex items-center justify-center border border-emerald-700/30">
-              <div className="h-1 w-3 bg-emerald-800/50 rounded-full" />
-            </div>
-            <span className="text-white/90">Empty Plot</span>
+          <div className="flex flex-col items-center gap-2">
+            <Image src={level1} alt="Plant" width={36} height={36} />
+            <span className="text-primary-foreground">20%</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xl">🌿</span>
-            <span className="text-white/90">33%</span>
+          <div className="flex flex-col items-center gap-2">
+            <Image src={level2} alt="Plant" width={36} height={36} />
+            <span className="text-primary-foreground">40%</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xl">🌱</span>
-            <span className="text-white/90">66%</span>
+          <div className="flex flex-col items-center gap-2">
+            <Image src={level3} alt="Plant" width={36} height={36} />
+            <span className="text-primary-foreground">60%</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xl">🌸</span>
-            <span className="text-white/90">100%</span>
+          <div className="flex flex-col items-center gap-2">
+            <Image src={level4} alt="Plant" width={36} height={36} />
+            <span className="text-primary-foreground">80%</span>
+          </div>
+          <div className="flex flex-col items-center gap-2">
+            <Image src={level5} alt="Plant" width={36} height={36} />
+            <span className="text-primary-foreground">100%</span>
           </div>
         </div>
       </div>
 
       {isLoading ? (
-        <div className="p-4 text-white/90">Loading your garden...</div>
+        <div className="p-4 text-primary">Loading your garden...</div>
       ) : (
-        <div className="flex flex-col gap-8 p-8 bg-emerald-900/20 rounded-xl border border-emerald-700/30 backdrop-blur-sm shadow-lg">
+        <Card className="container flex flex-col gap-8 p-4 bg-slate-200 shadow-lg">
           {generateGardenGrid()}
-        </div>
+        </Card>
       )}
     </div>
   );
