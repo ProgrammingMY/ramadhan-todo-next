@@ -16,6 +16,7 @@ export const usersTable = pgTable("users", {
   name: varchar({ length: 255 }).notNull(),
   email: varchar({ length: 255 }).unique(),
   password: varchar({ length: 255 }).notNull(),
+  picture: varchar({ length: 255 }).default(""),
 });
 
 // Table for predefined tasks

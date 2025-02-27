@@ -1,3 +1,4 @@
+import { Plus, Share } from "lucide-react";
 import { useState, useEffect } from "react";
 
 export default function InstallPrompt() {
@@ -17,23 +18,16 @@ export default function InstallPrompt() {
   }
 
   return (
-    <div>
-      <h3>Install App</h3>
+    <div className="flex flex-col gap-2">
       <button className="bg-primary text-primary-foreground px-4 py-2 rounded hover:bg-primary/90 transition-colors">
         Add to Home Screen
       </button>
       {isIOS && (
         <p>
           To install this app on your iOS device, tap the share button
-          <span role="img" aria-label="share icon">
-            {" "}
-            ⎋{" "}
-          </span>
+          <Share className="w-4 h-4" />
           and then "Add to Home Screen"
-          <span role="img" aria-label="plus icon">
-            {" "}
-            ➕{" "}
-          </span>
+          <Plus className="w-4 h-4" />
           .
         </p>
       )}

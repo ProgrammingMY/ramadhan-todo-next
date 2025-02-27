@@ -214,7 +214,7 @@ export default function Progress() {
     <div className="container mx-auto flex flex-col items-center gap-6 p-8">
       <h1 className="text-3xl md:text-5xl font-bold mb-6 text-background">{name ? `${name}'s` : "My"} Ramadan Garden</h1>
 
-      <div className="mb-4 bg-emerald-50/50 p-4 rounded-lg backdrop-blur-sm">
+      <div className="mb-4 bg-emerald-50 p-4 rounded-lg">
         <div className="flex items-center gap-6 text-sm">
           <div className="flex flex-col items-center gap-2">
             <Image src={level1} alt="Plant" width={36} height={36} />
@@ -242,7 +242,7 @@ export default function Progress() {
       {isLoading ? (
         <div className="p-4 text-primary">Loading your garden...</div>
       ) : (
-        <Card className="container border-0 flex flex-col gap-8 p-4 bg-emerald-200 shadow-lg">
+        <Card className="container border-0 flex flex-col gap-8 p-4 bg-emerald-50 shadow-lg">
           {generateGardenGrid()}
         </Card>
       )}

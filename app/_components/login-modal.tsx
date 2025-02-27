@@ -80,61 +80,64 @@ export default function LoginModal() {
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent>
+        <DialogContent className="sm:max-w-[425px] bg-slate-200 dark:border-slate-700 dark:bg-slate-950">
           <DialogHeader>
             <DialogTitle>{isLogin ? "Login" : "Sign Up"}</DialogTitle>
           </DialogHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="username">Username</Label>
-                  <Input
-                    type="text"
-                    id="username"
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
-                  <Input
-                    type="password"
-                    id="password"
-                    required
-                  />
-                </div>
-
-                {!isLogin && (
-                  <div className="space-y-2">
-                    <Label htmlFor="confirmPassword">Confirm Password</Label>
-                    <Input
-                      type="password"
-                      id="confirmPassword"
-                    />
-                  </div>
-                )}
-
-                <Button
-                  type="submit"
-                  className="w-full bg-blue-500 text-white hover:bg-blue-600"
-                >
-                  {isLogin ? "Login" : "Sign Up"}
-                </Button>
-              </form>
-            </CardContent>
-            <CardFooter>
-              <div className="w-full text-center text-sm text-gray-600">
-                {isLogin ? "Don't have an account? " : "Already have an account? "}
-                <Button
-                  type="button"
-                  onClick={() => setIsLogin(!isLogin)}
-                  variant="link"
-                  className="text-blue-500 hover:text-blue-600"
-                >
-                  {isLogin ? "Sign Up" : "Login"}
-                </Button>
+          <CardContent className="flex flex-col gap-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="username">Username</Label>
+                <Input
+                  className="border-slate-300 dark:border-slate-500"
+                  type="text"
+                  id="username"
+                  required
+                />
               </div>
-            </CardFooter>
+
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  className="border-slate-300 dark:border-slate-500"
+                  type="password"
+                  id="password"
+                  required
+                />
+              </div>
+
+              {!isLogin && (
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Input
+                    className="border-slate-300 dark:border-slate-500"
+                    type="password"
+                    id="confirmPassword"
+                  />
+                </div>
+              )}
+
+              <Button
+                type="submit"
+                className="w-full bg-primary text-primary-foreground hover:bg-primary/80"
+              >
+                {isLogin ? "Login" : "Sign Up"}
+              </Button>
+            </form>
+          </CardContent>
+          <CardFooter>
+            <div className="w-full text-center text-sm text-slate-800 dark:text-slate-50">
+              {isLogin ? "Don't have an account? " : "Already have an account? "}
+              <Button
+                type="button"
+                onClick={() => setIsLogin(!isLogin)}
+                variant="link"
+                className="text-blue-500 hover:text-blue-600"
+              >
+                {isLogin ? "Sign Up" : "Login"}
+              </Button>
+            </div>
+          </CardFooter>
         </DialogContent>
       </Dialog>
     </div>
