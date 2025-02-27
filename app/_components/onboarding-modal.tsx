@@ -61,7 +61,7 @@ export default function OnboardingModal() {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px] bg-slate-200 dark:border-slate-700 dark:bg-slate-950">
                 <DialogHeader>
                     <DialogTitle>{pages[currentPage].title}</DialogTitle>
                     <DialogDescription className="space-y-3 pt-3">
