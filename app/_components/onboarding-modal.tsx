@@ -28,8 +28,8 @@ export default function OnboardingModal() {
 
     const pages = [
         {
-            title: "Welcome to Ramadhan Garden! 🌸",
-            description: "Your personal sahabat for helping you stay consistent with your sunnah during Ramadhan.\nHere you can track your daily acts of sunnah and build good habits."
+            title: "Welcome to Ramadan Garden! 🌸",
+            description: "Your personal sahabat for helping you stay consistent with your sunnah during Ramadan.\nHere you can track your daily acts of sunnah and build good habits."
         },
         {
             title: "Raise Your Garden 🌱",

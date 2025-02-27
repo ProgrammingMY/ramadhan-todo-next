@@ -152,7 +152,7 @@ export function TodoList() {
 
   return (
     <div className="max-w-md mx-auto p-4">
-      <h2 className="text-3xl font-extrabold mb-6 text-primary text-center">
+      <h2 className="text-3xl font-extrabold mb-6 text-background text-center">
         Sunnah Ramadhan
       </h2>
       {!isOnline && (

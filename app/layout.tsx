@@ -1,24 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Quicksand, Noto_Naskh_Arabic } from "next/font/google";
 import type { ReactNode } from "react";
 import "./globals.css";
 import BottomNavBar from "./_components/navbar";
+import { ThemeProvider } from "./_components/theme-provider";
+import { quicksand } from "./lib/fonts";
 
-const APP_NAME = "Ramadhan Garden";
-const APP_DESCRIPTION = "Ramadhan Companion to help you stay on consistent with your sunnah";
+const APP_NAME = "Ramadan Garden";
+const APP_DESCRIPTION = "Ramadan Companion to help you stay on consistent with your sunnah";
 
-const quicksand = Quicksand({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const notoNaskhArabic = Noto_Naskh_Arabic({
-  subsets: ["arabic"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-  variable: "--font-noto-arabic",
-});
 
 export const metadata: Metadata = {
   applicationName: APP_NAME,
@@ -32,6 +21,15 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: "default",
     title: APP_NAME,
+    startupImage: [
+      { url: "/icons/launch-640x1136.png", media: "(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" },
+      { url: "/icons/launch-750x1294.png", media: "(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" },
+      { url: "/icons/launch-1125x2436.png", media: "(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" },
+      { url: "/icons/launch-1242x2148.png", media: "(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"},
+      { url: "/icons/launch-1536x2048.png", media: "(min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)" },
+      { url: "/icons/launch-1668x2224.png", media: "(min-device-width: 834px) and (max-device-width: 834px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)" },
+      { url: "/icons/launch-2048x2732.png", media: "(min-device-width: 1024px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)" },
+    ]
   },
   formatDetection: {
     telephone: false,
@@ -42,13 +40,14 @@ export const metadata: Metadata = {
   },
 };
 
+
 export const viewport: Viewport = {
-  themeColor: "#059669",
+  themeColor: "#289672",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" dir="ltr">
+    <html lang="en" dir="ltr" className={`${quicksand.className}`}>
       <head>
         <meta
           name="viewport"
@@ -71,8 +70,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             `}</style>
       </head>
       <body className="min-h-screen">
-        <main className="pb-20">{children}</main>
-        <BottomNavBar />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <main className="pb-20">{children}</main>
+          <BottomNavBar />
+        </ThemeProvider>
       </body>
     </html>
   );

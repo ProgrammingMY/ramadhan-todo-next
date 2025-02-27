@@ -73,7 +73,7 @@ export default function LoginModal() {
     <div>
       <Button
         onClick={() => setIsOpen(true)}
-        variant={"outline"}
+        variant={"default"}
         className="px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/80"
       >
         Login

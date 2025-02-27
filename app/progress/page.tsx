@@ -189,7 +189,7 @@ export default function Progress() {
             >
               {getPlantStage(Number(dayProgress?.completionRate) || 0)}
               {/* Day number - positioned below the pot */}
-              <span className="text-xs text-primary-foreground mt-1">
+              <span className="text-xs text-primary mt-1">
                 {dayIndex + 1}
               </span>
             </div>
@@ -212,29 +212,29 @@ export default function Progress() {
 
   return (
     <div className="container mx-auto flex flex-col items-center gap-6 p-8">
-      <h1 className="text-3xl md:text-5xl font-bold mb-6 text-primary">{name ? `${name}'s` : "My"} Ramadhan Garden</h1>
+      <h1 className="text-3xl md:text-5xl font-bold mb-6 text-background">{name ? `${name}'s` : "My"} Ramadan Garden</h1>
 
-      <div className="mb-4 bg-slate-300 p-4 rounded-lg backdrop-blur-sm">
+      <div className="mb-4 bg-emerald-50/50 p-4 rounded-lg backdrop-blur-sm">
         <div className="flex items-center gap-6 text-sm">
           <div className="flex flex-col items-center gap-2">
             <Image src={level1} alt="Plant" width={36} height={36} />
-            <span className="text-primary-foreground">20%</span>
+            <span className="text-primary">20%</span>
           </div>
           <div className="flex flex-col items-center gap-2">
             <Image src={level2} alt="Plant" width={36} height={36} />
-            <span className="text-primary-foreground">40%</span>
+            <span className="text-primary">40%</span>
           </div>
           <div className="flex flex-col items-center gap-2">
             <Image src={level3} alt="Plant" width={36} height={36} />
-            <span className="text-primary-foreground">60%</span>
+            <span className="text-primary">60%</span>
           </div>
           <div className="flex flex-col items-center gap-2">
             <Image src={level4} alt="Plant" width={36} height={36} />
-            <span className="text-primary-foreground">80%</span>
+            <span className="text-primary">80%</span>
           </div>
           <div className="flex flex-col items-center gap-2">
             <Image src={level5} alt="Plant" width={36} height={36} />
-            <span className="text-primary-foreground">100%</span>
+            <span className="text-primary">100%</span>
           </div>
         </div>
       </div>
@@ -242,7 +242,7 @@ export default function Progress() {
       {isLoading ? (
         <div className="p-4 text-primary">Loading your garden...</div>
       ) : (
-        <Card className="container flex flex-col gap-8 p-4 bg-slate-200 shadow-lg">
+        <Card className="container border-0 flex flex-col gap-8 p-4 bg-emerald-200 shadow-lg">
           {generateGardenGrid()}
         </Card>
       )}

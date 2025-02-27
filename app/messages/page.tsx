@@ -1,5 +1,6 @@
 "use client";
 
+import { notoNaskhArabic } from "@/lib/fonts";
 import { useEffect, useState } from "react";
 
 interface Dua {
@@ -72,7 +73,7 @@ export default function DuaList() {
             {expandedId === dua.id && (
               <div className="p-4 border-t">
                 {dua.arab.map((arab) => (
-                  <p className={`text-right text-2xl mb-4 font-var(--font-noto-naskh-arabic)`}>{arab}</p>
+                  <p className={`text-right text-2xl mb-4 ${notoNaskhArabic.className}`}>{arab}</p>
                 ))}
                 {dua.rumi.map((rumi) => (
                   <p className="text-sm mb-2 italic">{rumi}</p>

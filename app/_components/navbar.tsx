@@ -10,7 +10,7 @@ export default function BottomNavBar() {
   const isActive = (path: string) => pathname === path;
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-slate-800 border-t border-white/20 pb-safe">
+    <nav className="fixed bottom-0 left-0 right-0 bg-primary border-t border-white/20 pb-safe">
       <div className="flex justify-around items-center h-16">
         <Link
           href="/"
@@ -18,8 +18,8 @@ export default function BottomNavBar() {
             isActive("/") ? "text-white" : "text-white/70"
           }`}
         >
-          <Home className="w-6 h-6 text-primary" />
-          <span className="text-xs mt-1 text-primary">Home</span>
+          <Home className="w-6 h-6 text-primary-foreground" />
+          <span className="text-xs mt-1 text-primary-foreground">Home</span>
         </Link>
         <Link
           href="/progress"
@@ -27,8 +27,8 @@ export default function BottomNavBar() {
             isActive("/progress") ? "text-white" : "text-white/70"
           }`}
         >
-          <Leaf className="w-6 h-6 text-primary" />
-          <span className="text-xs mt-1 text-primary">Garden</span>
+          <Leaf className="w-6 h-6 text-primary-foreground" />
+          <span className="text-xs mt-1 text-primary-foreground">Garden</span>
         </Link>
         <Link
           href="/messages"
@@ -36,8 +36,8 @@ export default function BottomNavBar() {
             isActive("/messages") ? "text-white" : "text-white/70"
           }`}
         >
-          <Book className="w-6 h-6 text-primary" />
-          <span className="text-xs mt-1 text-primary">Doa</span>
+          <Book className="w-6 h-6 text-primary-foreground" />
+          <span className="text-xs mt-1 text-primary-foreground">Doa</span>
         </Link>
         <Link
           href="/profile"
@@ -45,8 +45,8 @@ export default function BottomNavBar() {
             isActive("/profile") ? "text-white" : "text-white/70"
           }`}
         >
-          <User className="w-6 h-6 text-primary" />
-          <span className="text-xs mt-1 text-primary">Profile</span>
+          <User className="w-6 h-6 text-primary-foreground" />
+          <span className="text-xs mt-1 text-primary-foreground">Profile</span>
         </Link>
       </div>
     </nav>

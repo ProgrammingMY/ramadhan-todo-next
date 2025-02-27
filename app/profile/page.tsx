@@ -6,12 +6,13 @@ import InstallPrompt from "../_components/install-prompt";
 import LoginModal from "../_components/login-modal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/_components/theme-switcher";
 
 
 export default function Profile() {
   const [name, setName] = useState("User Name");
   const [isEditingName, setIsEditingName] = useState(false);
-
+  const [user, setUser] = useState(null);
   const handleNameSave = () => {
     if (isEditingName) {
       console.log("Saving name");
@@ -35,7 +36,7 @@ export default function Profile() {
     }
 
     if (!user) {
-      setName("dummy");
+      setName("");
     }
 
     const getTest = async () => {
@@ -105,8 +106,25 @@ export default function Profile() {
             </Button>
           </div>
         </div>
-        <InstallPrompt />
-        <LoginModal />
+        <div className="flex gap-2">
+          <ModeToggle />
+          <InstallPrompt />
+          {
+            !user && (
+              <LoginModal />
+            )
+          }
+        {
+          user && (
+            <Button onClick={() => {
+              localStorage.removeItem("user");
+              setUser(null);
+            }}>
+              Logout
+            </Button>
+          )
+        }
+        </div>
       </div>
     </div>
   );
