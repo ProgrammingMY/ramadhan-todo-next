@@ -4,8 +4,8 @@ import type { ReactNode } from "react";
 import "./globals.css";
 import BottomNavBar from "./_components/navbar";
 
-const APP_NAME = "Ramadhan Companion";
-const APP_DESCRIPTION = "Ramadhan Companion to help you stay on track";
+const APP_NAME = "Ramadhan Garden";
+const APP_DESCRIPTION = "Ramadhan Companion to help you stay on consistent with your sunnah";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   applicationName: APP_NAME,
   title: {
     default: APP_NAME,
-    template: "%s - Ramadhan Companion",
+    template: "%s - Ramadhan Garden",
   },
   description: APP_DESCRIPTION,
   manifest: "/manifest.json",
