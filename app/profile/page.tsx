@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/_components/theme-switcher";
 import { Bell, ChevronRight, Download, Info, Sun } from "lucide-react";
 import { User } from "@/libs/types";
+import About from "@/_components/about";
 
 const settings = [
   {
@@ -21,7 +22,7 @@ const settings = [
     title: "Notifications",
     icon: <Bell />,
     id: "notifications",
-    content: <div>Notifications</div>
+    content: <div>Notifications not available yet</div>
   },
   {
     title: "Install App",
@@ -33,7 +34,7 @@ const settings = [
     title: "About",
     icon: <Info />,
     id: "about",
-    content: <div>About</div>
+    content: <About />
   }
 ];
 

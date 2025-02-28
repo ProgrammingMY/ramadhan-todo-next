@@ -12,6 +12,7 @@ import level4 from "/public/flowers/4.png";
 import level5 from "/public/flowers/5.png";
 import { Card } from "@/components/ui/card";
 import Profile from "@/_components/profile";
+import Cabinet from "@/_components/cabinets/cabinet";
 
 
 const PLANT_STAGES = [
@@ -139,8 +140,6 @@ export default function Progress() {
           <span className="text-2xl transform group-hover:scale-110 transition-transform drop-shadow-md">
             <Image src={stage.plant} alt="Plant" width={48} height={48} />
           </span>
-          {/* Flower pot */}
-          <div className="h-2 w-6 bg-orange-800/70 rounded-full mt-[-1px] z-10" />
         </div>
       );
     }
@@ -148,7 +147,6 @@ export default function Progress() {
       <div className="flex flex-col items-center group" title="Empty plot">
         {/* Empty pot */}
         <Image src={level1} className="invisible" alt="Empty pot" width={48} height={48} />
-        <div className="h-2 w-6 bg-orange-800/70 rounded-full z-10" />
       </div>
     );
   };
@@ -187,7 +185,8 @@ export default function Progress() {
             <div
               key={dateStr}
               className={`w-12 h-16 flex flex-col items-center justify-center relative group
-              ${isCurrentDay ? 'bg-emerald-100/50 rounded-lg ring-1 ring-emerald-200' : ''}`}
+              ${isCurrentDay ? 'bg-emerald-100/50 rounded-lg ring-1 ring-emerald-200' : ''}
+              transform translate-y-[-20px]`} // Added translation to position plants on shelves
             >
               {getPlantStage(Number(dayProgress?.completionRate) || 0)}
               {/* Day number - positioned below the pot */}
@@ -201,9 +200,8 @@ export default function Progress() {
       tiersOfPots.push(
         <div
           key={`tier-${tier}`}
-          className="flex justify-center items-end relative"
+          className="flex justify-center items-end relative h-[89px]" // Adjusted height to match shelf spacing
         >
-          {/* Shelf decoration */}
           {tierPots}
         </div>
       );
@@ -244,9 +242,14 @@ export default function Progress() {
       {isLoading ? (
         <div className="p-4 text-primary">Loading your garden...</div>
       ) : (
-        <Card className="container border-0 flex flex-col gap-8 p-4 bg-emerald-50 shadow-lg">
-          {generateGardenGrid()}
-        </Card>
+        <div className="relative container">
+          <Cabinet
+            monthProgress={monthProgress}
+            currentDay={new Date().getDate()}
+            plantStages={PLANT_STAGES}
+            getPlantStage={getPlantStage}
+          />
+        </div>
       )}
     </div>
   );
