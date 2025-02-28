@@ -7,7 +7,8 @@ import LoginModal from "../_components/login-modal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/_components/theme-switcher";
-import { Bell, ChevronRight, Download, Sun } from "lucide-react";
+import { Bell, ChevronRight, Download, Info, Sun } from "lucide-react";
+import { User } from "@/libs/types";
 
 const settings = [
   {
@@ -27,6 +28,12 @@ const settings = [
     icon: <Download />,
     id: "install",
     content: <InstallPrompt />
+  },
+  {
+    title: "About",
+    icon: <Info />,
+    id: "about",
+    content: <div>About</div>
   }
 ];
 
@@ -41,19 +48,22 @@ const avatars = [
   "/avatars/8.png",
 ];
 
-interface User {
-  username: string;
-  id: string;
-  picture: string;
-}
-
-
 export default function Profile() {
   const [name, setName] = useState("User Name");
   const [isEditingName, setIsEditingName] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [selectedPicture, setSelectedPicture] = useState(user?.picture || "/avatars/1.png");
   const [expandedSettingId, setExpandedSettingId] = useState<string | null>(null);
+
+  const [isStandalone, setIsStandalone] = useState(false);
+
+  useEffect(() => {
+    setIsStandalone(window.matchMedia('(display-mode: standalone)').matches);
+  }, []);
+
+  const filteredSettings = settings.filter(setting =>
+    setting.id !== 'install' || !isStandalone
+  );
 
   const handleNameSave = () => {
     if (isEditingName) {
@@ -97,10 +107,10 @@ export default function Profile() {
   }, []);
 
   return (
-    <div className="min-h-screen container">
+    <div className="p-6 container flex flex-col gap-6">
       {!user ? (
         // Not logged in view
-        <div className="p-6 mt-14">
+        <div className="mt-14">
           <div className="flex flex-col gap-4">
             <h1 className="text-3xl font-bold mb-6">Profile</h1>
             <p className="text-lg">Please login to customize your profile</p>
@@ -109,7 +119,7 @@ export default function Profile() {
         </div>
       ) : (
         // Logged in view
-        <div className="p-6">
+        <div>
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-3xl font-bold">Profile</h1>
             <div className="flex gap-2">
@@ -133,6 +143,7 @@ export default function Profile() {
                     width={32}
                     height={32}
                     className="rounded-full"
+                    sizes="32px"
                   />
                   <h3 className="font-semibold text-lg">Profile Picture</h3>
                 </div>
@@ -146,6 +157,7 @@ export default function Profile() {
                       alt="Selected profile picture"
                       fill
                       className="rounded-full object-cover"
+                      sizes="32px"
                     />
                   </div>
                   <div className="grid grid-cols-4 gap-4">
@@ -164,6 +176,7 @@ export default function Profile() {
                           width={64}
                           height={64}
                           className="rounded-full"
+                          sizes="64px"
                         />
                       </button>
                     ))}
@@ -211,16 +224,16 @@ export default function Profile() {
           </div>
         </div>
       )}
-      <div className="flex p-6 flex-col gap-4">
+      <div className="flex flex-col gap-4">
         <h1 className="text-3xl font-bold">Settings</h1>
         <div className="space-y-4">
-          {settings.map((setting) => (
+          {filteredSettings.map((setting) => (
             <div
               key={setting.id}
               className="bg-card border border-slate-200 dark:border-slate-700 rounded-md shadow-md overflow-hidden"
             >
               <div
-                className="p-4 cursor-pointer hover:bg-slate-800 flex justify-between items-center"
+                className="p-4 cursor-pointer hover:bg-primary/10 flex justify-between items-center"
                 onClick={() => setExpandedSettingId(expandedSettingId === setting.id ? null : setting.id)}
               >
                 <div className="flex items-center gap-2">

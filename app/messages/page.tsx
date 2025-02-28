@@ -1,6 +1,7 @@
 "use client";
 
 import { notoNaskhArabic } from "@/lib/fonts";
+import { ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface Dua {
@@ -52,26 +53,25 @@ export default function DuaList() {
       {/* Duas List Section */}
       <div className="space-y-4">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Collection of Duas</h2>
+          <h2 className="text-xl font-semibold">Collection of Dua</h2>
         </div>
 
         {filteredDuas.map((dua) => (
           <div
             key={dua.id}
-            className="bg-card rounded-lg shadow-sm overflow-hidden"
+            className="bg-card rounded-md shadow-md overflow-hidden"
           >
             <div
-              className="p-4 cursor-pointer hover:bg-slate-800 flex justify-between items-center"
+              className="p-4 cursor-pointer hover:bg-primary/10 flex justify-between items-center"
               onClick={() => setExpandedId(expandedId === dua.id ? null : dua.id)}
             >
               <h3 className="font-semibold text-lg">{dua.doa}</h3>
-              <span className="text-gray-500">
-                {expandedId === dua.id ? '▼' : '▶'}
-              </span>
+              <ChevronRight className={`transform transition-transform ${expandedId === dua.id ? 'rotate-90' : ''
+                }`} />
             </div>
 
             {expandedId === dua.id && (
-              <div className="p-4 border-t">
+              <div key={dua.id} className="p-4 border-t">
                 {dua.arab.map((arab) => (
                   <p className={`text-right text-2xl mb-4 ${notoNaskhArabic.className}`}>{arab}</p>
                 ))}

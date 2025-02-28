@@ -13,3 +13,9 @@ export interface Todo {
   text: string;
   completed: boolean;
 }
+
+export interface User {
+  username: string;
+  id: string;
+  picture: string;
+}
