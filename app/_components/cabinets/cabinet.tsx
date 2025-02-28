@@ -18,12 +18,10 @@ interface CabinetProps {
 export default function Cabinet({
     monthProgress,
     currentDay,
-    plantStages,
     getPlantStage
 }: CabinetProps) {
     const potsPerShelf = 7;
     const numberOfShelves = Math.ceil(monthProgress.length / potsPerShelf);
-    const shelfHeight = 150; // Height in pixels for each shelf
 
     return (
         <div className={`relative h-[350px] bg-[#45221c] border-[10px] border-[#69342b] box-border`}>
@@ -39,7 +37,6 @@ export default function Cabinet({
 
                 return (
                     <Shelf
-                        shelfHeight={shelfHeight}
                         key={shelfIndex}
                         items={shelfItems}
                         currentDay={currentDay}

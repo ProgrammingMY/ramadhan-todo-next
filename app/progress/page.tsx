@@ -13,7 +13,8 @@ import level5 from "/public/flowers/5.png";
 import { Card } from "@/components/ui/card";
 import Profile from "@/_components/profile";
 import Cabinet from "@/_components/cabinets/cabinet";
-
+import { generateInitialProgress } from "@/lib/generate-default-progress";
+import { getMonthProgress } from "@/lib/get-month-progress";
 
 const PLANT_STAGES = [
   { plant: level1, minCompletionRate: 1, maxCompletionRate: 20 },
@@ -29,23 +30,9 @@ export default function Progress() {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
 
-  // Function to generate initial progress data
-  const generateInitialProgress = () => {
-    const today = new Date();
-    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-    const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-    const totalDays = lastDay.getDate();
-
-    return Array.from({ length: totalDays }, (_, index) => ({
-      date: new Date(firstDay.getFullYear(), firstDay.getMonth(), index + 1)
-        .toISOString()
-        .split("T")[0],
-      completionRate: 0,
-    }));
-  };
 
   // Function to fetch progress data
-  const fetchProgressData = async (user: User) => {
+  const fetchProgressData = async (user: User | null) => {
     try {
       let tasks: TaskProgress[] = [];
 
@@ -69,28 +56,11 @@ export default function Progress() {
         tasks = await response.json();
       } else {
         // Try to get from localStorage
-        tasks = JSON.parse(localStorage.getItem("monthProgress") || "[]");
+        return JSON.parse(localStorage.getItem("monthProgress") || "[]");
       }
 
       // Calculate completion rates for each day
-      const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-      const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-      const totalDays = lastDay.getDate();
-
-      const progress = Array.from({ length: totalDays }, (_, index) => {
-        const date = new Date(
-          firstDay.getFullYear(),
-          firstDay.getMonth(),
-          index + 1
-        )
-          .toISOString()
-          .split("T")[0];
-
-        return {
-          date,
-          completionRate: calculateCompletionRate(tasks, date),
-        };
-      });
+      const progress = getMonthProgress(tasks);
 
       // Save to localStorage as backup
       localStorage.setItem("monthProgress", JSON.stringify(progress));
@@ -112,18 +82,18 @@ export default function Progress() {
   useEffect(() => {
     const userData = localStorage.getItem("user");
 
-    const loadProgress = async (user: User) => {
+    const loadProgress = async (user: User | null) => {
       setIsLoading(true);
       const progress = await fetchProgressData(user);
       setMonthProgress(progress);
       setIsLoading(false);
     };
 
+    loadProgress(JSON.parse(userData ?? "null"));
+
     if (userData) {
       setUser(JSON.parse(userData));
-      loadProgress(JSON.parse(userData));
     }
-
 
   }, []);
 
@@ -151,64 +121,6 @@ export default function Progress() {
     );
   };
 
-  // Function to generate garden grid with tiers
-  const generateGardenGrid = () => {
-    const today = new Date();
-    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-    const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-    const totalDays = lastDay.getDate();
-    const currentDay = today.getDate(); // Get current day of month
-
-    // Organize days into rows (tiers)
-    const tiersOfPots = [];
-    const potsPerRow = 7;
-    const numberOfTiers = Math.ceil(totalDays / potsPerRow);
-
-    for (let tier = 0; tier < numberOfTiers; tier++) {
-      const tierPots = [];
-      for (let pot = 0; pot < potsPerRow; pot++) {
-        const dayIndex = tier * potsPerRow + pot;
-        if (dayIndex < totalDays) {
-          const dateStr = new Date(
-            firstDay.getFullYear(),
-            firstDay.getMonth(),
-            dayIndex + 1
-          )
-            .toISOString()
-            .split("T")[0];
-
-          const dayProgress = monthProgress.find((p) => p.date === dateStr);
-          // check if the day is the current day
-          const isCurrentDay = dayIndex + 1 === currentDay;
-
-          tierPots.push(
-            <div
-              key={dateStr}
-              className={`w-12 h-16 flex flex-col items-center justify-center relative group
-              ${isCurrentDay ? 'bg-emerald-100/50 rounded-lg ring-1 ring-emerald-200' : ''}
-              transform translate-y-[-20px]`} // Added translation to position plants on shelves
-            >
-              {getPlantStage(Number(dayProgress?.completionRate) || 0)}
-              {/* Day number - positioned below the pot */}
-              <span className={`text-xs text-primary mt-1 ${isCurrentDay ? 'font-bold' : ''}`}>
-                {dayIndex + 1}
-              </span>
-            </div>
-          );
-        }
-      }
-      tiersOfPots.push(
-        <div
-          key={`tier-${tier}`}
-          className="flex justify-center items-end relative h-[89px]" // Adjusted height to match shelf spacing
-        >
-          {tierPots}
-        </div>
-      );
-    }
-
-    return tiersOfPots;
-  };
 
   return (
     <div className="container mx-auto flex flex-col items-center gap-6 p-8">

@@ -3,7 +3,6 @@ import { JSX } from "react";
 
 interface ShelfProps {
     items: DayProgress[];
-    shelfHeight: number;
     currentDay: number;
     shelfIndex: number;
     potsPerShelf: number;
@@ -13,7 +12,6 @@ interface ShelfProps {
 
 export default function Shelf({
     items,
-    shelfHeight,
     currentDay,
     shelfIndex,
     potsPerShelf,

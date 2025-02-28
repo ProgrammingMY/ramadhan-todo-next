@@ -50,7 +50,7 @@ const avatars = [
 ];
 
 export default function Profile() {
-  const [name, setName] = useState("User Name");
+  const [name, setName] = useState("");
   const [isEditingName, setIsEditingName] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [selectedPicture, setSelectedPicture] = useState(user?.picture || "/avatars/1.png");
@@ -66,15 +66,29 @@ export default function Profile() {
     setting.id !== 'install' || !isStandalone
   );
 
-  const handleNameSave = () => {
+  const handleNameSave = async () => {
     if (isEditingName) {
-      console.log("Saving name");
+      const response = await fetch("/api/user", {
+        method: "PUT",
+        body: JSON.stringify({
+          name: name,
+          id: user?.id
+        })
+      });
+
+      if (!response.ok) {
+        return console.error("Failed to save name");
+      }
+
+      localStorage.setItem("user", JSON.stringify({
+        ...user,
+        username: name
+      }));
+
       setIsEditingName(false);
     } else {
-      console.log("Editing name");
       setIsEditingName(true);
     }
-    // Here you would typically save the name to your backend/storage
   };
 
   const handlePictureSelect = (picture: string) => {
@@ -126,6 +140,8 @@ export default function Profile() {
             <div className="flex gap-2">
               <Button variant="destructive" onClick={() => {
                 localStorage.removeItem("user");
+                localStorage.removeItem("monthProgress");
+                localStorage.removeItem("todos");
                 setUser(null);
               }}>
                 Logout

@@ -8,12 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 
 import {
-  Card,
   CardContent,
-  CardDescription,
   CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 
 export default function LoginModal() {
@@ -59,12 +55,12 @@ export default function LoginModal() {
         JSON.stringify({
           id: data.user.id,
           username: data.user.name,
+          picture: data.user.picture,
         })
       );
       setIsOpen(false);
       return router.push("/");
     } else {
-      console.log(data);
       alert(data.error);
     }
   };

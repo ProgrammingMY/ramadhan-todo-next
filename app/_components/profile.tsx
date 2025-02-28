@@ -9,8 +9,8 @@ export default function Profile({ user }: { user: User }) {
         <div className="flex flex-col items-center">
             <div className="relative w-16 h-16">
                 <Image
-                    src={user.picture}
-                    alt="Selected profile picture"
+                    src={user.picture || ""}
+                    alt="profile picture"
                     fill
                     className="rounded-full object-cover"
                     sizes="32px"

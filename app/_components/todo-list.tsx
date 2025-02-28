@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { TaskProgress, Todo } from "../libs/types";
 import { DEFAULT_TODOS } from "../constant/todo";
 import TodoItem from "./todo-item";
+import { getMonthProgress } from "@/lib/get-month-progress";
 
 
 export function TodoList() {
@@ -108,17 +109,17 @@ export function TodoList() {
 
     // Create or update today's progress
     const todayStr = today.toISOString().split("T")[0];
-    const todayTasks = newTodos.map(todo => ({
+
+    // Update progress array
+    const tasks = newTodos.map(todo => ({
       date: todayStr,
       completed: todo.completed
     }));
 
-    // Update progress array
-    const progressWithoutToday = existingProgress.filter(p => p.date !== todayStr);
-    const updatedProgress = [...progressWithoutToday, ...todayTasks];
+    const monthProgress = getMonthProgress(tasks);
 
     // Save to localStorage
-    localStorage.setItem("monthProgress", JSON.stringify(updatedProgress));
+    localStorage.setItem("monthProgress", JSON.stringify(monthProgress));
 
     // save progress to API if online and user is logged in
     if (isOnline && user) {
