@@ -20,6 +20,7 @@ export default function Profile({ user }: { user: User }) {
                 <h1 className="text-2xl font-bold">{user.username}</h1>
                 <h2 className="text-lg font-medium text-gray-500">Ramadan Garden</h2>
             </div>
+            <div className="w-full h-px bg-gray-200" />
         </div>
     );
 }

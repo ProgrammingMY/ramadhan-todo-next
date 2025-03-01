@@ -1,20 +1,20 @@
 "use client";
 
+import moment from "moment-hijri";
 import { useState, useEffect } from "react";
 import { TaskProgress, User } from "../libs/types";
 import { DayProgress } from "../libs/types";
-import { calculateCompletionRate } from "../libs/completion-rate";
 import Image from "next/image";
 import level1 from "/public/flowers/1.png";
 import level2 from "/public/flowers/2.png";
 import level3 from "/public/flowers/3.png";
 import level4 from "/public/flowers/4.png";
 import level5 from "/public/flowers/5.png";
-import { Card } from "@/components/ui/card";
 import Profile from "@/_components/profile";
 import Cabinet from "@/_components/cabinets/cabinet";
 import { generateInitialProgress } from "@/lib/generate-default-progress";
 import { getMonthProgress } from "@/lib/get-month-progress";
+import { HIJRI_MONTHS, hijriToday } from "@/constant/hijri";
 
 const PLANT_STAGES = [
   { plant: level1, minCompletionRate: 1, maxCompletionRate: 20 },
@@ -36,14 +36,7 @@ export default function Progress() {
     try {
       let tasks: TaskProgress[] = [];
 
-      // get today's date
-      const today = new Date();
-      const yearMonth = today
-        .toISOString()
-        .split("T")[0]
-        .split("-")
-        .slice(0, 2)
-        .join("-");
+      const yearMonth = hijriToday().format("iYYYY-iMM");
 
       if (navigator.onLine && user) {
         const { id } = user;
@@ -58,6 +51,8 @@ export default function Progress() {
         // Try to get from localStorage
         return JSON.parse(localStorage.getItem("monthProgress") || "[]");
       }
+
+
 
       // Calculate completion rates for each day
       const progress = getMonthProgress(tasks);
@@ -124,30 +119,38 @@ export default function Progress() {
 
   return (
     <div className="container mx-auto flex flex-col items-center gap-6 p-8">
-      {user && <Profile user={user} />}
 
-      <div className="mb-4 bg-emerald-50 p-2 rounded-lg">
-        <div className="flex items-center gap-6 text-sm">
-          <div className="flex flex-col items-center gap-2">
-            <Image src={level1} alt="Plant" width={32} height={32} />
-            <span className="text-primary text-xs">20%</span>
+
+      <div className="mb-4 w-full bg-card shadow-md  p-4 rounded-lg">
+        <div className="flex flex-col items-center gap-2 text-sm">
+          {user && <Profile user={user} />}
+          <div className="text-primary font-bold text-lg">
+            {hijriToday().iDate()}
+            {" "}
+            {HIJRI_MONTHS[hijriToday().iMonth()]}
+            {" "}
+            {hijriToday().iYear()}
           </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image src={level2} alt="Plant" width={32} height={32} />
-            <span className="text-primary text-xs">40%</span>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image src={level3} alt="Plant" width={32} height={32} />
-            <span className="text-primary text-xs">60%</span>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image src={level4} alt="Plant" width={32} height={32} />
-            <span className="text-primary text-xs">80%</span>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image src={level5} alt="Plant" width={32} height={32} />
-            <span className="text-primary text-xs">100%</span>
-          </div>
+          {monthProgress.length > 0 && (
+            <div className="text-primary text-sm">
+              {(() => {
+                const todayProgress = monthProgress[hijriToday().date() - 1]?.completionRate || 0;
+                if (todayProgress >= 100) {
+                  return "🎉 Congratulations! Your flower has fully bloomed today!";
+                } else if (todayProgress >= 80) {
+                  return "🌸 Almost there! Your flower is about to bloom!";
+                } else if (todayProgress >= 60) {
+                  return "🌱 Great progress! Your flower is growing steadily!";
+                } else if (todayProgress >= 40) {
+                  return "🌿 You're doing well! Keep nurturing your flower!";
+                } else if (todayProgress > 0) {
+                  return "🪴 Good start! Keep it up!";
+                } else {
+                  return "Start your day by completing tasks to grow your flower!";
+                }
+              })()}
+            </div>
+          )}
         </div>
       </div>
 
@@ -157,7 +160,7 @@ export default function Progress() {
         <div className="relative container">
           <Cabinet
             monthProgress={monthProgress}
-            currentDay={new Date().getDate()}
+            currentDay={hijriToday().iDate()}
             plantStages={PLANT_STAGES}
             getPlantStage={getPlantStage}
           />

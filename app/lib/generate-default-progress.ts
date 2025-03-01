@@ -1,13 +1,13 @@
+import { hijriToday } from "@/constant/hijri";
+
 export const generateInitialProgress = () => {
-  const today = new Date();
-  const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-  const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-  const totalDays = lastDay.getDate();
+  // get first day of the month
+
+  const firstDay = hijriToday().startOf("iMonth");
+  const totalDays = hijriToday().iDaysInMonth();
 
   return Array.from({ length: totalDays }, (_, index) => ({
-    date: new Date(firstDay.getFullYear(), firstDay.getMonth(), index + 1)
-      .toISOString()
-      .split("T")[0],
+    date: firstDay.add(index, "day").format("iYYYY-iMM-iDD"),
     completionRate: 0,
   }));
 };
