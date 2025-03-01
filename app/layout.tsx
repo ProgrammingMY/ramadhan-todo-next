@@ -4,6 +4,7 @@ import "./globals.css";
 import BottomNavBar from "./_components/navbar";
 import { ThemeProvider } from "./_components/theme-provider";
 import { quicksand } from "./lib/fonts";
+import { Toaster } from "@/components/ui/sonner";
 
 const APP_NAME = "Ramadan Garden";
 const APP_DESCRIPTION = "Ramadan Companion to help you stay on consistent with your sunnah";
@@ -79,6 +80,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           disableTransitionOnChange
         >
           <main className="pb-20">{children}</main>
+          <Toaster richColors position="top-center" />
           <BottomNavBar />
         </ThemeProvider>
       </body>

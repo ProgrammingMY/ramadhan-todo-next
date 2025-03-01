@@ -3,6 +3,7 @@ import {
   boolean,
   integer,
   pgTable,
+  text,
   timestamp,
   unique,
   uuid,
@@ -43,4 +44,17 @@ export const progressTable = pgTable(
     completedAt: timestamp({ withTimezone: true }),
   },
   (table) => [unique().on(table.userId, table.taskId, table.date)]
+);
+
+export const subscriptionsTable = pgTable("subscriptions", {
+  id: uuid()
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
+  deviceId: uuid()
+    .notNull(),
+  subscription: text().notNull(),
+  createdAt: timestamp({ withTimezone: true }).notNull().default(sql`now()`),
+  updatedAt: timestamp({ withTimezone: true }).notNull().default(sql`now()`),
+},
+  (table) => [unique().on(table.deviceId, table.subscription)]
 );

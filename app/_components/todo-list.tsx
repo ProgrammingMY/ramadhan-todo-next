@@ -5,6 +5,7 @@ import { TaskProgress, Todo } from "../libs/types";
 import { DEFAULT_TODOS } from "../constant/todo";
 import TodoItem from "./todo-item";
 import { getMonthProgress } from "@/lib/get-month-progress";
+import { toast } from "sonner";
 
 
 export function TodoList() {
@@ -104,9 +105,6 @@ export function TodoList() {
     // Get today's date
     const today = new Date();
 
-    // Get existing progress or initialize new array
-    const existingProgress: TaskProgress[] = JSON.parse(localStorage.getItem("monthProgress") || "[]");
-
     // Create or update today's progress
     const todayStr = today.toISOString().split("T")[0];
 
@@ -120,6 +118,11 @@ export function TodoList() {
 
     // Save to localStorage
     localStorage.setItem("monthProgress", JSON.stringify(monthProgress));
+
+    // check if all todos are completed, if so, show toast
+    if (newTodos.every(todo => todo.completed)) {
+      toast.success("Alhamdulillah! You've fully grown your flower for today!");
+    }
 
     // save progress to API if online and user is logged in
     if (isOnline && user) {

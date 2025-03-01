@@ -65,4 +65,36 @@ const serwist = new Serwist({
   }
 });
 
+// Add push notification event listeners
+self.addEventListener('push', (event) => {
+  if (event.data) {
+    const data = event.data.json();
+    const options = {
+      body: data.body || 'New notification',
+      icon: '/icons/android-chrome-192x192.png', // Make sure this icon exists in your public folder
+      badge: '/icons/android-chrome-192x192.png',
+      vibrate: [100, 50, 100],
+      data: {
+        dateOfArrival: Date.now(),
+        primaryKey: data.id,
+        url: data.url
+      },
+      actions: data.actions || [],
+    };
+
+    event.waitUntil(
+      self.registration.showNotification(data.title || 'Notification', options)
+    );
+  }
+
+});
+
+self.addEventListener('notificationclick', (event) => {
+  console.log('Notification clicked', event);
+  event.notification.close();
+  event.waitUntil(
+    clients.openWindow(event.notification.data.url)
+  );
+});
+
 serwist.addEventListeners();
