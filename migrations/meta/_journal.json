@@ -15,6 +15,27 @@
       "when": 1740656354344,
       "tag": "0001_lame_peter_quill",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1740731682398,
+      "tag": "0002_old_gunslinger",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1740732990721,
+      "tag": "0003_cheerful_longshot",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1740733465317,
+      "tag": "0004_windy_proteus",
+      "breakpoints": true
     }
   ]
 }

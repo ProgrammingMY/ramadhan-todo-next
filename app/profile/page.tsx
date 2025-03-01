@@ -10,6 +10,7 @@ import { ModeToggle } from "@/_components/theme-switcher";
 import { Bell, ChevronRight, Download, Info, Sun } from "lucide-react";
 import { User } from "@/libs/types";
 import About from "@/_components/about";
+import NotificationManager from "@/_components/notification-manager";
 
 const settings = [
   {
@@ -22,7 +23,7 @@ const settings = [
     title: "Notifications",
     icon: <Bell />,
     id: "notifications",
-    content: <div>Notifications not available yet</div>
+    content: <NotificationManager />
   },
   {
     title: "Install App",
