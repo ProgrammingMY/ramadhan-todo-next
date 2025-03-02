@@ -7,7 +7,7 @@ export const getMonthProgress = (tasks: TaskProgress[]) => {
     const totalDays = hijriToday().iDaysInMonth();
 
     const progress = Array.from({ length: totalDays }, (_, index) => {
-        const date = firstDay.add(index, "day").format("iYYYY-iMM-iDD");
+        const date = firstDay.clone().add(index, "day").format("iYYYY-iMM-iDD");
 
         return {
             date,

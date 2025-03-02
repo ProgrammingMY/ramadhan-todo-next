@@ -7,7 +7,7 @@ export const generateInitialProgress = () => {
   const totalDays = hijriToday().iDaysInMonth();
 
   return Array.from({ length: totalDays }, (_, index) => ({
-    date: firstDay.add(index, "day").format("iYYYY-iMM-iDD"),
+    date: firstDay.clone().add(index, "day").format("iYYYY-iMM-iDD"),
     completionRate: 0,
   }));
 };

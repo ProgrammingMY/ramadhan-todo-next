@@ -134,7 +134,7 @@ export default function Progress() {
           {monthProgress.length > 0 && (
             <div className="text-primary text-sm">
               {(() => {
-                const todayProgress = monthProgress[hijriToday().date() - 1]?.completionRate || 0;
+                const todayProgress = monthProgress[hijriToday().iDate()]?.completionRate || 0;
                 if (todayProgress >= 100) {
                   return "🎉 Congratulations! Your flower has fully bloomed today!";
                 } else if (todayProgress >= 80) {
@@ -146,7 +146,7 @@ export default function Progress() {
                 } else if (todayProgress > 0) {
                   return "🪴 Good start! Keep it up!";
                 } else {
-                  return "Start your day by completing tasks to grow your flower!";
+                  return "Start your day by doing your sunnah to grow your flower!";
                 }
               })()}
             </div>
