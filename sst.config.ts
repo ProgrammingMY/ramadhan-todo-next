@@ -19,6 +19,8 @@ export default $config({
     const db_conn = new sst.Secret("DATABASE_URL");
     const cloudflare_zone = new sst.Secret("CLOUDFLARE_ZONE");
 
+    const stage = $app.stage;
+
     new sst.aws.Cron("CronReminder", {
       schedule: "cron(0 14 * * ? *)", // 2:00 PM UTC
       function: {
@@ -31,7 +33,7 @@ export default $config({
         DATABASE_URL: db_conn.value,
       },
       domain: {
-        name: "ramadhan.programmingmy.com",
+        name: stage === "dev" ? "dev.programmingmy.com" : `ramadhan.programmingmy.com`,
         dns: sst.cloudflare.dns({
           zone: cloudflare_zone.value,
         })
