@@ -18,20 +18,13 @@ export default $config({
   async run() {
     const db_conn = new sst.Secret("DATABASE_URL");
     const cloudflare_zone = new sst.Secret("CLOUDFLARE_ZONE");
-    const vapid_public_key = new sst.Secret("NEXT_PUBLIC_VAPID_PUBLIC_KEY");
-    const vapid_private_key = new sst.Secret("VAPID_PRIVATE_KEY");
 
-    const cron_reminder = new sst.aws.Cron("CronReminder", {
+    new sst.aws.Cron("CronReminder", {
       schedule: "cron(0 14 * * ? *)", // 2:00 PM UTC
       function: {
         handler: "lambda/cron.handler",
-        environment: {
-          NEXT_PUBLIC_VAPID_PUBLIC_KEY: vapid_public_key.value,
-          VAPID_PRIVATE_KEY: vapid_private_key.value,
-        }
       },
     })
-
 
     new sst.aws.Nextjs("ramadhan-todo-next", {
       environment: {

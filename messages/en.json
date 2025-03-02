@@ -1,0 +1,14 @@
+{
+  "greeting": "Assalamu'alaikum",
+  "garden": {
+    "loading": "Loading your garden...",
+    "start": "Start your day by doing your sunnah to grow your flower!",
+    "progress": {
+      "full": "🎉 Congratulations! Your flower has fully bloomed today!",
+      "almostFull": "🌸 Almost there! Your flower is about to bloom!",
+      "steady": "🌱 Great progress! Your flower is growing steadily!",
+      "good": "🌿 You're doing well! Keep nurturing your flower!",
+      "start": "🪴 Good start! Keep it up!"
+    }
+  }
+} 
