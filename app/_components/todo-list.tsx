@@ -6,6 +6,7 @@ import { DEFAULT_TODOS } from "../constant/todo";
 import TodoItem from "./todo-item";
 import { getMonthProgress } from "@/lib/get-month-progress";
 import { toast } from "sonner";
+import { hijriToday } from "@/constant/hijri";
 
 
 export function TodoList() {
@@ -18,7 +19,7 @@ export function TodoList() {
       try {
         const user = localStorage.getItem("user");
 
-        const today = new Date().toISOString().split("T")[0];
+        const today = hijriToday().format("iYYYY-iMM-iDD");
 
         if (navigator.onLine && user) {
           // Add timeout to API requests
@@ -44,7 +45,7 @@ export function TodoList() {
             setTodos(updatedTodos);
             // Cache the data
             localStorage.setItem("todos", JSON.stringify(updatedTodos));
-            localStorage.setItem("lastSavedDate", new Date().toDateString());
+            localStorage.setItem("lastSavedDate", hijriToday().format("iYYYY-iMM-iDD"));
             return;
           }
         }
@@ -103,10 +104,7 @@ export function TodoList() {
     localStorage.setItem("todos", JSON.stringify(newTodos));
 
     // Get today's date
-    const today = new Date();
-
-    // Create or update today's progress
-    const todayStr = today.toISOString().split("T")[0];
+    const todayStr = hijriToday().format("iYYYY-iMM-iDD");
 
     // Update progress array
     const tasks = newTodos.map(todo => ({
@@ -135,7 +133,7 @@ export function TodoList() {
           },
           body: JSON.stringify({
             completed: !todos.find((t) => t.id === id)?.completed,
-            date: new Date().toISOString().split("T")[0],
+            date: hijriToday().format("iYYYY-iMM-iDD"),
             userId,
           }),
         });

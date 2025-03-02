@@ -1,6 +1,6 @@
 import { defaultCache } from "@serwist/next/worker";
 import type { PrecacheEntry, SerwistGlobalConfig } from "serwist";
-import { CacheFirst, NetworkFirst, Serwist } from "serwist";
+import { CacheFirst, NetworkFirst, Serwist, StaleWhileRevalidate, } from "serwist";
 
 declare global {
   interface WorkerGlobalScope extends SerwistGlobalConfig {
@@ -44,14 +44,14 @@ const serwist = new Serwist({
         cacheName: "styles",
       })
     },
-    {
-      matcher({ request }) {
-        return request.url.includes("/api/") || request.headers.get("x-api-request");
-      },
-      handler: new NetworkFirst({
-        cacheName: "api",
-      })
-    }
+    // {
+    //   matcher({ request }) {
+    //     return request.url.includes("/api/") || request.headers.get("x-api-request");
+    //   },
+    //   handler: new StaleWhileRevalidate({
+    //     cacheName: "api",
+    //   })
+    // }
   ],
   fallbacks: {
     entries: [
@@ -89,12 +89,12 @@ self.addEventListener('push', (event) => {
 
 });
 
-self.addEventListener('notificationclick', (event) => {
-  console.log('Notification clicked', event);
-  event.notification.close();
-  event.waitUntil(
-    clients.openWindow(event.notification.data.url)
-  );
-});
+// self.addEventListener('notificationclick', (event) => {
+//   console.log('Notification clicked', event);
+//   event.notification.close();
+//   event.waitUntil(
+//     clients.openWindow(event.notification.data.url)
+//   );
+// });
 
 serwist.addEventListeners();
