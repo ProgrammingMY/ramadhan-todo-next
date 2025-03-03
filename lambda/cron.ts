@@ -13,7 +13,7 @@ async function handler() {
     const authHeader = process.env.CRON_AUTH_TOKEN;
 
     try {
-        const response = await fetch("https://tunnel.programmingmy.com/api/notifications/send", {
+        const response = await fetch("https://ramadhan.programmingmy.com/api/notifications/send", {
             method: "POST",
             body: JSON.stringify({ message: payload }),
             headers: {
