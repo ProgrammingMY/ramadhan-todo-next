@@ -7,6 +7,7 @@ import { TodoList } from "./_components/todo-list";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useEffect, useState } from "react";
+import VersionDialog from "./_components/version-dialog";
 
 
 export default function Page() {
@@ -16,7 +17,13 @@ export default function Page() {
 
   useEffect(() => {
     const user = localStorage.getItem("user");
-    if (user) {
+    if (!user) {
+      const anonymousUser = {
+        id: crypto.randomUUID(),
+        isAnonymous: true,
+      }
+      localStorage.setItem("user", JSON.stringify(anonymousUser));
+    } else if (user && !JSON.parse(user).isAnonymous) {
       const { username: storedUsername, picture: storedPicture } = JSON.parse(user);
       setUsername(storedUsername);
       setPicture(storedPicture);
@@ -42,6 +49,7 @@ export default function Page() {
           <h2 className="font-semibold text-2xl">{username}</h2>
         </div>
       </div>
+      <VersionDialog />
       <OnboardingModal />
       <TodoList />
     </div>

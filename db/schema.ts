@@ -50,9 +50,10 @@ export const subscriptionsTable = pgTable("subscriptions", {
   id: uuid()
     .primaryKey()
     .default(sql`gen_random_uuid()`),
-  deviceId: uuid()
+  deviceId: varchar({ length: 255 }).unique()
     .notNull(),
   subscription: text().notNull(),
+  isActive: boolean().notNull().default(true),
   createdAt: timestamp({ withTimezone: true }).notNull().default(sql`now()`),
   updatedAt: timestamp({ withTimezone: true }).notNull().default(sql`now()`),
 },

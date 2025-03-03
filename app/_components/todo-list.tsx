@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { TaskProgress, Todo } from "../libs/types";
+import { Todo, User } from "../libs/types";
 import { DEFAULT_TODOS } from "../constant/todo";
 import TodoItem from "./todo-item";
 import { getMonthProgress } from "@/lib/get-month-progress";
@@ -11,20 +11,22 @@ import { hijriToday } from "@/constant/hijri";
 
 export function TodoList() {
   const [todos, setTodos] = useState<Todo[]>(DEFAULT_TODOS);
+  const [user, setUser] = useState<User | null>(null);
   const [isOnline, setIsOnline] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchTodos() {
       try {
-        const user = localStorage.getItem("user");
+        const userData = localStorage.getItem("user");
+        setUser(JSON.parse(userData || "{}"));
 
         const today = hijriToday().format("iYYYY-iMM-iDD");
 
-        if (navigator.onLine && user) {
+        if (navigator.onLine && user && !user.isAnonymous) {
           // Add timeout to API requests
           // Try to fetch from API first
-          const { id, username } = JSON.parse(user as string);
+          const { id, username } = user;
           const response = await fetch(
             `/api/todos?id=${id}&name=${username}&date=${today}`,
           );
@@ -98,8 +100,6 @@ export function TodoList() {
     );
     setTodos(newTodos);
 
-    const user = localStorage.getItem("user");
-
     // Save to localStorage as backup
     localStorage.setItem("todos", JSON.stringify(newTodos));
 
@@ -123,9 +123,9 @@ export function TodoList() {
     }
 
     // save progress to API if online and user is logged in
-    if (isOnline && user) {
+    if (isOnline && user && !user.isAnonymous) {
       try {
-        const { id: userId } = JSON.parse(user as string);
+        const { id: userId } = user;
         const response = await fetch(`/api/todos/${id}`, {
           method: "PATCH",
           headers: {

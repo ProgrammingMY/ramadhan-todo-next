@@ -1,5 +1,6 @@
 import { db } from "../../../../db/drizzle";
 import { subscriptionsTable } from "db/schema";
+import { eq } from "drizzle-orm";
 import { NextResponse } from 'next/server';
 
 import webpush from 'web-push';
@@ -13,8 +14,14 @@ export async function POST(request: Request) {
     try {
         const { message } = await request.json();
 
-        // verify the source of the request comes from lambda
-        console.log(request);
+        // check if auth token is valid
+        const authHeader = request.headers.get("Authorization");
+
+        // remove Bearer from auth header
+        const token = authHeader?.split(" ")[1];
+        if (token !== process.env.CRON_AUTH_TOKEN) {
+            return NextResponse.json({ error: "Invalid auth token" }, { status: 401 });
+        }
 
         // get all subscriptions
         let subscriptions = [];
@@ -22,18 +29,19 @@ export async function POST(request: Request) {
         // Get subscriptions for logged-in user
         const userSubs = await db.select()
             .from(subscriptionsTable)
+            .where(eq(subscriptionsTable.isActive, true));
         subscriptions.push(...userSubs);
 
-        // append icon to the message
-        message.icon = "/icons/icon-512x512.png";
-        message.badge = "/icons/icon-512x512.png";
+        const payload = JSON.parse(message);
+        payload.icon = "/icons/icon-512x512.png";
+        payload.badge = "/icons/icon-512x512.png";
 
         // Send notification to all endpoints
         await Promise.all(
             subscriptions.map(async (sub) => {
                 await webpush.sendNotification(
                     JSON.parse(sub.subscription),
-                    JSON.stringify(message)
+                    JSON.stringify(payload),
                 );
             })
         );

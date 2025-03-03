@@ -43,36 +43,18 @@ export const metadata: Metadata = {
 
 // change theme color depending on the theme
 export const viewport: Viewport = {
-  themeColor: "#289672",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" }
+  ]
 };
 
-[
-  { media: "(prefers-color-scheme: dark)", color: "#000000" },
-  { media: "(prefers-color-scheme: light)", color: "#289672" }
-]
+
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" dir="ltr" className={`${quicksand.className}`}>
-      <head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, viewport-fit=cover"
-        />
-        <style>{`
-            html, body, #__next {
-              height: 100%;
-              padding-bottom: env(safe-area-inset-bottom, 16px);
-            }
-            #__next {
-              margin: 0 auto;
-            }
-              .pb-safe {
-              padding-bottom: env(safe-area-inset-bottom, 16px);
-            }
-            `}</style>
-      </head>
-      <body className="min-h-screen">
+    <html lang="en" dir="ltr" suppressHydrationWarning>
+      <body className={`${quicksand.className}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
