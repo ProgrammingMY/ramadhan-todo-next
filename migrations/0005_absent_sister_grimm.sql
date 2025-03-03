@@ -1,0 +1,1 @@
+ALTER TABLE "subscriptions" ADD COLUMN "isActive" boolean DEFAULT true NOT NULL;
