@@ -1,12 +1,13 @@
 "use client";
 
-export const dynamic = "force-static";
+// export const dynamic = "force-static";
 
 import OnboardingModal from "./_components/onboarding-modal";
 import { TodoList } from "./_components/todo-list";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useEffect, useState } from "react";
+import VersionDialog from "./_components/version-dialog";
 
 
 export default function Page() {
@@ -42,6 +43,7 @@ export default function Page() {
           <h2 className="font-semibold text-2xl">{username}</h2>
         </div>
       </div>
+      <VersionDialog />
       <OnboardingModal />
       <TodoList />
     </div>
