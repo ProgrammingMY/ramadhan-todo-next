@@ -88,6 +88,9 @@ export function TodoList() {
   };
 
   const goToNextDay = () => {
+    if (selectedDate.isAfter(hijriToday())) {
+      return;
+    }
     setSelectedDate(prev => prev.clone().add(1, 'day'));
   };
 
@@ -115,6 +118,13 @@ export function TodoList() {
     // Save to localStorage
     localStorage.setItem("monthProgress", JSON.stringify(monthProgress));
 
+    // prepare the updated data
+    const updateData = {
+      completed: !todos.find((t) => t.id === id)?.completed,
+      date: selectedDate.format("iYYYY-iMM-iDD"),
+      userId: user?.id,
+    }
+
     // check if all todos are completed, if so, show toast
     if (newTodos.every(todo => todo.completed)) {
       toast.success("Alhamdulillah! You've fully grown your flower for today!");
@@ -129,19 +139,28 @@ export function TodoList() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            completed: !todos.find((t) => t.id === id)?.completed,
-            date: selectedDate.format("iYYYY-iMM-iDD"),
-            userId,
-          }),
+          body: JSON.stringify(updateData),
         });
 
         if (!response.ok) {
           throw new Error("Failed to update todo");
         }
+
+        // Dispatch custom event for progress updates
+        // window.dispatchEvent(new Event("todos-updated"));
+
       } catch (error) {
         console.error("Error updating todo:", error);
-        // Optionally handle the error (e.g., show error message to user)
+        toast.error("Failed to update todo");
+
+        // Store failed request for background sync
+        // if ('serviceWorker' in navigator) {
+        //   const offlineCache = await caches.open('offline-todos');
+        //   await offlineCache.put(
+        //     new Request(`/api/todos/${id}`),
+        //     new Response(JSON.stringify(updateData))
+        //   );
+        // }
       }
     }
   };
