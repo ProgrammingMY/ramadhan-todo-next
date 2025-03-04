@@ -68,7 +68,7 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self'; connect-src 'self' https://programmingmy.github.io",
+            value: "default-src 'self'; script-src 'self';",
           },
         ],
       },

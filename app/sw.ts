@@ -1,6 +1,6 @@
 import { defaultCache } from "@serwist/next/worker";
 import type { PrecacheEntry, SerwistGlobalConfig } from "serwist";
-import { CacheFirst, NetworkFirst, Serwist } from "serwist";
+import { CacheFirst, NetworkFirst, Serwist, StaleWhileRevalidate } from "serwist";
 
 declare global {
   interface WorkerGlobalScope extends SerwistGlobalConfig {
@@ -20,6 +20,43 @@ const serwist = new Serwist({
   navigationPreload: true,
   runtimeCaching: [
     ...defaultCache,
+    // handler for doa data
+    {
+      matcher({ url }) {
+        return url.pathname.includes('/data/doa.json');
+      },
+      handler: new CacheFirst({
+        cacheName: 'doa-data',
+
+      })
+    },
+    // handler for api calls
+    {
+      matcher({ request }) {
+        return request.url.includes("/api/") || request.headers.get("x-api-request");
+      },
+      handler: new NetworkFirst({
+        cacheName: "api",
+      })
+    },
+    // handler for images
+    {
+      matcher({ request }) {
+        return request.destination === "image";
+      },
+      handler: new StaleWhileRevalidate({
+        cacheName: "images",
+      }),
+    },
+    // handler for styles
+    {
+      matcher({ request }) {
+        return request.destination === "style";
+      },
+      handler: new CacheFirst({
+        cacheName: "styles",
+      }),
+    },
     // {
     //   matcher({ request }) {
     //     return request.destination === "document";
@@ -36,31 +73,7 @@ const serwist = new Serwist({
     //     cacheName: "scripts",
     //   })
     // },
-    // {
-    //   matcher({ url }) {
-    //     return url.pathname.includes('dynamic-css-manifest.json');
-    //   },
-    //   handler: new NetworkFirst({
-    //     cacheName: "styles",
-    //     plugins: [
-    //       {
-    //         // Handle failed requests gracefully
-    //         handlerDidError: async () => new Response('{}', {
-    //           status: 200,
-    //           headers: { 'Content-Type': 'application/json' },
-    //         })
-    //       }
-    //     ]
-    //   })
-    // },
-    // {
-    //   matcher({ request }) {
-    //     return request.url.includes("/api/") || request.headers.get("x-api-request");
-    //   },
-    //   handler: new StaleWhileRevalidate({
-    //     cacheName: "api",
-    //   })
-    // }
+
   ],
 });
 
