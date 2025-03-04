@@ -10,6 +10,9 @@ import {
     DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { VERSION_UPDATE_LOG } from "@/constant/version-update-log";
+
+const CURRENT_VERSION = "1.1.1";
 
 export default function VersionDialog() {
     const [open, setOpen] = useState(false);
@@ -20,9 +23,9 @@ export default function VersionDialog() {
         const hasSeenVersion = localStorage.getItem("lastSeenVersion");
 
         // Only show version dialog if user has completed onboarding
-        if (hasSeenOnboarding && hasSeenVersion !== "1.1") {
+        if (hasSeenOnboarding && hasSeenVersion !== CURRENT_VERSION) {
             setOpen(true);
-            localStorage.setItem("lastSeenVersion", "1.1");
+            localStorage.setItem("lastSeenVersion", CURRENT_VERSION);
         }
     }, []);
 
@@ -30,13 +33,14 @@ export default function VersionDialog() {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>What's New in Ramadan Garden v1.1 🪴</DialogTitle>
+                    <DialogTitle>What's New in Ramadan Garden 🪴</DialogTitle>
                     <DialogDescription asChild>
                         <div className="space-y-3 pt-3">
-                            <p>One new feature to help you stay istiqamah:</p>
+                            <p>{VERSION_UPDATE_LOG[CURRENT_VERSION].subject}</p>
                             <ul className="list-disc list-inside space-y-1">
-                                <li>Notification reminders for your daily sunnah</li>
-                                <li>Go to profile &gt; notification to manage your notifications</li>
+                                {VERSION_UPDATE_LOG[CURRENT_VERSION].changes.map((change) => (
+                                    <li key={change}>{change}</li>
+                                ))}
                             </ul>
                         </div>
                     </DialogDescription>
