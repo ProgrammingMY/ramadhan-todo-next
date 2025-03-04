@@ -199,7 +199,7 @@ export default function NotificationManager() {
                         onCheckedChange={handleSwitchChange}
                     />
                     <label htmlFor="daily-reminder" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        Daily Reminder at 10:00 PM
+                        Daily Reminder at 7:00 PM
                     </label>
                     {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
                 </div>

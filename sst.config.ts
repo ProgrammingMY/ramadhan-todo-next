@@ -23,7 +23,7 @@ export default $config({
     const stage = $app.stage;
 
     new sst.aws.Cron("CronReminder", {
-      schedule: "cron(0 14 * * ? *)", // 2pm UTC = 10pm Singapore
+      schedule: "cron(0 11 * * ? *)", // 11am UTC = 7pm Singapore
       function: {
         handler: "lambda/cron.handler",
         runtime: "nodejs20.x",

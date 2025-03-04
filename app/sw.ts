@@ -35,7 +35,7 @@ const serwist = new Serwist({
       matcher({ request }) {
         return request.url.includes("/api/") || request.headers.get("x-api-request");
       },
-      handler: new NetworkFirst({
+      handler: new StaleWhileRevalidate({
         cacheName: "api",
       })
     },
