@@ -44,7 +44,7 @@ export function TodoList() {
           }));
           setTodos(updatedTodos);
           // Cache the data
-          localStorage.setItem("todos", JSON.stringify(updatedTodos));
+          // localStorage.setItem("todos", JSON.stringify(updatedTodos));
           localStorage.setItem("lastSavedDate", hijriToday().format("iYYYY-iMM-iDD"));
           return;
         }
@@ -57,7 +57,7 @@ export function TodoList() {
       if (lastSavedDate === date && savedTodos) {
         setTodos(JSON.parse(savedTodos));
       } else {
-        localStorage.setItem("todos", JSON.stringify(todos));
+        // localStorage.setItem("todos", JSON.stringify(todos));
         localStorage.setItem("lastSavedDate", date);
       }
     } catch (error) {
