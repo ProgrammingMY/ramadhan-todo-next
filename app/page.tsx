@@ -1,6 +1,6 @@
 "use client";
 
-export const dynamic = "force-static";
+// export const dynamic = "force-static";
 
 import OnboardingModal from "./_components/onboarding-modal";
 import { TodoList } from "./_components/todo-list";

@@ -1,96 +1,98 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { TaskProgress, Todo } from "../libs/types";
+import { Todo, User } from "../libs/types";
 import { DEFAULT_TODOS } from "../constant/todo";
 import TodoItem from "./todo-item";
 import { getMonthProgress } from "@/lib/get-month-progress";
 import { toast } from "sonner";
 import { hijriToday } from "@/constant/hijri";
+import { Loader2 } from "lucide-react";
+import DateSelection from "./date-selection";
 
 
 export function TodoList() {
   const [todos, setTodos] = useState<Todo[]>(DEFAULT_TODOS);
-  const [isOnline, setIsOnline] = useState(true);
+  // const [isOnline, setIsOnline] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
+  // date selection
+  const [selectedDate, setSelectedDate] = useState(hijriToday());
 
-  useEffect(() => {
-    async function fetchTodos() {
-      try {
-        const user = localStorage.getItem("user");
+  const fetchTodos = async (date: string) => {
+    try {
+      setIsLoading(true);
+      if (navigator.onLine && user) {
+        // Try to fetch from API first
+        const { id, username } = user;
+        const response = await fetch(
+          `/api/todos?id=${id}&name=${username}&date=${date}`,
+        );
 
-        const today = hijriToday().format("iYYYY-iMM-iDD");
+        if (response.ok) {
+          const data = await response.json();
+          // if undefined, complete to false
 
-        if (navigator.onLine && user) {
-          // Add timeout to API requests
-          // Try to fetch from API first
-          const { id, username } = JSON.parse(user as string);
-          const response = await fetch(
-            `/api/todos?id=${id}&name=${username}&date=${today}`,
-          );
-
-          if (response.ok) {
-            const data = await response.json();
-            // if undefined, complete to false
-
-            if (data.length === 0) {
-              setTodos(DEFAULT_TODOS);
-              return;
-            }
-
-            const updatedTodos = data.map((todo: Todo) => ({
-              ...todo,
-              completed: todo.completed === undefined ? false : todo.completed,
-            }));
-            setTodos(updatedTodos);
-            // Cache the data
-            localStorage.setItem("todos", JSON.stringify(updatedTodos));
-            localStorage.setItem("lastSavedDate", hijriToday().format("iYYYY-iMM-iDD"));
+          if (data.length === 0) {
+            setTodos(DEFAULT_TODOS);
             return;
           }
-        }
 
-        // If offline or API failed, try localStorage
-        const lastSavedDate = localStorage.getItem("lastSavedDate");
-        const savedTodos = localStorage.getItem("todos");
-
-        if (lastSavedDate === today && savedTodos) {
-          setTodos(JSON.parse(savedTodos));
-        } else {
-          localStorage.setItem("todos", JSON.stringify(todos));
-          localStorage.setItem("lastSavedDate", today);
+          const updatedTodos = data.map((todo: Todo) => ({
+            ...todo,
+            completed: todo.completed === undefined ? false : todo.completed,
+          }));
+          setTodos(updatedTodos);
+          // Cache the data
+          localStorage.setItem("todos", JSON.stringify(updatedTodos));
+          localStorage.setItem("lastSavedDate", hijriToday().format("iYYYY-iMM-iDD"));
+          return;
         }
-      } catch (error) {
-        console.error("Error fetching todos:", error);
-        // Fall back to defaults on error
-        const newTodos = DEFAULT_TODOS.map((todo, index) => ({
-          ...todo,
-          id: index + 1,
-        }));
-        setTodos(newTodos);
-      } finally {
-        setIsLoading(false);
       }
+
+      // If offline or API failed, try localStorage
+      const lastSavedDate = localStorage.getItem("lastSavedDate");
+      const savedTodos = localStorage.getItem("todos");
+
+      if (lastSavedDate === date && savedTodos) {
+        setTodos(JSON.parse(savedTodos));
+      } else {
+        localStorage.setItem("todos", JSON.stringify(todos));
+        localStorage.setItem("lastSavedDate", date);
+      }
+    } catch (error) {
+      console.error("Error fetching todos:", error);
+      // Fall back to defaults on error
+      const newTodos = DEFAULT_TODOS.map((todo, index) => ({
+        ...todo,
+        id: index + 1,
+      }));
+      setTodos(newTodos);
+    } finally {
+      setIsLoading(false);
     }
+  }
 
-    fetchTodos();
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    setUser(JSON.parse(userData as string));
 
-    // Setup online/offline detection
-    const handleOnline = () => {
-      setIsOnline(true);
-      fetchTodos(); // Refetch when coming back online
-    };
-    const handleOffline = () => setIsOnline(false);
+    fetchTodos(selectedDate.format("iYYYY-iMM-iDD"));
 
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
-    setIsOnline(navigator.onLine);
+  }, [selectedDate]);
 
-    return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
-    };
-  }, []);
+  // Add date navigation functions
+  const goToPreviousDay = () => {
+    setSelectedDate(prev => prev.clone().subtract(1, 'day'));
+  };
+
+  const goToNextDay = () => {
+    setSelectedDate(prev => prev.clone().add(1, 'day'));
+  };
+
+  const goToToday = () => {
+    setSelectedDate(hijriToday());
+  };
 
   const toggleTodo = async (id: number) => {
     const newTodos = todos.map((todo) =>
@@ -103,12 +105,9 @@ export function TodoList() {
     // Save to localStorage as backup
     localStorage.setItem("todos", JSON.stringify(newTodos));
 
-    // Get today's date
-    const todayStr = hijriToday().format("iYYYY-iMM-iDD");
-
     // Update progress array
     const tasks = newTodos.map(todo => ({
-      date: todayStr,
+      date: selectedDate.format("iYYYY-iMM-iDD"),
       completed: todo.completed
     }));
 
@@ -123,7 +122,7 @@ export function TodoList() {
     }
 
     // save progress to API if online and user is logged in
-    if (isOnline && user) {
+    if (user) {
       try {
         const { id: userId } = JSON.parse(user as string);
         const response = await fetch(`/api/todos/${id}`, {
@@ -133,7 +132,7 @@ export function TodoList() {
           },
           body: JSON.stringify({
             completed: !todos.find((t) => t.id === id)?.completed,
-            date: hijriToday().format("iYYYY-iMM-iDD"),
+            date: selectedDate.format("iYYYY-iMM-iDD"),
             userId,
           }),
         });
@@ -148,32 +147,40 @@ export function TodoList() {
     }
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
-    <div className="max-w-md mx-auto p-4">
+    <div className="max-w-md mx-auto p-4 relative">
       <h2 className="text-3xl font-extrabold mb-6 text-background text-center">
         Sunnah Ramadhan
       </h2>
-      {!isOnline && (
+      {/* Add date navigation */}
+      <DateSelection
+        selectedDate={selectedDate}
+        goToPreviousDay={goToPreviousDay}
+        goToNextDay={goToNextDay}
+        goToToday={goToToday}
+      />
+      {/* {!isOnline && (
         <div className="bg-yellow-100 border-l-4 border-yellow-500 p-3 mb-4 rounded text-yellow-700">
           <p className="font-medium">
             You're offline. Changes will be saved locally.
           </p>
         </div>
-      )}
+      )} */}
 
-      <ul className="space-y-3">
-        {todos.map((todo) => (
-          <TodoItem
-            key={todo.id}
-            todo={todo}
-            onToggle={toggleTodo}
-          />
-        ))}
-      </ul>
+      <div className="relative min-h-[400px]"> {/* Add this wrapper div with min-height */}
+        {isLoading && (
+          <div className="z-5 bg-background/80 absolute inset-0 flex flex-col items-center justify-center">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            <span className="text-sm text-gray-500">Loading...</span>
+          </div>
+        )}
+
+        <ul className="space-y-3">
+          {todos.map((todo) => (
+            <TodoItem key={todo.id} todo={todo} onToggle={toggleTodo} />
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
