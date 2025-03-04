@@ -1,6 +1,6 @@
 import { defaultCache } from "@serwist/next/worker";
 import type { PrecacheEntry, SerwistGlobalConfig } from "serwist";
-import { CacheFirst, NetworkFirst, Serwist, StaleWhileRevalidate, } from "serwist";
+import { CacheFirst, NetworkFirst, Serwist, StaleWhileRevalidate } from "serwist";
 
 declare global {
   interface WorkerGlobalScope extends SerwistGlobalConfig {
@@ -20,49 +20,61 @@ const serwist = new Serwist({
   navigationPreload: true,
   runtimeCaching: [
     ...defaultCache,
+    // handler for doa data
     {
-      matcher({ request }) {
-        return request.destination === "document";
-      },
-      handler: new NetworkFirst({
-        cacheName: "pages",
-      })
-    },
-    {
-      matcher({ request }) {
-        return request.destination === "script";
+      matcher({ url }) {
+        return url.pathname.includes('/data/doa.json');
       },
       handler: new CacheFirst({
-        cacheName: "scripts",
+        cacheName: 'doa-data',
+
       })
     },
+    // handler for api calls
+    {
+      matcher({ request }) {
+        return request.url.includes("/api/") || request.headers.get("x-api-request");
+      },
+      handler: new StaleWhileRevalidate({
+        cacheName: "api",
+      })
+    },
+    // handler for images
+    {
+      matcher({ request }) {
+        return request.destination === "image";
+      },
+      handler: new StaleWhileRevalidate({
+        cacheName: "images",
+      }),
+    },
+    // handler for styles
     {
       matcher({ request }) {
         return request.destination === "style";
       },
       handler: new CacheFirst({
         cacheName: "styles",
-      })
+      }),
     },
     // {
     //   matcher({ request }) {
-    //     return request.url.includes("/api/") || request.headers.get("x-api-request");
+    //     return request.destination === "document";
     //   },
-    //   handler: new StaleWhileRevalidate({
-    //     cacheName: "api",
+    //   handler: new NetworkFirst({
+    //     cacheName: "pages",
     //   })
-    // }
+    // },
+    // {
+    //   matcher({ request }) {
+    //     return request.destination === "script";
+    //   },
+    //   handler: new CacheFirst({
+    //     cacheName: "scripts",
+    //   })
+    // },
+
   ],
-  fallbacks: {
-    entries: [
-      {
-        url: "/~offline",
-        matcher({ request }) {
-          return request.destination === "document";
-        }
-      }
-    ]
-  }
 });
 
 // Add push notification event listeners
@@ -89,12 +101,23 @@ self.addEventListener('push', (event) => {
 
 });
 
-// self.addEventListener('notificationclick', (event) => {
-//   console.log('Notification clicked', event);
-//   event.notification.close();
-//   event.waitUntil(
-//     clients.openWindow(event.notification.data.url)
-//   );
-// });
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  event.waitUntil(
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
+      if (clientList.length > 0) {
+        let client = clientList[0];
+        for (let i = 0; i < clientList.length; i++) {
+          if (clientList[i].focused) {
+            client = clientList[i];
+          }
+        }
+        return client.focus();
+      }
+      return self.clients.openWindow("/");
+    }),
+  );
+});
 
 serwist.addEventListeners();

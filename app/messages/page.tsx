@@ -14,7 +14,7 @@ interface Dua {
   rujukan?: string;
 }
 
-const GITHUB = "https://programmingmy.github.io/doa-harian/doa.json";
+const DOA_JSON_URL = "/data/doa.json";
 
 export default function DuaList() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -23,7 +23,7 @@ export default function DuaList() {
 
   useEffect(() => {
     const getDuas = async () => {
-      const response = await fetch(GITHUB);
+      const response = await fetch(DOA_JSON_URL);
       const data = await response.json();
       setDuas(data);
     };

@@ -17,7 +17,13 @@ export default function Page() {
 
   useEffect(() => {
     const user = localStorage.getItem("user");
-    if (user) {
+    if (!user) {
+      const anonymousUser = {
+        id: crypto.randomUUID(),
+        isAnonymous: true,
+      }
+      localStorage.setItem("user", JSON.stringify(anonymousUser));
+    } else if (user && !JSON.parse(user).isAnonymous) {
       const { username: storedUsername, picture: storedPicture } = JSON.parse(user);
       setUsername(storedUsername);
       setPicture(storedPicture);

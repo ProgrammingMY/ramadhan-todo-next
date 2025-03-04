@@ -15,8 +15,6 @@ export default function OnboardingModal() {
     const [open, setOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
 
-
-
     useEffect(() => {
         // Check if user has seen onboarding
         const hasSeenOnboarding = localStorage.getItem("hasSeenOnboarding");

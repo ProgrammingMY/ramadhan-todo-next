@@ -1,0 +1,14 @@
+{
+  "greeting": "Assalamu'alaikum",
+  "garden": {
+    "loading": "Sedang memuat kebun anda...",
+    "start": "Mulakan hari anda dengan melakukan sunnah untuk menumbuhkan bunga anda!",
+    "progress": {
+      "full": "🎉 Tahniah! Bunga anda telah mekar sepenuhnya hari ini!",
+      "almostFull": "🌸 Hampir sampai! Bunga anda akan mekar tidak lama lagi!",
+      "steady": "🌱 Kemajuan yang hebat! Bunga anda sedang membesar!",
+      "good": "🌿 Anda melakukan dengan baik! Teruskan menjaga bunga anda!",
+      "start": "🪴 Permulaan yang bagus! Teruskan!"
+    }
+  }
+} 

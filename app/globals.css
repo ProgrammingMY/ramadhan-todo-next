@@ -113,4 +113,20 @@
     @apply bg-background text-foreground;
     /* background: linear-gradient(135deg, #81B622 0%, #59981A 100%); */
   }
+
+  html,
+  body,
+  #__next {
+    height: 100%;
+    padding-bottom: env(safe-area-inset-bottom, 16px);
+  }
+
+  #__next {
+    margin: 0 auto;
+  }
+
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 16px);
+  }
+
 }

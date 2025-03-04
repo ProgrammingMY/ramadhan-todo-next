@@ -18,8 +18,20 @@ export default $config({
   async run() {
     const db_conn = new sst.Secret("DATABASE_URL");
     const cloudflare_zone = new sst.Secret("CLOUDFLARE_ZONE");
+    const cron_auth_token = new sst.Secret("CRON_AUTH_TOKEN");
 
     const stage = $app.stage;
+
+    new sst.aws.Cron("CronReminder", {
+      schedule: "cron(0 11 * * ? *)", // 11am UTC = 7pm Singapore
+      function: {
+        handler: "lambda/cron.handler",
+        runtime: "nodejs20.x",
+        environment: {
+          CRON_AUTH_TOKEN: cron_auth_token.value,
+        }
+      },
+    })
 
     new sst.aws.Nextjs("ramadhan-todo-next", {
       environment: {

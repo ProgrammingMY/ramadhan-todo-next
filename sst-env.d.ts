@@ -9,6 +9,10 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
+    "CRON_AUTH_TOKEN": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
     "DATABASE_URL": {
       "type": "sst.sst.Secret"
       "value": string

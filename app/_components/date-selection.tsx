@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { HIJRI_MONTHS, hijriToday } from "@/constant/hijri";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { Moment } from "moment-hijri";
+import { useEffect } from "react";
+import { useState } from "react";
 
 export default function DateSelection({
     selectedDate,
@@ -14,6 +16,12 @@ export default function DateSelection({
     goToNextDay: () => void;
     goToToday: () => void;
 }) {
+    const [isToday, setIsToday] = useState(false);
+
+    useEffect(() => {
+        setIsToday(selectedDate.isSame(hijriToday(), 'day'));
+    }, [selectedDate]);
+
     return (
         <div className="flex items-center justify-between mb-4">
             <Button
@@ -45,7 +53,7 @@ export default function DateSelection({
                 onClick={goToNextDay}
                 variant="outline"
                 className="bg-primary/10 dark:bg-slate-800 border-primary/20 dark:border-slate-700"
-
+                disabled={isToday}
             >
                 <ChevronRightIcon className="w-4 h-4" />
             </Button>

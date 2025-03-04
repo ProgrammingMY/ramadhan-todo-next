@@ -11,10 +11,12 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
+import { Loader2 } from "lucide-react";
 
 export default function LoginModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,8 +118,14 @@ export default function LoginModal() {
               <Button
                 type="submit"
                 className="w-full bg-primary text-primary-foreground hover:bg-primary/80"
+                disabled={isLoading}
               >
-                {isLogin ? "Login" : "Sign Up"}
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Loading...</span>
+                  </>
+                ) : isLogin ? "Login" : "Sign Up"}
               </Button>
             </form>
           </CardContent>

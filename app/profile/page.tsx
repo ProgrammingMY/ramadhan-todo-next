@@ -10,6 +10,8 @@ import { ModeToggle } from "@/_components/theme-switcher";
 import { Bell, ChevronRight, Download, Info, Sun } from "lucide-react";
 import { User } from "@/libs/types";
 import About from "@/_components/about";
+import NotificationManager from "@/_components/notification-manager";
+import { toast } from "sonner";
 
 const settings = [
   {
@@ -22,7 +24,7 @@ const settings = [
     title: "Notifications",
     icon: <Bell />,
     id: "notifications",
-    content: <div>Notifications not available yet</div>
+    content: <NotificationManager />
   },
   {
     title: "Install App",
@@ -77,7 +79,8 @@ export default function Profile() {
       });
 
       if (!response.ok) {
-        return console.error("Failed to save name");
+        toast.error("Failed to change name");
+        return;
       }
 
       localStorage.setItem("user", JSON.stringify({
@@ -86,6 +89,7 @@ export default function Profile() {
       }));
 
       setIsEditingName(false);
+      toast.success("Name changed successfully");
     } else {
       setIsEditingName(true);
     }
@@ -123,7 +127,7 @@ export default function Profile() {
 
   return (
     <div className="p-6 container flex flex-col gap-6">
-      {!user ? (
+      {!user || user.isAnonymous ? (
         // Not logged in view
         <div className="mt-14">
           <div className="flex flex-col gap-4">
@@ -174,7 +178,7 @@ export default function Profile() {
                       alt="Selected profile picture"
                       fill
                       className="rounded-full object-cover"
-                      sizes="32px"
+                      sizes="80px"
                     />
                   </div>
                   <div className="grid grid-cols-4 gap-4">
@@ -223,7 +227,8 @@ export default function Profile() {
                     isEditingName && (
                       <Button
                         onClick={() => setIsEditingName(false)}
-                        className="flex-1 bg-red-500 text-white"
+                        variant="ghost"
+                        className="flex-1"
                       >
                         Cancel
                       </Button>

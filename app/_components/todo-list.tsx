@@ -22,7 +22,8 @@ export function TodoList() {
   const fetchTodos = async (date: string) => {
     try {
       setIsLoading(true);
-      if (navigator.onLine && user) {
+
+      if (navigator.onLine && user && !user.isAnonymous) {
         // Try to fetch from API first
         const { id, username } = user;
         const response = await fetch(
@@ -87,6 +88,9 @@ export function TodoList() {
   };
 
   const goToNextDay = () => {
+    if (selectedDate.isAfter(hijriToday())) {
+      return;
+    }
     setSelectedDate(prev => prev.clone().add(1, 'day'));
   };
 
@@ -99,8 +103,6 @@ export function TodoList() {
       todo.id === id ? { ...todo, completed: !todo.completed } : todo
     );
     setTodos(newTodos);
-
-    const user = localStorage.getItem("user");
 
     // Save to localStorage as backup
     localStorage.setItem("todos", JSON.stringify(newTodos));
@@ -116,33 +118,49 @@ export function TodoList() {
     // Save to localStorage
     localStorage.setItem("monthProgress", JSON.stringify(monthProgress));
 
+    // prepare the updated data
+    const updateData = {
+      completed: !todos.find((t) => t.id === id)?.completed,
+      date: selectedDate.format("iYYYY-iMM-iDD"),
+      userId: user?.id,
+    }
+
     // check if all todos are completed, if so, show toast
     if (newTodos.every(todo => todo.completed)) {
       toast.success("Alhamdulillah! You've fully grown your flower for today!");
     }
 
     // save progress to API if online and user is logged in
-    if (user) {
+    if (user && !user.isAnonymous) {
       try {
-        const { id: userId } = JSON.parse(user as string);
+        const { id: userId } = user;
         const response = await fetch(`/api/todos/${id}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            completed: !todos.find((t) => t.id === id)?.completed,
-            date: selectedDate.format("iYYYY-iMM-iDD"),
-            userId,
-          }),
+          body: JSON.stringify(updateData),
         });
 
         if (!response.ok) {
           throw new Error("Failed to update todo");
         }
+
+        // Dispatch custom event for progress updates
+        // window.dispatchEvent(new Event("todos-updated"));
+
       } catch (error) {
         console.error("Error updating todo:", error);
-        // Optionally handle the error (e.g., show error message to user)
+        toast.error("Failed to update todo");
+
+        // Store failed request for background sync
+        // if ('serviceWorker' in navigator) {
+        //   const offlineCache = await caches.open('offline-todos');
+        //   await offlineCache.put(
+        //     new Request(`/api/todos/${id}`),
+        //     new Response(JSON.stringify(updateData))
+        //   );
+        // }
       }
     }
   };

@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { VERSION_UPDATE_LOG } from "@/constant/version-update-log";
 
-const CURRENT_VERSION = "1.1.1";
+const CURRENT_VERSION = "1.1.2";
 
 export default function VersionDialog() {
     const [open, setOpen] = useState(false);
