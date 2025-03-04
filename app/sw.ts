@@ -20,30 +20,39 @@ const serwist = new Serwist({
   navigationPreload: true,
   runtimeCaching: [
     ...defaultCache,
-    {
-      matcher({ request }) {
-        return request.destination === "document";
-      },
-      handler: new NetworkFirst({
-        cacheName: "pages",
-      })
-    },
-    {
-      matcher({ request }) {
-        return request.destination === "script";
-      },
-      handler: new CacheFirst({
-        cacheName: "scripts",
-      })
-    },
-    {
-      matcher({ request }) {
-        return request.destination === "style";
-      },
-      handler: new CacheFirst({
-        cacheName: "styles",
-      })
-    },
+    // {
+    //   matcher({ request }) {
+    //     return request.destination === "document";
+    //   },
+    //   handler: new NetworkFirst({
+    //     cacheName: "pages",
+    //   })
+    // },
+    // {
+    //   matcher({ request }) {
+    //     return request.destination === "script";
+    //   },
+    //   handler: new CacheFirst({
+    //     cacheName: "scripts",
+    //   })
+    // },
+    // {
+    //   matcher({ url }) {
+    //     return url.pathname.includes('dynamic-css-manifest.json');
+    //   },
+    //   handler: new NetworkFirst({
+    //     cacheName: "styles",
+    //     plugins: [
+    //       {
+    //         // Handle failed requests gracefully
+    //         handlerDidError: async () => new Response('{}', {
+    //           status: 200,
+    //           headers: { 'Content-Type': 'application/json' },
+    //         })
+    //       }
+    //     ]
+    //   })
+    // },
     // {
     //   matcher({ request }) {
     //     return request.url.includes("/api/") || request.headers.get("x-api-request");
@@ -53,16 +62,6 @@ const serwist = new Serwist({
     //   })
     // }
   ],
-  fallbacks: {
-    entries: [
-      {
-        url: "/~offline",
-        matcher({ request }) {
-          return request.destination === "document";
-        }
-      }
-    ]
-  }
 });
 
 // Add push notification event listeners
@@ -89,12 +88,23 @@ self.addEventListener('push', (event) => {
 
 });
 
-// self.addEventListener('notificationclick', (event) => {
-//   console.log('Notification clicked', event);
-//   event.notification.close();
-//   event.waitUntil(
-//     clients.openWindow(event.notification.data.url)
-//   );
-// });
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  event.waitUntil(
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
+      if (clientList.length > 0) {
+        let client = clientList[0];
+        for (let i = 0; i < clientList.length; i++) {
+          if (clientList[i].focused) {
+            client = clientList[i];
+          }
+        }
+        return client.focus();
+      }
+      return self.clients.openWindow("/");
+    }),
+  );
+});
 
 serwist.addEventListeners();

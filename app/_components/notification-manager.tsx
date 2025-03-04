@@ -19,31 +19,40 @@ function urlBase64ToUint8Array(base64String: string) {
 }
 
 export default function NotificationManager() {
+    const [isSubscribed, setIsSubscribed] = useState(false);
+    const [registration, setRegistration] = useState<ServiceWorkerRegistration | null>(null);
     const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>("default");
-    const [isSubscribed, setIsSubscribed] = useState(localStorage.getItem("isNotificationEnabled") === "true");
+
+    // check if app is installed
     const [isStandalone, setIsStandalone] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
+
+    // loading state
     const [isLoading, setIsLoading] = useState(false);
-    const [user, setUser] = useState<User>({
-        id: crypto.randomUUID(),
-        isAnonymous: true,
-    });
+
+    // user
+    const [user, setUser] = useState<User>(JSON.parse(localStorage.getItem("user") || "{}"));
 
     useEffect(() => {
-        if ('Notification' in window) {
-            setNotificationPermission(Notification.permission);
-        }
-        const user = localStorage.getItem("user");
-        if (user) {
-            setUser(JSON.parse(user));
-        }
-
         // check if mobile device
         setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
 
-
         // check if ap is installed
         setIsStandalone(window.matchMedia('(display-mode: standalone)').matches);
+
+        // check if service worker is supported
+        if (typeof window !== "undefined" && "serviceWorker" in navigator && window.serwist !== undefined) {
+            // run only in browser
+            navigator.serviceWorker.ready.then((reg) => {
+                reg.pushManager.getSubscription().then((sub) => {
+                    if (sub && !(sub.expirationTime && Date.now() > sub.expirationTime - 5 * 60 * 1000)) {
+                        setIsSubscribed(true);
+                    }
+                });
+                setRegistration(reg);
+                console.log("Service worker registered and activated", reg);
+            });
+        }
     }, []);
 
 
@@ -58,15 +67,33 @@ export default function NotificationManager() {
     const subscribeToNotifications = async () => {
         try {
             setIsLoading(true);
+
+            // check if environment variables are set
+            if (!process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY) {
+                toast.error("Environment variables supplied not sufficient.");
+                return;
+            }
+
+            // check if service worker is registered
+            if (!registration) {
+                toast.error("No SW registration available.");
+                return;
+            }
+
+            // request permission
             const permission = await Notification.requestPermission();
             setNotificationPermission(permission);
 
             if (permission === 'granted') {
-                const registration = await navigator.serviceWorker.ready;
-                const subscription = await registration.pushManager.subscribe({
+                // Add a timeout to prevent infinite waiting
+                const sub = await registration.pushManager.subscribe({
                     userVisibleOnly: true,
                     applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!),
                 });
+
+                if (!sub) {
+                    throw new Error('Failed to create push subscription');
+                }
 
                 // Send subscription to backend
                 const response = await fetch('/api/notifications/subscribe', {
@@ -75,23 +102,26 @@ export default function NotificationManager() {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        subscription,
+                        subscription: sub,
                         userId: user.id,
                     }),
                 });
 
                 if (!response.ok) {
-                    throw new Error('Failed to subscribe to notifications');
+                    throw new Error('Failed to subscribe to notifications ' + response.statusText);
                 }
 
                 setIsSubscribed(true);
-                // store state in local storage
-                localStorage.setItem("isNotificationEnabled", "true");
                 toast.success("Daily reminder enabled");
+            } else if (permission === "denied") {
+                throw new Error('Notification permission not granted ' + permission);
+            } else {
+                throw new Error('Failed to subscribe to notifications: ' + permission);
             }
         } catch (error) {
             console.error('Error subscribing to notifications:', error);
-            toast.error("Failed to enable notifications");
+            setIsLoading(false);
+            toast.error(error instanceof Error ? error.message : "Failed to enable notifications");
         } finally {
             setIsLoading(false);
         }
@@ -100,7 +130,12 @@ export default function NotificationManager() {
     const unsubscribeFromNotifications = async () => {
         try {
             setIsLoading(true);
-            const registration = await navigator.serviceWorker.ready;
+
+            // check if service worker is registered
+            if (!registration) {
+                toast.error("No SW registration available.");
+                return;
+            }
             const subscription = await registration.pushManager.getSubscription();
 
             if (subscription) {
@@ -122,8 +157,9 @@ export default function NotificationManager() {
                 // Unsubscribe on the client side
                 await subscription.unsubscribe();
                 setIsSubscribed(false);
-                localStorage.setItem("isNotificationEnabled", "false");
                 toast.success("Daily reminder disabled");
+            } else {
+                throw new Error('Failed to unsubscribe from notifications');
             }
         } catch (error) {
             console.error('Error unsubscribing from notifications:', error);
