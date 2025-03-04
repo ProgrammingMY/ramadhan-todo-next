@@ -43,6 +43,7 @@ export default function NotificationManager() {
         // check if service worker is supported
         if (typeof window !== "undefined" && "serviceWorker" in navigator && window.serwist !== undefined) {
             // run only in browser
+            console.log("Service worker supported");
             navigator.serviceWorker.ready.then((reg) => {
                 reg.pushManager.getSubscription().then((sub) => {
                     if (sub && !(sub.expirationTime && Date.now() > sub.expirationTime - 5 * 60 * 1000)) {
