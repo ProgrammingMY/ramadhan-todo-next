@@ -47,6 +47,7 @@ export default function NotificationManager() {
                 reg.pushManager.getSubscription().then((sub) => {
                     if (sub) {
                         setIsSubscribed(true);
+                        setNotificationPermission("granted");
                     }
                 });
                 setRegistration(reg);
