@@ -1,20 +1,17 @@
 "use client";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User } from "@/libs/types";
-import Image from "next/image";
 export default function Profile({ user }: { user: User }) {
 
 
     return (
         <div className="flex flex-col items-center">
             <div className="relative w-16 h-16">
-                <Image
-                    src={user.picture || ""}
-                    alt="profile picture"
-                    fill
-                    className="rounded-full object-cover"
-                    sizes="32px"
-                />
+                <Avatar className="size-12">
+                    <AvatarImage src={user.picture} />
+                    <AvatarFallback>{user.username?.slice(0, 2).toUpperCase()}</AvatarFallback>
+                </Avatar>
             </div>
             <div className="flex flex-col items-center gap-1">
                 <h1 className="text-2xl font-bold">{user.username}</h1>
