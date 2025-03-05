@@ -122,7 +122,7 @@ export default function Progress() {
 
       <div className="mb-4 w-full bg-card shadow-md  p-4 rounded-lg">
         <div className="flex flex-col items-center gap-2 text-sm">
-          {user && <Profile user={user} />}
+          {user && !user.isAnonymous && <Profile user={user} />}
           <div className="text-primary font-bold text-lg">
             {hijriToday().iDate()}
             {" "}
@@ -133,7 +133,7 @@ export default function Progress() {
           {monthProgress.length > 0 && (
             <div className="text-primary text-sm">
               {(() => {
-                const todayProgress = monthProgress[hijriToday().iDate()]?.completionRate || 0;
+                const todayProgress = monthProgress[hijriToday().iDate() - 1]?.completionRate || 0;
                 if (todayProgress >= 100) {
                   return "🎉 Congratulations! Your flower has fully bloomed today!";
                 } else if (todayProgress >= 80) {
