@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, JSX } from "react";
 import { TaskProgress, User } from "../libs/types";
 import { DayProgress } from "../libs/types";
 import Image from "next/image";
@@ -14,6 +14,7 @@ import Cabinet from "@/_components/cabinets/cabinet";
 import { generateInitialProgress } from "@/lib/generate-default-progress";
 import { getMonthProgress } from "@/lib/get-month-progress";
 import { HIJRI_MONTHS, hijriToday } from "@/constant/hijri";
+import IsometricGarden from "@/_components/garden/isometric-garden";
 
 const PLANT_STAGES = [
   { plant: level1, minCompletionRate: 1, maxCompletionRate: 20 },
@@ -92,7 +93,7 @@ export default function Progress() {
   }, []);
 
   // Function to get plant stage based on completion rate
-  const getPlantStage = (rate: number) => {
+  const getPlantStage = (rate: number): JSX.Element => {
     const stage = PLANT_STAGES.find(
       (stage) =>
         rate >= stage.minCompletionRate && rate <= stage.maxCompletionRate
@@ -157,10 +158,9 @@ export default function Progress() {
         <div className="p-4 text-primary">Loading your garden...</div>
       ) : (
         <div className="relative container">
-          <Cabinet
+          <IsometricGarden
             monthProgress={monthProgress}
             currentDay={hijriToday().iDate()}
-            plantStages={PLANT_STAGES}
             getPlantStage={getPlantStage}
           />
         </div>

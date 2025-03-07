@@ -10,6 +10,8 @@
   }
 }
 
+
+
 :root {
   --background: oklch(96.25% 0.0167 164.68);
   --foreground: 240 10% 3.9%;
@@ -127,6 +129,10 @@
 
   .pb-safe {
     padding-bottom: env(safe-area-inset-bottom, 16px);
+  }
+
+  .transform-style-3d {
+    transform-style: preserve-3d;
   }
 
 }
