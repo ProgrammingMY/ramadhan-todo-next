@@ -7,8 +7,8 @@ export default function Profile({ user }: { user: User }) {
 
     return (
         <div className="flex flex-col items-center">
-            <div className="relative w-16 h-16">
-                <Avatar className="size-12">
+            <div className="w-16 h-16 flex items-center justify-center">
+                <Avatar className="size-16">
                     <AvatarImage src={user.picture} />
                     <AvatarFallback>{user.username?.slice(0, 2).toUpperCase()}</AvatarFallback>
                 </Avatar>
