@@ -1,71 +1,14 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@radix-ui/react-label";
-
-import {
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import { Loader2 } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import LoginForm from "./auth/login-form";
+import SignUpForm from "./auth/signup-form";
 
 export default function LoginModal() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLogin, setIsLogin] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const username = (e.target as HTMLFormElement).username.value;
-    const password = (e.target as HTMLFormElement).password.value;
-
-    if (!username || !password) {
-      alert("Please enter an username and password");
-      return;
-    }
-
-    if (!isLogin) {
-      const confirmPassword = (e.target as HTMLFormElement).confirmPassword
-        .value;
-      if (password !== confirmPassword) {
-        alert("Passwords do not match");
-        return;
-      }
-    }
-
-    // api call to login or signup
-    const endpoint = isLogin ? "/api/auth/login" : "/api/auth/signup";
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      // Store user data in localStorage
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          id: data.user.id,
-          username: data.user.name,
-          picture: data.user.picture,
-        })
-      );
-      setIsOpen(false);
-      return router.push("/");
-    } else {
-      alert(data.error);
-    }
-  };
 
   return (
     <div>
@@ -78,70 +21,25 @@ export default function LoginModal() {
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogDescription className="hidden">
+          Login to your account to continue
+        </DialogDescription>
         <DialogContent className="sm:max-w-[425px] bg-slate-200 dark:border-slate-700 dark:bg-slate-950">
+          <DialogTitle className="hidden">Login</DialogTitle>
           <DialogHeader>
-            <DialogTitle>{isLogin ? "Login" : "Sign Up"}</DialogTitle>
+            <Tabs defaultValue="login" >
+              <TabsList className="grid w-full grid-cols-2 px-6">
+                <TabsTrigger value="login">Login</TabsTrigger>
+                <TabsTrigger value="signup">Sign Up</TabsTrigger>
+              </TabsList>
+              <TabsContent value="login">
+                <LoginForm onSuccess={() => setIsOpen(false)} />
+              </TabsContent>
+              <TabsContent value="signup">
+                <SignUpForm onSuccess={() => setIsOpen(false)} />
+              </TabsContent>
+            </Tabs>
           </DialogHeader>
-          <CardContent className="flex flex-col gap-4">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
-                <Input
-                  className="border-slate-300 dark:border-slate-500"
-                  type="text"
-                  id="username"
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  className="border-slate-300 dark:border-slate-500"
-                  type="password"
-                  id="password"
-                  required
-                />
-              </div>
-
-              {!isLogin && (
-                <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirm Password</Label>
-                  <Input
-                    className="border-slate-300 dark:border-slate-500"
-                    type="password"
-                    id="confirmPassword"
-                  />
-                </div>
-              )}
-
-              <Button
-                type="submit"
-                className="w-full bg-primary text-primary-foreground hover:bg-primary/80"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    <span>Loading...</span>
-                  </>
-                ) : isLogin ? "Login" : "Sign Up"}
-              </Button>
-            </form>
-          </CardContent>
-          <CardFooter>
-            <div className="w-full text-center text-sm text-slate-800 dark:text-slate-50">
-              {isLogin ? "Don't have an account? " : "Already have an account? "}
-              <Button
-                type="button"
-                onClick={() => setIsLogin(!isLogin)}
-                variant="link"
-                className="text-blue-500 hover:text-blue-600"
-              >
-                {isLogin ? "Sign Up" : "Login"}
-              </Button>
-            </div>
-          </CardFooter>
         </DialogContent>
       </Dialog>
     </div>
