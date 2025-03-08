@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { hijriToday } from "@/constant/hijri";
 import { Loader2 } from "lucide-react";
 import DateSelection from "./date-selection";
+import PeriodCheck from "./period-check";
 
 
 export function TodoList() {
@@ -166,10 +167,7 @@ export function TodoList() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4 relative">
-      <h2 className="text-3xl font-extrabold mb-6 text-background text-center">
-        Sunnah Ramadhan
-      </h2>
+    <div className="max-w-md mx-auto p-4 space-y-4 relative">
       {/* Add date navigation */}
       <DateSelection
         selectedDate={selectedDate}
@@ -177,6 +175,9 @@ export function TodoList() {
         goToNextDay={goToNextDay}
         goToToday={goToToday}
       />
+      {user && user.gender === "female" && (
+        <PeriodCheck />
+      )}
       {/* {!isOnline && (
         <div className="bg-yellow-100 border-l-4 border-yellow-500 p-3 mb-4 rounded text-yellow-700">
           <p className="font-medium">
