@@ -50,6 +50,20 @@
       "when": 1740978437281,
       "tag": "0006_freezing_mockingbird",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1741397970419,
+      "tag": "0007_common_robbie_robertson",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1741401298478,
+      "tag": "0008_gorgeous_zodiak",
+      "breakpoints": true
     }
   ]
 }

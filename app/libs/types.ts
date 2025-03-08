@@ -19,4 +19,5 @@ export interface User {
   id: string;
   picture?: string;
   isAnonymous: boolean;
+  gender?: string;
 }

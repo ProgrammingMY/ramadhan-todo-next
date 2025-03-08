@@ -17,6 +17,7 @@ export const usersTable = pgTable("users", {
   name: varchar({ length: 255 }).notNull(),
   email: varchar({ length: 255 }).unique(),
   password: varchar({ length: 255 }).notNull(),
+  gender: varchar({ length: 255 }).$type<"male" | "female">().default("male"),
   picture: varchar({ length: 255 }).default(""),
 });
 
@@ -39,6 +40,7 @@ export const progressTable = pgTable(
       .notNull()
       .references(() => tasksTable.id),
     date: varchar({ length: 255 }).notNull(),
+    isUzur: boolean().default(false),
     yearMonth: varchar({ length: 255 }).notNull(),
     completed: boolean().notNull().default(false),
     completedAt: timestamp({ withTimezone: true }),
