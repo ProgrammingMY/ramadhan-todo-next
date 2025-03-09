@@ -37,7 +37,7 @@ export default function Progress() {
 
       const yearMonth = hijriToday().format("iYYYY-iMM");
 
-      if (navigator.onLine && user) {
+      if (navigator.onLine && user && !user.isAnonymous) {
         const { id } = user;
 
         // Try to fetch from API
