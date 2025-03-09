@@ -64,6 +64,20 @@
       "when": 1741401298478,
       "tag": "0008_gorgeous_zodiak",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1741406878336,
+      "tag": "0009_small_colossus",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1741482249951,
+      "tag": "0010_solid_winter_soldier",
+      "breakpoints": true
     }
   ]
 }

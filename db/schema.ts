@@ -26,6 +26,7 @@ export const tasksTable = pgTable("tasks", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar({ length: 255 }).notNull(),
   displayOrder: integer().notNull(),
+  isPeriodCan: boolean().default(true),
 });
 
 // Table for daily user progress
@@ -40,7 +41,6 @@ export const progressTable = pgTable(
       .notNull()
       .references(() => tasksTable.id),
     date: varchar({ length: 255 }).notNull(),
-    isUzur: boolean().default(false),
     yearMonth: varchar({ length: 255 }).notNull(),
     completed: boolean().notNull().default(false),
     completedAt: timestamp({ withTimezone: true }),
@@ -61,3 +61,16 @@ export const subscriptionsTable = pgTable("subscriptions", {
 },
   (table) => [unique().on(table.deviceId, table.subscription)]
 );
+
+export const periodTable = pgTable("period", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  date: varchar({ length: 255 }).notNull(),
+  yearMonth: varchar({ length: 255 }).notNull(),
+  isPeriod: boolean().notNull().default(false),
+  userId: uuid()
+    .notNull()
+    .references(() => usersTable.id),
+},
+  (table) => [unique().on(table.userId, table.date)]
+);
+

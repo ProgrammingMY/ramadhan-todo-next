@@ -19,6 +19,18 @@ export function TodoList() {
   const [user, setUser] = useState<User | null>(null);
   // date selection
   const [selectedDate, setSelectedDate] = useState(hijriToday());
+  const [periodStatus, setPeriodStatus] = useState(false);
+
+  const handlePeriodChange = async (periodStatus: boolean) => {
+    setPeriodStatus(periodStatus);
+
+    // filter the todos that are period can 
+    const periodTodos = periodStatus ? todos.filter(todo => todo.isPeriodCan) : DEFAULT_TODOS;
+
+    setTodos(periodTodos);
+    // Save to localStorage and API if needed
+    localStorage.setItem("todos", JSON.stringify(periodTodos));
+  };
 
   const fetchTodos = async (date: string) => {
     try {
@@ -81,6 +93,20 @@ export function TodoList() {
 
     fetchTodos(selectedDate.format("iYYYY-iMM-iDD"));
 
+    const periodTodos = DEFAULT_TODOS.filter(todo => todo.isPeriodCan);
+
+    // fetch isPeriod
+    // const isPeriod = localStorage.getItem("isPeriod");
+    // if (isPeriod) {
+    //   setTodos(periodTodos);
+    // } else {
+    //   fetchIsPeriod(selectedDate, user?.id as string).then(data => {
+    //     if (data) {
+    //       setTodos(periodTodos);
+    //     }
+    //   });
+    // }
+
   }, [selectedDate]);
 
   // Add date navigation functions
@@ -134,7 +160,6 @@ export function TodoList() {
     // save progress to API if online and user is logged in
     if (user && !user.isAnonymous) {
       try {
-        const { id: userId } = user;
         const response = await fetch(`/api/todos/${id}`, {
           method: "PATCH",
           headers: {
@@ -147,21 +172,10 @@ export function TodoList() {
           throw new Error("Failed to update todo");
         }
 
-        // Dispatch custom event for progress updates
-        // window.dispatchEvent(new Event("todos-updated"));
 
       } catch (error) {
         console.error("Error updating todo:", error);
         toast.error("Failed to update todo");
-
-        // Store failed request for background sync
-        // if ('serviceWorker' in navigator) {
-        //   const offlineCache = await caches.open('offline-todos');
-        //   await offlineCache.put(
-        //     new Request(`/api/todos/${id}`),
-        //     new Response(JSON.stringify(updateData))
-        //   );
-        // }
       }
     }
   };
@@ -176,7 +190,11 @@ export function TodoList() {
         goToToday={goToToday}
       />
       {user && user.gender === "female" && (
-        <PeriodCheck />
+        <PeriodCheck
+          selectedDate={selectedDate}
+          onPeriodChange={handlePeriodChange}
+          user={user}
+        />
       )}
       {/* {!isOnline && (
         <div className="bg-yellow-100 border-l-4 border-yellow-500 p-3 mb-4 rounded text-yellow-700">
