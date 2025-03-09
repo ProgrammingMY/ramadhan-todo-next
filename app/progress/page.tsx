@@ -14,21 +14,21 @@ import Cabinet from "@/_components/cabinets/cabinet";
 import { generateInitialProgress } from "@/lib/generate-default-progress";
 import { getMonthProgress } from "@/lib/get-month-progress";
 import { HIJRI_MONTHS, hijriToday } from "@/constant/hijri";
+import { useUser } from "@/_context/user-context";
 
 const PLANT_STAGES = [
-  { plant: level1, minCompletionRate: 1, maxCompletionRate: 20 },
-  { plant: level2, minCompletionRate: 20, maxCompletionRate: 40 },
-  { plant: level3, minCompletionRate: 40, maxCompletionRate: 60 },
-  { plant: level4, minCompletionRate: 60, maxCompletionRate: 99 },
-  { plant: level5, minCompletionRate: 99, maxCompletionRate: 100 },
-
+  { plant: level5, minCompletionRate: 99 },
+  { plant: level4, minCompletionRate: 60 },
+  { plant: level3, minCompletionRate: 40 },
+  { plant: level2, minCompletionRate: 20 },
+  { plant: level1, minCompletionRate: 1 },
 ];
 
 export default function Progress() {
   const [monthProgress, setMonthProgress] = useState<DayProgress[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
-
+  const { periodDates, handleMonthProgressChange } = useUser();
 
   // Function to fetch progress data
   const fetchProgressData = async (user: User | null) => {
@@ -51,13 +51,12 @@ export default function Progress() {
         return JSON.parse(localStorage.getItem("monthProgress") || "[]");
       }
 
-
-
       // Calculate completion rates for each day
-      const progress = getMonthProgress(tasks);
+      const progress = getMonthProgress(tasks, periodDates);
 
-      // Save to localStorage as backup
-      localStorage.setItem("monthProgress", JSON.stringify(progress));
+      // save in context
+      handleMonthProgressChange(progress);
+
       return progress;
     } catch (error) {
       console.error("Failed to fetch from API:", error);
@@ -95,7 +94,7 @@ export default function Progress() {
   const getPlantStage = (rate: number) => {
     const stage = PLANT_STAGES.find(
       (stage) =>
-        rate >= stage.minCompletionRate && rate <= stage.maxCompletionRate
+        rate >= stage.minCompletionRate
     );
 
     if (stage) {

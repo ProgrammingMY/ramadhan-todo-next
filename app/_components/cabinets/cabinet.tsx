@@ -10,7 +10,6 @@ interface CabinetProps {
     plantStages: {
         plant: StaticImageData;
         minCompletionRate: number;
-        maxCompletionRate: number;
     }[];
     getPlantStage: (rate: number) => JSX.Element;
 }

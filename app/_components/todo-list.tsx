@@ -10,6 +10,9 @@ import { hijriToday } from "@/constant/hijri";
 import { Loader2 } from "lucide-react";
 import DateSelection from "./date-selection";
 import PeriodCheck from "./period-check";
+import { useUser } from "@/_context/user-context";
+
+const PERIOD_TODOS = DEFAULT_TODOS.filter(todo => todo.isPeriodCan);
 
 
 export function TodoList() {
@@ -19,17 +22,20 @@ export function TodoList() {
   const [user, setUser] = useState<User | null>(null);
   // date selection
   const [selectedDate, setSelectedDate] = useState(hijriToday());
-  const [periodStatus, setPeriodStatus] = useState(false);
+  const { periodDates } = useUser();
+
 
   const handlePeriodChange = async (periodStatus: boolean) => {
-    setPeriodStatus(periodStatus);
-
     // filter the todos that are period can 
-    const periodTodos = periodStatus ? todos.filter(todo => todo.isPeriodCan) : DEFAULT_TODOS;
+    if (periodStatus) {
+      const periodTodos = todos.filter((todo: Todo) => PERIOD_TODOS.some(t => t.id === todo.id));
+      setTodos(periodTodos);
 
-    setTodos(periodTodos);
-    // Save to localStorage and API if needed
-    localStorage.setItem("todos", JSON.stringify(periodTodos));
+      // Save to localStorage
+      localStorage.setItem("todos", JSON.stringify(periodTodos));
+    } else {
+      fetchTodos(selectedDate.format("iYYYY-iMM-iDD"));
+    }
   };
 
   const fetchTodos = async (date: string) => {
@@ -56,7 +62,16 @@ export function TodoList() {
             ...todo,
             completed: todo.completed === undefined ? false : todo.completed,
           }));
-          setTodos(updatedTodos);
+
+          // has the same id
+          const periodTodos = updatedTodos.filter((todo: Todo) => PERIOD_TODOS.some(t => t.id === todo.id));
+
+          if (periodDates[selectedDate.format("iYYYY-iMM-iDD")]) {
+            setTodos(periodTodos);
+          } else {
+            setTodos(updatedTodos);
+          }
+
           // Cache the data
           // localStorage.setItem("todos", JSON.stringify(updatedTodos));
           localStorage.setItem("lastSavedDate", hijriToday().format("iYYYY-iMM-iDD"));
@@ -92,8 +107,6 @@ export function TodoList() {
     setUser(JSON.parse(userData as string));
 
     fetchTodos(selectedDate.format("iYYYY-iMM-iDD"));
-
-    const periodTodos = DEFAULT_TODOS.filter(todo => todo.isPeriodCan);
 
     // fetch isPeriod
     // const isPeriod = localStorage.getItem("isPeriod");
@@ -140,7 +153,7 @@ export function TodoList() {
       completed: todo.completed
     }));
 
-    const monthProgress = getMonthProgress(tasks);
+    const monthProgress = getMonthProgress(tasks, periodDates);
 
     // Save to localStorage
     localStorage.setItem("monthProgress", JSON.stringify(monthProgress));

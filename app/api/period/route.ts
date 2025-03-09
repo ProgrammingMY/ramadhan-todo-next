@@ -20,8 +20,6 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: "Period not found" }, { status: 404 });
     }
 
-    console.log("period", period);
-
     return NextResponse.json(period);
 }
 

@@ -1,3 +1,4 @@
+import { useUser } from "@/_context/user-context";
 import { Switch } from "@/components/ui/switch";
 import { User } from "@/libs/types";
 import { Moment } from "moment-hijri";
@@ -12,6 +13,7 @@ interface PeriodCheckProps {
 
 export default function PeriodCheck({ selectedDate, onPeriodChange, user }: PeriodCheckProps) {
     const [isPeriod, setIsPeriod] = useState(false);
+    const { periodDates, handlePeriodChange: handlePeriodChangeContext } = useUser();
 
     useEffect(() => {
         // Load period status for the selected date
@@ -22,13 +24,15 @@ export default function PeriodCheck({ selectedDate, onPeriodChange, user }: Peri
     const handlePeriodChange = async (checked: boolean) => {
         setIsPeriod(checked);
         // Save period status for the date
-        const periodDates = JSON.parse(localStorage.getItem("periodDates") || "{}");
         if (checked) {
             periodDates[selectedDate.format("iYYYY-iMM-iDD")] = true;
         } else {
             delete periodDates[selectedDate.format("iYYYY-iMM-iDD")];
         }
-        localStorage.setItem("periodDates", JSON.stringify(periodDates));
+
+        // add to context
+        handlePeriodChangeContext(periodDates);
+
         try {
 
             await fetch(
