@@ -63,13 +63,23 @@ export function UserProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const handlePeriodChange = (newPeriodDates: PeriodDates) => {
-    setPeriodDates(newPeriodDates);
-    localStorage.setItem("periodDates", JSON.stringify(newPeriodDates));
+    if (!newPeriodDates || Object.keys(newPeriodDates).length === 0) {
+      localStorage.removeItem("periodDates");
+      setPeriodDates({});
+    } else {
+      setPeriodDates(newPeriodDates);
+      localStorage.setItem("periodDates", JSON.stringify(newPeriodDates));
+    }
   }
 
   const handleMonthProgressChange = (newMonthProgress: MonthProgress[]) => {
-    setMonthProgress(newMonthProgress);
-    localStorage.setItem("monthProgress", JSON.stringify(newMonthProgress));
+    if (!newMonthProgress || newMonthProgress.length === 0) {
+      localStorage.removeItem("monthProgress");
+      setMonthProgress([]);
+    } else {
+      setMonthProgress(newMonthProgress);
+      localStorage.setItem("monthProgress", JSON.stringify(newMonthProgress));
+    }
   }
 
   return (

@@ -12,9 +12,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: "userId and date are required" }, { status: 400 });
     }
 
-    const yearMonth = date.split("-")[0] + "-" + date.split("-")[1];
-
-    const period = await db.query.periodTable.findFirst({ where: and(eq(periodTable.userId, userId), eq(periodTable.yearMonth, yearMonth)), columns: { isPeriod: true } });
+    const period = await db.query.periodTable.findMany({ where: and(eq(periodTable.userId, userId), eq(periodTable.yearMonth, date)), columns: { isPeriod: true, date: true } });
 
     if (!period) {
         return NextResponse.json({ error: "Period not found" }, { status: 404 });

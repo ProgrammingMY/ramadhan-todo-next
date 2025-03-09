@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import { CardContent } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
+import { useUser } from "@/_context/user-context";
 
 interface SignUpFormProps {
   onSuccess: () => void;
@@ -15,6 +16,7 @@ interface SignUpFormProps {
 export default function SignUpForm({ onSuccess }: SignUpFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { setUser } = useUser();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,14 +48,16 @@ export default function SignUpForm({ onSuccess }: SignUpFormProps) {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            id: data.user.id,
-            username: data.user.name,
-            picture: data.user.picture,
-          })
-        );
+        const userData = {
+          id: data.user.id,
+          username: data.user.name,
+          picture: data.user.picture,
+          isAnonymous: false,
+          gender: data.user.gender,
+        }
+        localStorage.setItem("user", JSON.stringify(userData));
+        setUser(userData);
+
         onSuccess();
         router.push("/");
       } else {

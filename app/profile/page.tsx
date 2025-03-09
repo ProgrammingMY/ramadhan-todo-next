@@ -12,6 +12,7 @@ import About from "@/_components/about";
 import NotificationManager from "@/_components/notification-manager";
 import ProfileEdit from "@/_components/profile/profile-edit";
 import PictureEdit from "@/_components/profile/picture-edit";
+import { useUser } from "@/_context/user-context";
 
 const settings = [
   {
@@ -46,6 +47,7 @@ export default function Profile() {
   const [user, setUser] = useState<User | null>(null);
   const [expandedSettingId, setExpandedSettingId] = useState<string | null>(null);
   const [isStandalone, setIsStandalone] = useState(false);
+  const { setUser: setUserContext, handlePeriodChange, handleMonthProgressChange } = useUser();
 
   useEffect(() => {
     setIsStandalone(window.matchMedia('(display-mode: standalone)').matches);
@@ -54,6 +56,17 @@ export default function Profile() {
   const filteredSettings = settings.filter(setting =>
     setting.id !== 'install' || !isStandalone
   );
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("monthProgress");
+    localStorage.removeItem("todos");
+    localStorage.removeItem("periodDates");
+    setUser(null);
+    setUserContext(null);
+    handlePeriodChange({});
+    handleMonthProgressChange([]);
+  }
 
   useEffect(() => {
     // get user name from local storage
@@ -80,12 +93,7 @@ export default function Profile() {
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-3xl font-bold">Profile</h1>
             <div className="flex gap-2">
-              <Button variant="destructive" onClick={() => {
-                localStorage.removeItem("user");
-                localStorage.removeItem("monthProgress");
-                localStorage.removeItem("todos");
-                setUser(null);
-              }}>
+              <Button variant="destructive" onClick={handleLogout}>
                 Logout
               </Button>
             </div>

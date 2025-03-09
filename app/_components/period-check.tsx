@@ -1,3 +1,4 @@
+import { fetchIsPeriod } from "@/_action/fetchIsPeriod";
 import { useUser } from "@/_context/user-context";
 import { Switch } from "@/components/ui/switch";
 import { User } from "@/libs/types";
@@ -16,8 +17,33 @@ export default function PeriodCheck({ selectedDate, onPeriodChange, user }: Peri
     const { periodDates, handlePeriodChange: handlePeriodChangeContext } = useUser();
 
     useEffect(() => {
+        const fetchPeriodDates = async () => {
+            try {
+                const periodDatesData = await fetchIsPeriod(selectedDate, user.id);
+
+                if (!periodDatesData) {
+                    handlePeriodChangeContext({});
+                    return;
+                }
+
+                handlePeriodChangeContext(periodDatesData);
+                setIsPeriod(!!periodDatesData[selectedDate.format("iYYYY-iMM-iDD")]);
+            } catch (error) {
+                console.error("Error fetching period dates", error);
+                toast.error("Error fetching period dates");
+                return;
+            }
+        }
+
         // Load period status for the selected date
         const periodDates = JSON.parse(localStorage.getItem("periodDates") || "{}");
+
+        // if empty, fetch from api
+        if (Object.keys(periodDates).length === 0) {
+            fetchPeriodDates();
+            return;
+        }
+
         setIsPeriod(!!periodDates[selectedDate.format("iYYYY-iMM-iDD")]);
     }, [selectedDate]);
 
@@ -34,7 +60,6 @@ export default function PeriodCheck({ selectedDate, onPeriodChange, user }: Peri
         handlePeriodChangeContext(periodDates);
 
         try {
-
             await fetch(
                 `/api/period`,
                 {
