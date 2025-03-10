@@ -1,17 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { User } from "@/libs/types";
+import { useUser } from "@/_context/user-context";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export default function NameForm({
-    user
-}: {
-    user: User
-}) {
+export default function NameForm() {
     const [isEditingName, setIsEditingName] = useState(false);
+    const { user, setUser } = useUser();
     const [name, setName] = useState(user?.username || "");
     const router = useRouter();
 
@@ -30,10 +27,17 @@ export default function NameForm({
                 return;
             }
 
-            localStorage.setItem("user", JSON.stringify({
-                ...user,
-                username: name
-            }));
+            if (user) {
+                localStorage.setItem("user", JSON.stringify({
+                    ...user,
+                    username: name
+                }));
+
+                setUser({
+                    ...user,
+                    username: name
+                });
+            }
 
             setIsEditingName(false);
             toast.success("Name changed successfully");

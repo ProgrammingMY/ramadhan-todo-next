@@ -1,19 +1,19 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { User } from "@/libs/types";
 import { ChevronRight } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
 import GenderForm from "./gender-form";
-import { Label } from "@/components/ui/label";
 import NameForm from "./name-form";
+import TotalPeriod from "./total-period";
+import { useEffect, useState } from "react";
+import { useUser } from "@/_context/user-context";
 
-export default function ProfileEdit({
-    user
-}: {
-    user: User
-}) {
-    
+export default function ProfileEdit() {
+    const [isFemale, setIsFemale] = useState(false);
+    const { user } = useUser();
+    useEffect(() => {
+        if (user?.gender === "female") {
+            setIsFemale(true);
+        }
+    }, [user]);
+
     return (
         < div className="bg-card border border-slate-200 dark:border-slate-700 rounded-md shadow-md overflow-hidden" >
             <div className="p-4 flex justify-between items-center">
@@ -23,8 +23,9 @@ export default function ProfileEdit({
                 <ChevronRight className={`transform transition-transform`} />
             </div>
             <div className="p-4 space-y-4 border-t border-slate-200 dark:border-slate-700">
-                <NameForm user={user} />
-                <GenderForm user={user} />
+                <NameForm />
+                <GenderForm />
+                {isFemale && <TotalPeriod />}
             </div>
         </div >
     )

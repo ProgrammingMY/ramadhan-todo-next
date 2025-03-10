@@ -1,17 +1,14 @@
+import { useUser } from "@/_context/user-context";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { User } from "@/libs/types";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export default function GenderForm({
-    user
-}: {
-    user: User
-}) {
+export default function GenderForm() {
     const [isEditingGender, setIsEditingGender] = useState(false);
+    const { user, setUser } = useUser();
     const [gender, setGender] = useState(user?.gender || "male");
     const router = useRouter();
 
@@ -30,10 +27,17 @@ export default function GenderForm({
                 return;
             }
 
-            localStorage.setItem("user", JSON.stringify({
-                ...user,
-                gender: value
-            }));
+            if (user) {
+                localStorage.setItem("user", JSON.stringify({
+                    ...user,
+                    gender: value
+                }));
+
+                setUser({
+                    ...user,
+                    gender: value
+                });
+            }
 
             setIsEditingGender(false);
             toast.success("Gender changed successfully");
