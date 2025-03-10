@@ -92,8 +92,6 @@ export default function NotificationManager() {
                     applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!),
                 });
 
-                console.log("Push subscription created", sub);
-
                 if (!sub) {
                     throw new Error('Failed to create push subscription');
                 }

@@ -3,6 +3,11 @@ import { type Story } from 'react-insta-stories/dist/interfaces';
 import { motion } from "motion/react"
 import StoryOne from './story-one';
 import StoryTwo from './story-two';
+import StoryThree from './story-three';
+import StoryFour from './story-four';
+import StoryFive from './story-five';
+import StorySix from './story-six';
+
 const stories: Story[] = [
     {
         content: () => (
@@ -14,6 +19,26 @@ const stories: Story[] = [
             <StoryTwo />
         )
     },
+    {
+        content: () => (
+            <StoryThree />
+        )
+    },
+    {
+        content: () => (
+            <StoryFour />
+        )
+    },
+    {
+        content: () => (
+            <StoryFive />
+        )
+    },
+    {
+        content: () => (
+            <StorySix />
+        )
+    }
 ];
 
 const StoryViewer = ({ onClose }: { onClose: () => void }) => {
