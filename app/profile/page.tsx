@@ -6,13 +6,14 @@ import InstallPrompt from "../_components/install-prompt";
 import LoginModal from "../_components/login-modal";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/_components/theme-switcher";
-import { Bell, ChevronRight, Download, Info, Sun } from "lucide-react";
+import { Bell, ChevronRight, Download, Info, Sun, Trophy } from "lucide-react";
 import { User } from "@/libs/types";
 import About from "@/_components/about";
 import NotificationManager from "@/_components/notification-manager";
 import ProfileEdit from "@/_components/profile/profile-edit";
 import PictureEdit from "@/_components/profile/picture-edit";
 import { useUser } from "@/_context/user-context";
+import StoryViewer from "@/_components/story/story-viewer";
 
 const settings = [
   {
@@ -49,11 +50,24 @@ export default function Profile() {
   const [isStandalone, setIsStandalone] = useState(false);
   const { setUser: setUserContext, handlePeriodChange, handleMonthProgressChange } = useUser();
 
+  const [showStory, setShowStory] = useState(false);
+
+  // Add this to your settings array
+  const newSettings = [
+    {
+      title: "Your Progress Story",
+      icon: <Trophy />,
+      id: "story",
+      content: <Button onClick={() => setShowStory(true)}>View Your Story</Button>
+    },
+    ...settings
+  ];
+
   useEffect(() => {
     setIsStandalone(window.matchMedia('(display-mode: standalone)').matches);
   }, []);
 
-  const filteredSettings = settings.filter(setting =>
+  const filteredSettings = newSettings.filter(setting =>
     setting.id !== 'install' || !isStandalone
   );
 
@@ -78,6 +92,7 @@ export default function Profile() {
 
   return (
     <div className="p-6 container flex flex-col gap-6">
+      {showStory && <StoryViewer onClose={() => setShowStory(false)} />}
       {!user || user.isAnonymous ? (
         // Not logged in view
         <div className="mt-14">
