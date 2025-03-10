@@ -102,7 +102,7 @@ export default function Profile() {
           <div className="space-y-4">
             {/* Profile Picture Section */}
             <PictureEdit user={user} />
-            <ProfileEdit user={user} />
+            <ProfileEdit />
           </div>
         </div>
       )}
