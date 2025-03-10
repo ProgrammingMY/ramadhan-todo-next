@@ -5,15 +5,23 @@ import * as SwitchPrimitive from "@radix-ui/react-switch"
 
 import { cn } from "@/lib/utils"
 
+interface SwitchProps extends React.ComponentProps<typeof SwitchPrimitive.Root> {
+  variant?: 'default' | 'gender'
+}
+
 function Switch({
   className,
+  variant = "default",
   ...props
-}: React.ComponentProps<typeof SwitchPrimitive.Root>) {
+}: SwitchProps) {
   return (
     <SwitchPrimitive.Root
       data-slot="switch"
       className={cn(
-        "peer data-[state=checked]:bg-primary data-[state=unchecked]:bg-input focus-visible:border-ring focus-visible:ring-ring/50 inline-flex h-5 w-9 shrink-0 items-center rounded-full border-2 border-transparent shadow-xs transition-all outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
+        "peer inline-flex h-5 w-9 shrink-0 items-center rounded-full border-2 border-transparent shadow-xs transition-all outline-none focus-visible:ring-[3px] focus-visible:border-ring focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50",
+        variant === 'default'
+          ? "data-[state=checked]:bg-primary data-[state=unchecked]:bg-input"
+          : "data-[state=checked]:bg-blue-500 data-[state=unchecked]:bg-pink-500",
         className
       )}
       {...props}

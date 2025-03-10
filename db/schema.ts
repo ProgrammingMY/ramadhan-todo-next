@@ -17,6 +17,7 @@ export const usersTable = pgTable("users", {
   name: varchar({ length: 255 }).notNull(),
   email: varchar({ length: 255 }).unique(),
   password: varchar({ length: 255 }).notNull(),
+  gender: varchar({ length: 255 }).$type<"male" | "female">().default("male"),
   picture: varchar({ length: 255 }).default(""),
 });
 
@@ -25,6 +26,7 @@ export const tasksTable = pgTable("tasks", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar({ length: 255 }).notNull(),
   displayOrder: integer().notNull(),
+  isPeriodCan: boolean().default(true),
 });
 
 // Table for daily user progress
@@ -59,3 +61,16 @@ export const subscriptionsTable = pgTable("subscriptions", {
 },
   (table) => [unique().on(table.deviceId, table.subscription)]
 );
+
+export const periodTable = pgTable("period", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  date: varchar({ length: 255 }).notNull(),
+  yearMonth: varchar({ length: 255 }).notNull(),
+  isPeriod: boolean().notNull().default(false),
+  userId: uuid()
+    .notNull()
+    .references(() => usersTable.id),
+},
+  (table) => [unique().on(table.userId, table.date)]
+);
+

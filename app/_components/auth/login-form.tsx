@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import { CardContent } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
+import { useUser } from "@/_context/user-context";
 
 interface LoginFormProps {
     onSuccess: () => void;
@@ -15,6 +16,7 @@ interface LoginFormProps {
 export default function LoginForm({ onSuccess }: LoginFormProps) {
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
+    const { setUser } = useUser();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -39,14 +41,22 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
             const data = await response.json();
 
             if (response.ok) {
+                const userData = {
+                    id: data.user.id,
+                    username: data.user.name,
+                    picture: data.user.picture,
+                    isAnonymous: false,
+                    gender: data.user.gender,
+                }
+
+
                 localStorage.setItem(
                     "user",
-                    JSON.stringify({
-                        id: data.user.id,
-                        username: data.user.name,
-                        picture: data.user.picture,
-                    })
+                    JSON.stringify(userData)
                 );
+
+                setUser(userData);
+
                 onSuccess();
                 router.push("/");
             } else {

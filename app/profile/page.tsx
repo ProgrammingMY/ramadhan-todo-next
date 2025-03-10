@@ -1,17 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
+
 import InstallPrompt from "../_components/install-prompt";
 import LoginModal from "../_components/login-modal";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/_components/theme-switcher";
 import { Bell, ChevronRight, Download, Info, Sun } from "lucide-react";
 import { User } from "@/libs/types";
 import About from "@/_components/about";
 import NotificationManager from "@/_components/notification-manager";
-import { toast } from "sonner";
+import ProfileEdit from "@/_components/profile/profile-edit";
+import PictureEdit from "@/_components/profile/picture-edit";
+import { useUser } from "@/_context/user-context";
 
 const settings = [
   {
@@ -40,25 +41,13 @@ const settings = [
   }
 ];
 
-const avatars = [
-  "/avatars/1.png",
-  "/avatars/2.png",
-  "/avatars/3.png",
-  "/avatars/4.png",
-  "/avatars/5.png",
-  "/avatars/6.png",
-  "/avatars/7.png",
-  "/avatars/8.png",
-];
+
 
 export default function Profile() {
-  const [name, setName] = useState("");
-  const [isEditingName, setIsEditingName] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const [selectedPicture, setSelectedPicture] = useState(user?.picture || "/avatars/1.png");
   const [expandedSettingId, setExpandedSettingId] = useState<string | null>(null);
-
   const [isStandalone, setIsStandalone] = useState(false);
+  const { setUser: setUserContext, handlePeriodChange, handleMonthProgressChange } = useUser();
 
   useEffect(() => {
     setIsStandalone(window.matchMedia('(display-mode: standalone)').matches);
@@ -68,60 +57,22 @@ export default function Profile() {
     setting.id !== 'install' || !isStandalone
   );
 
-  const handleNameSave = async () => {
-    if (isEditingName) {
-      const response = await fetch("/api/user", {
-        method: "PUT",
-        body: JSON.stringify({
-          name: name,
-          id: user?.id
-        })
-      });
-
-      if (!response.ok) {
-        toast.error("Failed to change name");
-        return;
-      }
-
-      localStorage.setItem("user", JSON.stringify({
-        ...user,
-        username: name
-      }));
-
-      setIsEditingName(false);
-      toast.success("Name changed successfully");
-    } else {
-      setIsEditingName(true);
-    }
-  };
-
-  const handlePictureSelect = (picture: string) => {
-    // Here you would typically save the selected picture to your backend/storage
-    const updateUser = async (user: any) => {
-      await fetch("/api/user", {
-        method: "PUT",
-        body: JSON.stringify(user)
-      });
-    }
-
-    // save picture to in user object
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-    user.picture = picture;
-    localStorage.setItem("user", JSON.stringify(user));
-
-    if (user) {
-      updateUser(user);
-    }
-    setSelectedPicture(picture);
-  };
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("monthProgress");
+    localStorage.removeItem("todos");
+    localStorage.removeItem("periodDates");
+    setUser(null);
+    setUserContext(null);
+    handlePeriodChange({});
+    handleMonthProgressChange([]);
+  }
 
   useEffect(() => {
     // get user name from local storage
     const user = localStorage.getItem("user");
     if (user) {
-      setName(JSON.parse(user).username);
       setUser(JSON.parse(user));
-      setSelectedPicture(JSON.parse(user).picture || "/avatars/1.png");
     }
   }, []);
 
@@ -142,12 +93,7 @@ export default function Profile() {
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-3xl font-bold">Profile</h1>
             <div className="flex gap-2">
-              <Button variant="destructive" onClick={() => {
-                localStorage.removeItem("user");
-                localStorage.removeItem("monthProgress");
-                localStorage.removeItem("todos");
-                setUser(null);
-              }}>
+              <Button variant="destructive" onClick={handleLogout}>
                 Logout
               </Button>
             </div>
@@ -155,94 +101,8 @@ export default function Profile() {
 
           <div className="space-y-4">
             {/* Profile Picture Section */}
-            <div className="bg-card border border-slate-200 dark:border-slate-700 rounded-md shadow-md overflow-hidden">
-              <div className="p-4 flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <Image
-                    src={selectedPicture}
-                    alt="Selected profile picture"
-                    width={32}
-                    height={32}
-                    className="rounded-full"
-                    sizes="32px"
-                  />
-                  <h3 className="font-semibold text-lg">Profile Picture</h3>
-                </div>
-                <ChevronRight className={`transform transition-transform`} />
-              </div>
-              <div className="p-4 border-t border-slate-200 dark:border-slate-700">
-                <div className="flex flex-col items-center gap-4">
-                  <div className="relative w-32 h-32">
-                    <Image
-                      src={selectedPicture}
-                      alt="Selected profile picture"
-                      fill
-                      className="rounded-full object-cover"
-                      sizes="80px"
-                    />
-                  </div>
-                  <div className="grid grid-cols-4 gap-4">
-                    {avatars.map((picture, index) => (
-                      <button
-                        key={index}
-                        onClick={() => handlePictureSelect(picture)}
-                        className={`p-2 border rounded-lg transition-all hover:scale-105 ${selectedPicture === picture
-                          ? "border-primary ring-2 ring-primary/50"
-                          : "border-border hover:border-primary"
-                          }`}
-                      >
-                        <Image
-                          src={picture}
-                          alt={`Avatar option ${index + 1}`}
-                          width={64}
-                          height={64}
-                          className="rounded-full"
-                          sizes="64px"
-                        />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Name Section */}
-            <div className="bg-card border border-slate-200 dark:border-slate-700 rounded-md shadow-md overflow-hidden">
-              <div className="p-4 flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-lg">Name</h3>
-                </div>
-                <ChevronRight className={`transform transition-transform`} />
-              </div>
-              <div className="p-4 border-t border-slate-200 dark:border-slate-700">
-                <div className="flex flex-row gap-2">
-                  <Input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="max-w-sm"
-                    disabled={!isEditingName}
-                  />
-                  {
-                    isEditingName && (
-                      <Button
-                        onClick={() => setIsEditingName(false)}
-                        variant="ghost"
-                        className="flex-1"
-                      >
-                        Cancel
-                      </Button>
-                    )
-                  }
-                  <Button
-                    onClick={handleNameSave}
-                    className="flex-1"
-                  >
-                    {isEditingName ? "Save" : "Edit"}
-                  </Button>
-                </div>
-              </div>
-            </div>
+            <PictureEdit user={user} />
+            <ProfileEdit />
           </div>
         </div>
       )}

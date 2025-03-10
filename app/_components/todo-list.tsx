@@ -9,6 +9,10 @@ import { toast } from "sonner";
 import { hijriToday } from "@/constant/hijri";
 import { Loader2 } from "lucide-react";
 import DateSelection from "./date-selection";
+import PeriodCheck from "./period-check";
+import { useUser } from "@/_context/user-context";
+
+const PERIOD_TODOS = DEFAULT_TODOS.filter(todo => todo.isPeriodCan);
 
 
 export function TodoList() {
@@ -18,6 +22,21 @@ export function TodoList() {
   const [user, setUser] = useState<User | null>(null);
   // date selection
   const [selectedDate, setSelectedDate] = useState(hijriToday());
+  const { periodDates } = useUser();
+
+
+  const handlePeriodChange = async (periodStatus: boolean) => {
+    // filter the todos that are period can 
+    if (periodStatus) {
+      const periodTodos = todos.filter((todo: Todo) => PERIOD_TODOS.some(t => t.id === todo.id));
+      setTodos(periodTodos);
+
+      // Save to localStorage
+      localStorage.setItem("todos", JSON.stringify(periodTodos));
+    } else {
+      fetchTodos(selectedDate.format("iYYYY-iMM-iDD"));
+    }
+  };
 
   const fetchTodos = async (date: string) => {
     try {
@@ -43,7 +62,16 @@ export function TodoList() {
             ...todo,
             completed: todo.completed === undefined ? false : todo.completed,
           }));
-          setTodos(updatedTodos);
+
+          // has the same id
+          const periodTodos = updatedTodos.filter((todo: Todo) => PERIOD_TODOS.some(t => t.id === todo.id));
+
+          if (periodDates[selectedDate.format("iYYYY-iMM-iDD")]) {
+            setTodos(periodTodos);
+          } else {
+            setTodos(updatedTodos);
+          }
+
           // Cache the data
           // localStorage.setItem("todos", JSON.stringify(updatedTodos));
           localStorage.setItem("lastSavedDate", hijriToday().format("iYYYY-iMM-iDD"));
@@ -80,6 +108,18 @@ export function TodoList() {
 
     fetchTodos(selectedDate.format("iYYYY-iMM-iDD"));
 
+    // fetch isPeriod
+    // const isPeriod = localStorage.getItem("isPeriod");
+    // if (isPeriod) {
+    //   setTodos(periodTodos);
+    // } else {
+    //   fetchIsPeriod(selectedDate, user?.id as string).then(data => {
+    //     if (data) {
+    //       setTodos(periodTodos);
+    //     }
+    //   });
+    // }
+
   }, [selectedDate]);
 
   // Add date navigation functions
@@ -113,7 +153,7 @@ export function TodoList() {
       completed: todo.completed
     }));
 
-    const monthProgress = getMonthProgress(tasks);
+    const monthProgress = getMonthProgress(tasks, periodDates);
 
     // Save to localStorage
     localStorage.setItem("monthProgress", JSON.stringify(monthProgress));
@@ -133,7 +173,6 @@ export function TodoList() {
     // save progress to API if online and user is logged in
     if (user && !user.isAnonymous) {
       try {
-        const { id: userId } = user;
         const response = await fetch(`/api/todos/${id}`, {
           method: "PATCH",
           headers: {
@@ -146,30 +185,16 @@ export function TodoList() {
           throw new Error("Failed to update todo");
         }
 
-        // Dispatch custom event for progress updates
-        // window.dispatchEvent(new Event("todos-updated"));
 
       } catch (error) {
         console.error("Error updating todo:", error);
         toast.error("Failed to update todo");
-
-        // Store failed request for background sync
-        // if ('serviceWorker' in navigator) {
-        //   const offlineCache = await caches.open('offline-todos');
-        //   await offlineCache.put(
-        //     new Request(`/api/todos/${id}`),
-        //     new Response(JSON.stringify(updateData))
-        //   );
-        // }
       }
     }
   };
 
   return (
-    <div className="max-w-md mx-auto p-4 relative">
-      <h2 className="text-3xl font-extrabold mb-6 text-background text-center">
-        Sunnah Ramadhan
-      </h2>
+    <div className="max-w-md mx-auto p-4 space-y-4 relative">
       {/* Add date navigation */}
       <DateSelection
         selectedDate={selectedDate}
@@ -177,6 +202,13 @@ export function TodoList() {
         goToNextDay={goToNextDay}
         goToToday={goToToday}
       />
+      {user && user.gender === "female" && (
+        <PeriodCheck
+          selectedDate={selectedDate}
+          onPeriodChange={handlePeriodChange}
+          user={user}
+        />
+      )}
       {/* {!isOnline && (
         <div className="bg-yellow-100 border-l-4 border-yellow-500 p-3 mb-4 rounded text-yellow-700">
           <p className="font-medium">

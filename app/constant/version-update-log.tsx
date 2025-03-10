@@ -7,4 +7,13 @@ export const VERSION_UPDATE_LOG = {
         subject: "A new feature to help you stay istiqamah",
         changes: ["Notification reminders for your daily sunnah",],
     },
+    "1.2": {
+        subject: "Simple Menstruation Date Tracker 🌸",
+        changes: [
+            "You can choose which day your menstruation starts",
+            "Relevant sunnah will be shown if you are in your menstruation",
+            "Check profile to check total menstruation days",
+            "Check your garden to see your menstruation days",
+        ],
+    }
 };
