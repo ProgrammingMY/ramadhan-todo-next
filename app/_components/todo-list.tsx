@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Todo, User } from "../libs/types";
+import { Todo, User } from "../lib/types";
 import { DEFAULT_TODOS } from "../constant/todo";
 import TodoItem from "./todo-item";
 import { getMonthProgress } from "@/lib/get-month-progress";

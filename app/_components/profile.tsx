@@ -1,7 +1,7 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User } from "@/libs/types";
+import { User } from "@/lib/types";
 export default function Profile({ user }: { user: User }) {
 
 

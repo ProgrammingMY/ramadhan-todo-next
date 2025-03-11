@@ -1,4 +1,4 @@
-import { Todo } from "../libs/types";
+import { Todo } from "../lib/types";
 
 export const DEFAULT_TODOS: Todo[] = [
   { id: 1, text: "Qiam", completed: false, isPeriodCan: false },

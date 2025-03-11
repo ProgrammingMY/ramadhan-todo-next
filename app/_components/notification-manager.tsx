@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { User } from "@/libs/types";
+import { User } from "@/lib/types";
 import { Info, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";

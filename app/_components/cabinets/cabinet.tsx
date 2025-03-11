@@ -1,4 +1,4 @@
-import { DayProgress } from "@/libs/types";
+import { DayProgress } from "@/lib/types";
 import Shelf from "./shelf";
 import { StaticImageData } from "next/image";
 import { JSX } from "react";

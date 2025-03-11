@@ -7,7 +7,7 @@ import LoginModal from "../_components/login-modal";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/_components/theme-switcher";
 import { Bell, ChevronRight, Download, Info, Sun, Trophy } from "lucide-react";
-import { User } from "@/libs/types";
+import { User } from "@/lib/types";
 import About from "@/_components/about";
 import NotificationManager from "@/_components/notification-manager";
 import ProfileEdit from "@/_components/profile/profile-edit";
