@@ -7,41 +7,73 @@ import StoryThree from './story-three';
 import StoryFour from './story-four';
 import StoryFive from './story-five';
 import StorySix from './story-six';
-
-const stories: Story[] = [
-    {
-        content: () => (
-            <StoryOne />
-        )
-    },
-    {
-        content: () => (
-            <StoryTwo />
-        )
-    },
-    {
-        content: () => (
-            <StoryThree />
-        )
-    },
-    {
-        content: () => (
-            <StoryFour />
-        )
-    },
-    {
-        content: () => (
-            <StoryFive />
-        )
-    },
-    {
-        content: () => (
-            <StorySix />
-        )
-    }
-];
+import { useEffect } from 'react';
+import { useState } from 'react';
+import StoryLoading from './story-loading';
+import { useUser } from '@/_context/user-context';
+import { hijriToday } from '@/constant/hijri';
 
 const StoryViewer = ({ onClose }: { onClose: () => void }) => {
+    const [isLoading, setIsLoading] = useState(true);
+    const [stories, setStories] = useState<Story[]>([]);
+    const { user } = useUser();
+
+    useEffect(() => {
+        let isMounted = true;
+        // Get analytics data
+        const fetchData = async () => {
+            try {
+                if (!user) return;
+
+                if (!isMounted) return;
+                // get 7 days ago
+                const startDate = hijriToday().subtract(7, 'days').format('iYYYY-iMM-iDD');
+                const endDate = hijriToday().format('iYYYY-iMM-iDD');
+
+                const res = await fetch(`/api/analytics?userId=${user.id}&startDate=${startDate}&endDate=${endDate}`);
+                const data = await res.json();
+
+                const { taskCompletions, totalPerfectDays } = data;
+
+                // Set your stories after data is "loaded"
+                setStories([
+                    {
+                        content: () => <StoryOne />
+                    },
+                    {
+                        content: () => <StoryTwo taskCompletions={taskCompletions} />
+                    },
+                    {
+                        content: () => <StoryThree totalPerfectDays={totalPerfectDays} />
+                    },
+                    {
+                        content: () => <StoryFour taskCompletions={taskCompletions} />
+                    },
+                    {
+                        content: () => <StoryFive taskCompletions={taskCompletions} />
+                    },
+                    {
+                        content: () => <StorySix />
+                    }
+                ]);
+
+                setIsLoading(false);
+            } catch (error) {
+                console.error('Error loading story data:', error);
+                if (isMounted) {
+                    onClose(); // Close on error
+                }
+            }
+        };
+
+        setIsLoading(true);
+        fetchData();
+
+        return () => {
+            isMounted = false;
+        }
+    }, [user]);
+
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -83,13 +115,18 @@ const StoryViewer = ({ onClose }: { onClose: () => void }) => {
             >
                 ✕
             </motion.button>
-            <Stories
-                stories={stories}
-                defaultInterval={5000}
-                width="100%"
-                height="100vh"
-                onAllStoriesEnd={onClose}
-            />
+
+            {isLoading ? (
+                <StoryLoading />
+            ) : (
+                <Stories
+                    stories={stories}
+                    defaultInterval={5000}
+                    width="100%"
+                    height="100vh"
+                    onAllStoriesEnd={onClose}
+                />
+            )}
         </motion.div>
     );
 };

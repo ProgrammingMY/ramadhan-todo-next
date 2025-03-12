@@ -90,13 +90,9 @@ const Podium = ({ position, height, task, count, delay }: PodiumProps) => (
     </motion.div>
 );
 
-export default function StoryFour() {
+export default function StoryFour({ taskCompletions }: { taskCompletions: { task: string, count: number }[] }) {
     // This is placeholder data - you'll want to get actual data from your context/state
-    const topTasks = [
-        { task: "Morning Exercise", count: 7 },
-        { task: "Read Book", count: 6 },
-        { task: "Meditate", count: 5 }
-    ];
+    const topTasks = taskCompletions.slice(0, 3);
 
     // Calculate podium heights
     const baseHeight = 100;

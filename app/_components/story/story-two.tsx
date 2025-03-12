@@ -5,9 +5,8 @@
 import { useUser } from "@/_context/user-context";
 import { motion } from "motion/react";
 
-export default function StoryTwo() {
-    // This is a placeholder - you'll want to calculate the actual number from your data
-    const completedTasks = 24;
+export default function StoryTwo({ taskCompletions }: { taskCompletions: { name: string, count: number }[] }) {
+    const completedTasks = taskCompletions.reduce((acc, task) => acc + task.count, 0);
 
     return (
         <motion.div

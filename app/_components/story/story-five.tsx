@@ -100,25 +100,19 @@ const TaskCard = ({ task, completionRate, encouragement, delay }: TaskCardProps)
     </motion.div>
 );
 
-export default function StoryFive() {
-    // This is placeholder data - you'll want to get actual data from your context/state
-    const challengingTasks = [
-        {
-            task: "Morning Workout",
-            completionRate: 30,
+export default function StoryFive({ taskCompletions }: { taskCompletions: { name: string, count: number }[] }) {
+    // filter out tasks with count less than 3
+    const tasks = taskCompletions.filter((task) => task.count < 3);
+
+    const challengingTasks = tasks.map((task) => {
+        return {
+            task: task.name,
+            completionRate: task.count / 7 * 100,
             encouragement: "Start with just 5 minutes - you've got this!"
-        },
-        {
-            task: "Daily Meditation",
-            completionRate: 40,
-            encouragement: "Finding peace takes practice. Keep going!"
-        },
-        {
-            task: "Reading Session",
-            completionRate: 45,
-            encouragement: "Every page counts, no matter how small!"
         }
-    ];
+    });
+
+
 
     return (
         <motion.div
@@ -170,17 +164,19 @@ export default function StoryFive() {
             </motion.div>
 
             {/* Task Cards */}
-            <div style={{ width: '100%', maxWidth: '300px' }}>
-                {challengingTasks.map((task, index) => (
-                    <TaskCard
-                        key={index}
-                        task={task.task}
-                        completionRate={task.completionRate}
-                        encouragement={task.encouragement}
-                        delay={0.5 + (index * 0.3)}
-                    />
-                ))}
-            </div>
+            {challengingTasks && challengingTasks.length > 0 && (
+                <div style={{ width: '100%', maxWidth: '300px' }}>
+                    {challengingTasks.map((task, index) => (
+                        <TaskCard
+                            key={index}
+                            task={task.task}
+                            completionRate={task.completionRate}
+                            encouragement={task.encouragement}
+                            delay={0.5 + (index * 0.3)}
+                        />
+                    ))}
+                </div>
+            )}
 
             {/* Bottom Message */}
             <motion.div

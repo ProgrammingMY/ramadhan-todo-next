@@ -22,3 +22,10 @@ export interface User {
   isAnonymous: boolean;
   gender?: string;
 }
+
+export interface UserStats {
+  totalTasksCompleted: number;
+  totalPerfectDays: number;
+  topTasks: Array<{ task: string; count: number }>;
+  strugglingTasks: Array<{ task: string; completionRate: number }>;
+}

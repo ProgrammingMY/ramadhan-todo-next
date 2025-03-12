@@ -89,9 +89,9 @@ const Flower = ({ delay }: { delay: number }) => {
     );
 };
 
-export default function StoryThree() {
+export default function StoryThree({ totalPerfectDays }: { totalPerfectDays: number }) {
     // This is a placeholder - you'll want to calculate the actual number from your data
-    const completedDays = 5;
+    const completedDays = totalPerfectDays;
 
     return (
         <motion.div
