@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { StarIcon } from "lucide-react";
+import { Loader2, StarIcon } from "lucide-react";
 import { toast } from "sonner";
 import { submitFeedback } from "@/_action/feedback";
 
@@ -15,9 +15,11 @@ export default function FeedbackForm({
   const [rating, setRating] = useState<number>(0);
   const [feedback, setFeedback] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async () => {
     try {
+      setIsLoading(true);
       await submitFeedback({
         rating,
         feedback,
@@ -31,6 +33,8 @@ export default function FeedbackForm({
     } catch (error) {
       console.error("Error submitting feedback:", error);
       toast.error("Error submitting feedback");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -70,10 +74,10 @@ export default function FeedbackForm({
       />
       <Button
         onClick={handleSubmit}
-        disabled={rating === 0}
+        disabled={rating === 0 || isLoading}
         className="w-full"
       >
-        Submit Feedback
+        {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Submit Feedback"}
       </Button>
     </div>
   );
