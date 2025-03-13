@@ -10,7 +10,7 @@ export default function BottomNavBar() {
   const isActive = (path: string) => pathname === path;
 
   return (
-    <nav className="fixed z-10 bottom-0 left-0 right-0 bg-primary border-t border-white/20 pb-safe">
+    <nav className="fixed max-w-2xl mx-auto z-10 bottom-0 left-0 right-0 bg-primary border-t border-white/20 pb-safe">
       <div className="flex justify-around items-center h-16">
         <Link
           href="/"
