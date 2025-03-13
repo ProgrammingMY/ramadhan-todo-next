@@ -6,13 +6,14 @@ import InstallPrompt from "../_components/install-prompt";
 import LoginModal from "../_components/login-modal";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/_components/theme-switcher";
-import { Bell, ChevronRight, Download, Info, Sun } from "lucide-react";
+import { Bell, ChevronRight, Download, Info, MessageSquare, Sun } from "lucide-react";
 import { User } from "@/libs/types";
 import About from "@/_components/about";
 import NotificationManager from "@/_components/notification-manager";
 import ProfileEdit from "@/_components/profile/profile-edit";
 import PictureEdit from "@/_components/profile/picture-edit";
 import { useUser } from "@/_context/user-context";
+import FeedbackForm from "@/_components/feedback-form";
 
 const settings = [
   {
@@ -26,6 +27,12 @@ const settings = [
     icon: <Bell />,
     id: "notifications",
     content: <NotificationManager />
+  },
+  {
+    title: "Feedback",
+    icon: <MessageSquare />,
+    id: "feedback",
+    content: <FeedbackForm />
   },
   {
     title: "Install App",

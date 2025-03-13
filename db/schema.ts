@@ -74,3 +74,9 @@ export const periodTable = pgTable("period", {
   (table) => [unique().on(table.userId, table.date)]
 );
 
+export const feedbackTable = pgTable("feedback", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  rating: integer().notNull(),
+  feedback: text().notNull(),
+  createdAt: timestamp({ withTimezone: true }).notNull().default(sql`now()`),
+});
