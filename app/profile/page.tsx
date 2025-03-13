@@ -13,7 +13,7 @@ import NotificationManager from "@/_components/notification-manager";
 import ProfileEdit from "@/_components/profile/profile-edit";
 import PictureEdit from "@/_components/profile/picture-edit";
 import { useUser } from "@/_context/user-context";
-import FeedbackForm from "@/_components/feedback-form";
+import FeedbackForm from "@/_components/feedback/feedback-form";
 
 const settings = [
   {
@@ -84,7 +84,7 @@ export default function Profile() {
   }, []);
 
   return (
-    <div className="p-6 container flex flex-col gap-6">
+    <div className="p-6 max-w-2xl mx-auto flex flex-col gap-6">
       {!user || user.isAnonymous ? (
         // Not logged in view
         <div className="mt-14">
