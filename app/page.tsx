@@ -7,6 +7,7 @@ import { TodoList } from "./_components/todo-list";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useEffect, useState } from "react";
 import VersionDialog from "./_components/version-dialog";
+import FeedbackPrompt from "./_components/feedback/feedback-prompt";
 
 
 export default function Page() {
@@ -37,7 +38,7 @@ export default function Page() {
 
 
   return (
-    <div className="pb-16 p-6">
+    <div className="max-w-2xl mx-auto pb-16 p-6">
       <div className="flex items-center gap-3">
         <Avatar className="size-12">
           <AvatarImage src={picture} />
@@ -50,6 +51,7 @@ export default function Page() {
       </div>
       <VersionDialog />
       <OnboardingModal />
+      <FeedbackPrompt />
       <TodoList />
     </div>
   );

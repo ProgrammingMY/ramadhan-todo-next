@@ -194,7 +194,7 @@ export function TodoList() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4 space-y-4 relative">
+    <div className="p-4 space-y-4 relative">
       {/* Add date navigation */}
       <DateSelection
         selectedDate={selectedDate}

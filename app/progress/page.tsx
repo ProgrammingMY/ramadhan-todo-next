@@ -116,7 +116,7 @@ export default function Progress() {
 
 
   return (
-    <div className="container mx-auto flex flex-col items-center gap-6 p-8">
+    <div className="max-w-2xl mx-auto flex flex-col items-center gap-6 p-8">
 
 
       <div className="mb-4 w-full bg-card shadow-md  p-4 rounded-lg">

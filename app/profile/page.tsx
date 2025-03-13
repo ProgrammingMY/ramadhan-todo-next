@@ -6,13 +6,14 @@ import InstallPrompt from "../_components/install-prompt";
 import LoginModal from "../_components/login-modal";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/_components/theme-switcher";
-import { Bell, ChevronRight, Download, Info, Sun, Trophy } from "lucide-react";
+import { Bell, ChevronRight, Download, Info, MessageSquare, Sun, Trophy } from "lucide-react";
 import { User } from "@/lib/types";
 import About from "@/_components/about";
 import NotificationManager from "@/_components/notification-manager";
 import ProfileEdit from "@/_components/profile/profile-edit";
 import PictureEdit from "@/_components/profile/picture-edit";
 import { useUser } from "@/_context/user-context";
+import FeedbackForm from "@/_components/feedback/feedback-form";
 import StoryViewer from "@/_components/story/story-viewer";
 
 const settings = [
@@ -27,6 +28,12 @@ const settings = [
     icon: <Bell />,
     id: "notifications",
     content: <NotificationManager />
+  },
+  {
+    title: "Feedback",
+    icon: <MessageSquare />,
+    id: "feedback",
+    content: <FeedbackForm />
   },
   {
     title: "Install App",
@@ -91,7 +98,7 @@ export default function Profile() {
   }, []);
 
   return (
-    <div className="p-6 container flex flex-col gap-6">
+    <div className="p-6 max-w-2xl mx-auto flex flex-col gap-6">
       {showStory && <StoryViewer onClose={() => setShowStory(false)} />}
       {!user || user.isAnonymous ? (
         // Not logged in view
