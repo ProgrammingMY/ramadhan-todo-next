@@ -18,6 +18,7 @@ export default $config({
   async run() {
     const db_conn = new sst.Secret("DATABASE_URL");
     const cloudflare_zone = new sst.Secret("CLOUDFLARE_ZONE");
+    const sunnah_cloudflare_zone = new sst.Secret("SUNNAH_CLOUDFLARE_ZONE");
     const cron_auth_token = new sst.Secret("CRON_AUTH_TOKEN");
 
     const stage = $app.stage;
@@ -38,10 +39,22 @@ export default $config({
         DATABASE_URL: db_conn.value,
       },
       domain: {
-        name: stage === "dev" ? "dev.programmingmy.com" : `ramadhan.programmingmy.com`,
+        name: stage === "production" ? "ramadhan.programmingmy.com" : `${stage}.programmingmy.com`,
         dns: sst.cloudflare.dns({
           zone: cloudflare_zone.value,
-        })
+        }),
+      }
+    });
+
+    new sst.aws.Nextjs("sunnah-garden-next", {
+      environment: {
+        DATABASE_URL: db_conn.value,
+      },
+      domain: {
+        name: stage === "production" ? "app.sunnahgarden.my" : `${stage}.sunnahgarden.my`,
+        dns: sst.cloudflare.dns({
+          zone: sunnah_cloudflare_zone.value,
+        }),
       }
     });
   },
