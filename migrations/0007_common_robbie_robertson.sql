@@ -1,0 +1,1 @@
+ALTER TABLE "progress" ADD COLUMN "isUzur" boolean DEFAULT false;

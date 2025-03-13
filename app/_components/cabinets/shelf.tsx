@@ -1,4 +1,5 @@
 import { DayProgress } from "@/libs/types";
+import { useUser } from "@/_context/user-context";
 import { JSX } from "react";
 
 interface ShelfProps {
@@ -17,6 +18,8 @@ export default function Shelf({
     potsPerShelf,
     getPlantStage
 }: ShelfProps) {
+    const { periodDates } = useUser();
+
     return (
         <div className={`relative w-full h-[20%]`}>
             {/* Back panel */}
@@ -27,6 +30,7 @@ export default function Shelf({
                 {items.map((progress, index) => {
                     const dayNumber = shelfIndex * potsPerShelf + index + 1;
                     const isCurrentDay = dayNumber === currentDay;
+                    const isPeriod = periodDates[progress.date];
 
                     return (
                         <div
@@ -36,7 +40,7 @@ export default function Shelf({
                             title={`${progress.date}: ${progress.completionRate}% completed`}
                         >
                             {/* Plant image */}
-                            <div className={`absolute bottom-0 ${isCurrentDay ? 'bg-emerald-100/30 rounded-lg ring-1 ring-emerald-200/30' : ''}`}>
+                            <div className={`absolute bottom-0 ${isPeriod ? 'bg-pink-400/30 rounded-lg' : ''}`}>
                                 {getPlantStage(progress.completionRate)}
                             </div>
                         </div>
@@ -52,13 +56,12 @@ export default function Shelf({
                     {items.map((progress, index) => {
                         const dayNumber = shelfIndex * potsPerShelf + index + 1;
                         const isCurrentDay = dayNumber === currentDay;
-
                         return (
                             <div
                                 key={`day-${progress.date}`}
                                 className="w-12 flex justify-center mt-1"
                             >
-                                <span className={`text-xs text-stone-200 ${isCurrentDay ? 'font-bold text-emerald-200' : ''}`}>
+                                <span className={`text-xs text-slate-100 ${isCurrentDay ? 'font-extrabold text-slate-50' : ''}`}>
                                     {dayNumber}
                                 </span>
                             </div>
