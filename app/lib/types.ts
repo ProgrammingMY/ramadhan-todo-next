@@ -24,8 +24,11 @@ export interface User {
 }
 
 export interface UserStats {
+  name: string;
+  userId: string;
+  startDate: string;
+  mode: "weekly" | "monthly";
   totalTasksCompleted: number;
   totalPerfectDays: number;
-  topTasks: Array<{ task: string; count: number }>;
-  strugglingTasks: Array<{ task: string; completionRate: number }>;
+  strugglingTasks: Array<{ name: string; completionRate: string }>;
 }

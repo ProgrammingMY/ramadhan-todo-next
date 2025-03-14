@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { generateAnalysis, generateTaskEncouragement } from '@/lib/ai-service';
+import { generateAnalysis } from '@/lib/ai-service';
 import { UserStats } from '@/lib/types';
 
 export function useAiAnalysis() {
@@ -16,27 +16,13 @@ export function useAiAnalysis() {
             setError(null);
             const result = await generateAnalysis(stats);
             setAnalysis(result);
+            return result;
         } catch (err) {
             setError('Failed to generate analysis');
             console.error(err);
+            return null;
         } finally {
             setLoading(false);
-        }
-    }, []);
-
-    const getTaskEncouragement = useCallback(async (
-        taskName: string,
-        completionRate: number
-    ) => {
-        try {
-            const encouragement = await generateTaskEncouragement(
-                taskName,
-                completionRate
-            );
-            return encouragement;
-        } catch (err) {
-            console.error(err);
-            return null;
         }
     }, []);
 
@@ -44,7 +30,6 @@ export function useAiAnalysis() {
         analysis,
         loading,
         error,
-        getAnalysis,
-        getTaskEncouragement
+        getAnalysis
     };
 }
