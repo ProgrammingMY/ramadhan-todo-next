@@ -1,6 +1,7 @@
 import { sql } from "drizzle-orm";
 import {
   boolean,
+  index,
   integer,
   pgTable,
   text,
@@ -45,7 +46,10 @@ export const progressTable = pgTable(
     completed: boolean().notNull().default(false),
     completedAt: timestamp({ withTimezone: true }),
   },
-  (table) => [unique().on(table.userId, table.taskId, table.date)]
+  (table) => [
+    unique().on(table.userId, table.taskId, table.date),
+    index("idx_progress_completed_date").on(table.completed, table.date),
+  ]
 );
 
 export const subscriptionsTable = pgTable("subscriptions", {
@@ -80,3 +84,19 @@ export const feedbackTable = pgTable("feedback", {
   feedback: text().notNull(),
   createdAt: timestamp({ withTimezone: true }).notNull().default(sql`now()`),
 });
+
+export const analyticsTable = pgTable("analytics", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  userId: uuid()
+    .notNull()
+    .references(() => usersTable.id),
+  analysis: text().notNull(),
+  startDate: varchar({ length: 255 }).notNull(),
+  mode: varchar({ length: 255 }).$type<"weekly" | "monthly">().notNull(),
+  createdAt: timestamp({ withTimezone: true }).notNull().default(sql`now()`),
+},
+  (table) => [
+    unique().on(table.userId, table.startDate, table.mode),
+    index("idx_user_id_start_date_mode").on(table.userId, table.startDate, table.mode)
+  ]
+);
