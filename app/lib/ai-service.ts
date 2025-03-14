@@ -51,7 +51,7 @@ export async function generateAnalysis(stats: UserStats): Promise<{
         Struggling Sunnah:
         ${strugglingSunnah}
         
-        Provide a brief, encouraging analysis (max 40 words) that:
+        Provide a brief, encouraging analysis (max 50 words) that:
         1. Acknowledges their achievements and celebrates their wins
         2. If any, offers specific encouragement for struggling tasks. In specific encouragement, no need to mention the task name
         3. Maintains a positive, motivating tone

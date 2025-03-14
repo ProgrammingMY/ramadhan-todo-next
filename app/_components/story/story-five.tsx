@@ -92,6 +92,7 @@ export default function StoryFive({ strugglingTasks, encouragements }: StoryFive
                         textAlign: 'center',
                         marginBottom: '40px',
                         fontWeight: 'bold',
+                        color: 'white',
                         textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)'
                     }}
                 >
