@@ -11,29 +11,64 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import StoryLoading from './story-loading';
 import { useUser } from '@/_context/user-context';
-import { hijriToday } from '@/constant/hijri';
+import { useAiAnalysis } from '@/hooks/useAiAnalysis';
 
-const StoryViewer = ({ onClose }: { onClose: () => void }) => {
+interface TaskCompletion {
+    name: string;
+    count: number;
+}
+
+interface AnalyticsData {
+    taskCompletions: TaskCompletion[];
+    totalPerfectDays: number;
+    userRank?: number;
+}
+
+const StoryViewer = ({ startDate, endDate, onClose }: { startDate: string, endDate: string, onClose: () => void }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [stories, setStories] = useState<Story[]>([]);
     const { user } = useUser();
+    const { getAnalysis } = useAiAnalysis();
 
     useEffect(() => {
         let isMounted = true;
+        // Add these dependencies to useEffect
+        if (!user || !startDate || !endDate) {
+            if (isMounted) setIsLoading(false);
+            return;
+        }
+
         // Get analytics data
         const fetchData = async () => {
             try {
-                if (!user) return;
-
                 if (!isMounted) return;
-                // get 7 days ago
-                const startDate = hijriToday().subtract(7, 'days').format('iYYYY-iMM-iDD');
-                const endDate = hijriToday().format('iYYYY-iMM-iDD');
 
                 const res = await fetch(`/api/analytics?userId=${user.id}&startDate=${startDate}&endDate=${endDate}`);
                 const data = await res.json();
 
-                const { taskCompletions, totalPerfectDays } = data;
+                if (!isMounted) return;
+
+                const { taskCompletions, totalPerfectDays, userRank } = data as AnalyticsData;
+
+                const completedTasks = taskCompletions.reduce((acc, task) => acc + task.count, 0);
+                const topTasks = taskCompletions.slice(0, 3);
+
+                // get struggling tasks if count is less than 50%
+                const strugglingTasks = taskCompletions.filter(task => task.count < 3).map(task => ({ name: task.name, completionRate: (task.count / 7 * 100).toFixed(0) }));
+
+                // ai analysis
+                const analysis = await getAnalysis({
+                    name: user.username || "",
+                    userId: user.id,
+                    startDate: startDate,
+                    mode: "weekly",
+                    totalTasksCompleted: completedTasks,
+                    totalPerfectDays: totalPerfectDays,
+                    strugglingTasks: strugglingTasks
+                });
+
+                const encouragements = analysis?.encouragements;
+                const analysisText = analysis?.analysis;
 
                 // Set your stories after data is "loaded"
                 setStories([
@@ -41,19 +76,19 @@ const StoryViewer = ({ onClose }: { onClose: () => void }) => {
                         content: () => <StoryOne />
                     },
                     {
-                        content: () => <StoryTwo taskCompletions={taskCompletions} />
+                        content: () => <StoryTwo rank={userRank} completedTasks={completedTasks} />
                     },
                     {
                         content: () => <StoryThree totalPerfectDays={totalPerfectDays} />
                     },
                     {
-                        content: () => <StoryFour taskCompletions={taskCompletions} />
+                        content: () => <StoryFour topTasks={topTasks} />
                     },
                     {
-                        content: () => <StoryFive taskCompletions={taskCompletions} />
+                        content: () => <StoryFive strugglingTasks={strugglingTasks} encouragements={encouragements} />
                     },
                     {
-                        content: () => <StorySix />
+                        content: () => <StorySix rank={userRank} analysisText={analysisText} />
                     }
                 ]);
 
@@ -72,7 +107,7 @@ const StoryViewer = ({ onClose }: { onClose: () => void }) => {
         return () => {
             isMounted = false;
         }
-    }, [user]);
+    }, [user, startDate, endDate, onClose]);
 
     return (
         <motion.div
@@ -98,7 +133,7 @@ const StoryViewer = ({ onClose }: { onClose: () => void }) => {
                     position: 'absolute',
                     top: 20,
                     right: 20,
-                    zIndex: 51,
+                    zIndex: 100,
                     background: 'rgba(255, 255, 255, 0.2)',
                     border: 'none',
                     borderRadius: '50%',

@@ -1,12 +1,98 @@
 /**
  * Total tasks completed in the past week
  */
+import {
+    motion,
+    KeyframeOptions,
+    animate,
+    useInView,
+    useIsomorphicLayoutEffect,
+} from "motion/react";
+import { useRef } from "react";
 
-import { useUser } from "@/_context/user-context";
-import { motion } from "motion/react";
+// comment based on tasks completed
+const COMMENT = [
+    {
+        tasksCompleted: 50,
+        comment: "MashaAllah! 50+ sunnah acts completed! Your dedication to following the Sunnah is truly commendable."
+    },
+    {
+        tasksCompleted: 40,
+        comment: "Alhamdulillah for your 40+ sunnah acts! Following the Prophet's way brings light to your path. ✨ ."
+    },
+    {
+        tasksCompleted: 30,
+        comment: "SubhanAllah! 30+ sunnah practices this week. May Allah reward you for your efforts."
+    },
+    {
+        tasksCompleted: 20,
+        comment: "BarakAllahu feek! Your 20+ sunnah acts are seeds of barakah in your daily life. 🌱"
+    },
+    {
+        tasksCompleted: 10,
+        comment: "JazakAllah khair for your 10+ sunnah practices! Remember, small consistent efforts are highly rewarded."
+    },
+    {
+        tasksCompleted: 5,
+        comment: "Alhamdulillah for your 5+ sunnah acts! May Allah ease your journey."
+    },
+    {
+        tasksCompleted: 0,
+        comment: "The journey of following the sunnah begins with intention. May Allah make it easy for you."
+    }
+];
 
-export default function StoryTwo({ taskCompletions }: { taskCompletions: { name: string, count: number }[] }) {
-    const completedTasks = taskCompletions.reduce((acc, task) => acc + task.count, 0);
+// AnimatedCounter component
+const AnimatedCounter = ({
+    from,
+    to,
+    animationOptions,
+    style,
+}: {
+    from: number;
+    to: number;
+    animationOptions?: KeyframeOptions;
+    style?: React.CSSProperties;
+}) => {
+    const ref = useRef<HTMLSpanElement>(null);
+    const inView = useInView(ref, { once: true });
+
+    useIsomorphicLayoutEffect(() => {
+        const element = ref.current;
+
+        if (!element) return;
+        if (!inView) return;
+
+        // Set initial value
+        element.textContent = String(from);
+
+        // If reduced motion is enabled in system's preferences
+        if (window.matchMedia("(prefers-reduced-motion)").matches) {
+            element.textContent = String(to);
+            return;
+        }
+
+        const controls = animate(from, to, {
+            duration: 2, // Match the 2 second duration used elsewhere
+            ease: "easeOut",
+            ...animationOptions,
+            onUpdate(value) {
+                element.textContent = value.toFixed(0);
+            },
+        });
+
+        // Cancel on unmount
+        return () => {
+            controls.stop();
+        };
+    }, [ref, inView, from, to, animationOptions]);
+
+    return <span ref={ref} style={style} />;
+};
+
+
+
+export default function StoryTwo({ rank, completedTasks }: { rank?: number, completedTasks: number }) {
 
     return (
         <motion.div
@@ -86,7 +172,7 @@ export default function StoryTwo({ taskCompletions }: { taskCompletions: { name:
                 <motion.div
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.8, duration: 0.5 }}
+                    transition={{ delay: 0, duration: 0.5 }}
                     style={{
                         fontSize: '120px',
                         fontWeight: 'bold',
@@ -95,7 +181,11 @@ export default function StoryTwo({ taskCompletions }: { taskCompletions: { name:
                         textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)'
                     }}
                 >
-                    {completedTasks}
+                    {/* Use the AnimatedCounter component */}
+                    <AnimatedCounter
+                        from={0}
+                        to={completedTasks}
+                    />
                 </motion.div>
 
                 <motion.div
@@ -105,10 +195,6 @@ export default function StoryTwo({ taskCompletions }: { taskCompletions: { name:
                     style={{
                         fontSize: '32px',
                         fontWeight: '600',
-                        background: 'rgba(255, 255, 255, 0.2)',
-                        padding: '15px 30px',
-                        borderRadius: '30px',
-                        backdropFilter: 'blur(10px)',
                         textShadow: '1px 1px 2px rgba(0, 0, 0, 0.2)'
                     }}
                 >
@@ -122,13 +208,19 @@ export default function StoryTwo({ taskCompletions }: { taskCompletions: { name:
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.8, duration: 0.5 }}
                 style={{
+                    textAlign: 'center',
                     position: 'absolute',
-                    bottom: '40px',
+                    bottom: '60px',
                     fontSize: '18px',
-                    opacity: 0.8
+                    opacity: 1.0,
+                    padding: '0 20px'
                 }}
             >
-                That's what we call dedication! 🎯
+                {rank && (
+                    <>
+                        You are ranked <span style={{ fontWeight: 'bold' }}>{rank}</span> among our users this week!
+                    </>
+                )}
             </motion.p>
         </motion.div>
     );

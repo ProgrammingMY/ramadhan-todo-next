@@ -2,17 +2,20 @@
  * Top 3 tasks the user struggled with
  */
 
-import { useUser } from "@/_context/user-context";
 import { motion } from "motion/react";
 
 interface TaskCardProps {
-    task: string;
-    completionRate: number;
+    name: string;
     encouragement: string;
     delay: number;
 }
 
-const TaskCard = ({ task, completionRate, encouragement, delay }: TaskCardProps) => (
+interface StoryFiveProps {
+    strugglingTasks: { name: string, completionRate: string }[];
+    encouragements?: Record<string, string>;
+}
+
+const TaskCard = ({ name, encouragement, delay }: TaskCardProps) => (
     <motion.div
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
@@ -41,43 +44,7 @@ const TaskCard = ({ task, completionRate, encouragement, delay }: TaskCardProps)
                 color: 'white'
             }}
         >
-            {task}
-        </motion.div>
-
-        {/* Progress Bar */}
-        <motion.div
-            style={{
-                height: '8px',
-                background: 'rgba(255, 255, 255, 0.1)',
-                borderRadius: '4px',
-                overflow: 'hidden',
-                marginBottom: '10px'
-            }}
-        >
-            <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${completionRate}%` }}
-                transition={{ delay: delay + 0.4, duration: 0.8 }}
-                style={{
-                    height: '100%',
-                    background: 'rgba(255, 255, 255, 0.5)',
-                    borderRadius: '4px'
-                }}
-            />
-        </motion.div>
-
-        {/* Completion Rate */}
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: delay + 0.6, duration: 0.3 }}
-            style={{
-                fontSize: '14px',
-                color: 'rgba(255, 255, 255, 0.8)',
-                marginBottom: '12px'
-            }}
-        >
-            Completion rate: {completionRate}%
+            {name}
         </motion.div>
 
         {/* Encouragement */}
@@ -100,19 +67,59 @@ const TaskCard = ({ task, completionRate, encouragement, delay }: TaskCardProps)
     </motion.div>
 );
 
-export default function StoryFive({ taskCompletions }: { taskCompletions: { name: string, count: number }[] }) {
-    // filter out tasks with count less than 3
-    const tasks = taskCompletions.filter((task) => task.count < 3);
+export default function StoryFive({ strugglingTasks, encouragements }: StoryFiveProps) {
+    if (!encouragements || Object.keys(encouragements).length === 0) {
+        return (
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                style={{
+                    background: 'linear-gradient(135deg, #6B46C1, #2C5282)',
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <motion.h2
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    style={{
+                        fontSize: '28px',
+                        textAlign: 'center',
+                        marginBottom: '40px',
+                        fontWeight: 'bold',
+                        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)'
+                    }}
+                >
+                    Looks like you're doing great!
+                </motion.h2>
+                <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3, duration: 0.5 }}
+                    style={{
+                        fontSize: '18px',
+                        textAlign: 'center',
+                        color: 'white',
+                        opacity: 0.9
+                    }}
+                >
+                    Keep up the good work! May Allah reward you for your efforts.
+                </motion.p>
+            </motion.div>
+        );
+    }
 
-    const challengingTasks = tasks.map((task) => {
+    const challengingTasks = Object.keys(encouragements).slice(0, 2).map((task) => {
         return {
-            task: task.name,
-            completionRate: task.count / 7 * 100,
-            encouragement: "Start with just 5 minutes - you've got this!"
+            name: task,
+            encouragement: encouragements?.[task] || ""
         }
     });
-
-
 
     return (
         <motion.div
@@ -152,15 +159,6 @@ export default function StoryFive({ taskCompletions }: { taskCompletions: { name
                 >
                     Growth Opportunities
                 </motion.h2>
-                <motion.p
-                    style={{
-                        fontSize: '16px',
-                        color: 'rgba(255, 255, 255, 0.9)',
-                        maxWidth: '280px'
-                    }}
-                >
-                    These tasks are challenging, but that's where the magic happens!
-                </motion.p>
             </motion.div>
 
             {/* Task Cards */}
@@ -169,37 +167,13 @@ export default function StoryFive({ taskCompletions }: { taskCompletions: { name
                     {challengingTasks.map((task, index) => (
                         <TaskCard
                             key={index}
-                            task={task.task}
-                            completionRate={task.completionRate}
+                            name={task.name}
                             encouragement={task.encouragement}
                             delay={0.5 + (index * 0.3)}
                         />
                     ))}
                 </div>
             )}
-
-            {/* Bottom Message */}
-            <motion.div
-                style={{
-                    position: 'absolute',
-                    bottom: '40px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    textAlign: 'center'
-                }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 2, duration: 0.4 }}
-            >
-                <p style={{
-                    fontSize: '16px',
-                    color: 'white',
-                    opacity: 0.8,
-                    maxWidth: '280px'
-                }}>
-                    Remember: Progress isn't about perfection, it's about consistency 🌟
-                </p>
-            </motion.div>
         </motion.div>
     );
 }

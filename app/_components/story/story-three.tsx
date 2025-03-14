@@ -1,97 +1,213 @@
 /**
  * Total days completed in the past week
  */
-
-import { useUser } from "@/_context/user-context";
 import { motion } from "motion/react";
 
-const FlowerPetal = ({ rotation, delay }: { rotation: number; delay: number }) => (
-    <motion.div
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{
-            delay: delay,
-            duration: 0.5,
-            ease: "easeOut"
-        }}
-        style={{
-            position: 'absolute',
-            width: '25px',
-            height: '40px',
-            background: '#FF97C1',
-            borderRadius: '50%',
-            transform: `rotate(${rotation}deg)`,
-            transformOrigin: 'bottom center',
-            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
-        }}
-    />
-);
-
-const Flower = ({ delay }: { delay: number }) => {
+const GrowingSunflower = ({ delay = 0 }: { delay?: number }) => {
     return (
         <motion.div
-            style={{
-                position: 'relative',
-                width: '50px',
-                height: '50px',
-                margin: '10px'
-            }}
+            className="w-16 h-16 mx-auto mb-8 relative"
+            initial="hidden"
+            animate="visible"
+            style={{ margin: '10px' }}
         >
-            {/* Petals */}
-            {[0, 60, 120, 180, 240, 300].map((rotation, index) => (
-                <FlowerPetal
-                    key={rotation}
-                    rotation={rotation}
-                    delay={delay + (index * 0.1)}
+            <svg viewBox="0 0 100 150" className="w-full h-full">
+                {/* Stem */}
+                <motion.path
+                    d="M 50 100 L 50 140"
+                    stroke="#2E7D32"
+                    strokeWidth="5"
+                    strokeLinecap="round"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{ pathLength: 1, opacity: 1 }}
+                    transition={{
+                        duration: 0.8,
+                        delay: delay + 0.2,
+                        ease: "easeInOut"
+                    }}
                 />
-            ))}
 
-            {/* Center of flower */}
-            <motion.div
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{
-                    delay: delay + 0.7,
-                    duration: 0.3,
-                }}
-                style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    width: '20px',
-                    height: '20px',
-                    borderRadius: '50%',
-                    background: '#FFD93D',
-                    transform: 'translate(-50%, -50%)',
-                    zIndex: 2
-                }}
-            />
+                {/* Left Leaf */}
+                <motion.path
+                    d="M 50 120 C 40 115, 30 118, 25 110 C 30 105, 40 110, 50 120"
+                    fill="#4CAF50"
+                    stroke="#388E3C"
+                    strokeWidth="1"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{
+                        duration: 0.5,
+                        delay: delay + 0.8,
+                        type: "spring",
+                        stiffness: 100
+                    }}
+                />
 
-            {/* Stem */}
-            <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 40, opacity: 1 }}
-                transition={{
-                    delay: delay - 0.2,
-                    duration: 0.3,
-                }}
-                style={{
-                    position: 'absolute',
-                    bottom: '-40px',
-                    left: '50%',
-                    width: '3px',
-                    background: '#4CAF50',
-                    transformOrigin: 'bottom',
-                    transform: 'translateX(-50%)',
-                }}
-            />
+                {/* Right Leaf */}
+                <motion.path
+                    d="M 50 130 C 60 125, 70 128, 75 120 C 70 115, 60 120, 50 130"
+                    fill="#4CAF50"
+                    stroke="#388E3C"
+                    strokeWidth="1"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{
+                        duration: 0.5,
+                        delay: delay + 1.0,
+                        type: "spring",
+                        stiffness: 100
+                    }}
+                />
+
+                {/* Flower Petals */}
+                {[...Array(16)].map((_, i) => {
+                    const angle = (i * 22.5) * (Math.PI / 180);
+                    const startX = 50 + Math.cos(angle) * 15;
+                    const startY = 50 + Math.sin(angle) * 15;
+                    const endX = 50 + Math.cos(angle) * 40;
+                    const endY = 50 + Math.sin(angle) * 40;
+
+                    // Modified control points for more natural sunflower petals
+                    const cp1x = 50 + Math.cos(angle - 0.2) * 45;
+                    const cp1y = 50 + Math.sin(angle - 0.2) * 45;
+                    const cp2x = 50 + Math.cos(angle + 0.2) * 45;
+                    const cp2y = 50 + Math.sin(angle + 0.2) * 45;
+
+                    return (
+                        <motion.path
+                            key={i}
+                            d={`
+                                M ${startX} ${startY}
+                                Q ${cp1x} ${cp1y} ${endX} ${endY}
+                                Q ${cp2x} ${cp2y} ${startX} ${startY}
+                            `}
+                            fill="#FFD700"
+                            stroke="#FFA500"
+                            strokeWidth="1"
+                            filter="drop-shadow(0 1px 2px rgba(0,0,0,0.1))"
+                            initial={{ scale: 0, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{
+                                duration: 0.5,
+                                delay: delay + 1.5 + (i * 0.08),
+                                type: "spring",
+                                stiffness: 100
+                            }}
+                        />
+                    );
+                })}
+
+                {/* Flower Center Base */}
+                <motion.circle
+                    cx="50"
+                    cy="50"
+                    r="15"
+                    fill="#5D4037"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: delay + 2.7 }}
+                />
+
+                {/* Seed Pattern */}
+                <motion.g
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: delay + 2.9 }}
+                >
+                    {/* Create spiral seed pattern */}
+                    {[...Array(5)].map((_, i) => (
+                        <g key={i}>
+                            {[...Array(8)].map((_, j) => {
+                                const angle = (j * 45) * (Math.PI / 180);
+                                const distance = 3 + (i * 2);
+                                const seedX = 50 + Math.cos(angle) * distance;
+                                const seedY = 50 + Math.sin(angle) * distance;
+
+                                return (
+                                    <circle
+                                        key={`${i}-${j}`}
+                                        cx={seedX}
+                                        cy={seedY}
+                                        r={1.2 - (i * 0.15)}
+                                        fill="#8D6E63"
+                                    />
+                                );
+                            })}
+                        </g>
+                    ))}
+                </motion.g>
+
+                {/* Subtle glow effect */}
+                <motion.circle
+                    cx="50"
+                    cy="50"
+                    r="45"
+                    fill="url(#sunGlow)"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 0.4 }}
+                    transition={{ duration: 1, delay: delay + 3.0 }}
+                />
+
+                {/* Gradient definitions */}
+                <defs>
+                    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                        <stop offset="0%" stopColor="#FFD700" stopOpacity="0.3" />
+                        <stop offset="100%" stopColor="#FFD700" stopOpacity="0" />
+                    </radialGradient>
+                </defs>
+            </svg>
         </motion.div>
     );
 };
 
 export default function StoryThree({ totalPerfectDays }: { totalPerfectDays: number }) {
-    // This is a placeholder - you'll want to calculate the actual number from your data
     const completedDays = totalPerfectDays;
+
+    if (completedDays === 0) {
+        return (
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                style={{
+                    background: 'linear-gradient(135deg, #43A047, #1B5E20)',
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <motion.h2
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    style={{
+                        fontSize: '28px',
+                        textAlign: 'center',
+                        marginBottom: '40px',
+                        fontWeight: 'bold',
+                        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)'
+                    }}
+                >
+                    You haven't completed get perfect days yet
+                </motion.h2>
+                <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3, duration: 0.5 }}
+                    style={{
+                        fontSize: '18px',
+                        textAlign: 'center',
+                        color: 'white',
+                        opacity: 0.9
+                    }}
+                >
+                    You might want to try one time and see how it goes!
+                </motion.p>
+            </motion.div>
+        );
+    }
 
     return (
         <motion.div
@@ -131,14 +247,18 @@ export default function StoryThree({ totalPerfectDays }: { totalPerfectDays: num
                     display: 'flex',
                     flexWrap: 'wrap',
                     justifyContent: 'center',
-                    maxWidth: '300px',
-                    gap: '20px'
+                    alignItems: 'center',
+                    width: '100%',
+                    maxWidth: '400px',
+                    gap: '5px',
+                    margin: '0 auto'
                 }}
             >
                 {Array.from({ length: completedDays }).map((_, index) => (
-                    <Flower key={index} delay={1 + (index * 0.3)} />
+                    <GrowingSunflower key={index} delay={index * 0.2} />
                 ))}
             </motion.div>
+
 
             <motion.p
                 initial={{ opacity: 0 }}
@@ -153,31 +273,14 @@ export default function StoryThree({ totalPerfectDays }: { totalPerfectDays: num
                     textShadow: '1px 1px 2px rgba(0, 0, 0, 0.2)'
                 }}
             >
-                You completed all tasks on
+                You have
                 <br />
                 <span style={{ fontSize: '32px', fontWeight: 'bold' }}>
                     {completedDays} days
                 </span>
                 <br />
-                this week! 🌸
+                of perfect days! 🌻
             </motion.p>
-
-            <motion.div
-                style={{
-                    position: 'absolute',
-                    bottom: '40px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    textAlign: 'center'
-                }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 3, duration: 0.4 }}
-            >
-                <p style={{ fontSize: '16px', opacity: 0.8 }}>
-                    Keep growing your garden! 🌱
-                </p>
-            </motion.div>
         </motion.div>
     );
 }

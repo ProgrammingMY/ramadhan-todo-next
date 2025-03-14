@@ -8,9 +8,9 @@
 
 import { useUser } from "@/_context/user-context";
 import { motion } from "motion/react";
-import { Bell, Share2, Heart } from "lucide-react";
+import { Heart } from "lucide-react";
 
-export default function StorySix() {
+export default function StorySix({ analysisText, rank }: { analysisText?: string, rank?: number }) {
     const { user } = useUser();
 
     return (
@@ -99,114 +99,70 @@ export default function StorySix() {
                             opacity: 0.9
                         }}
                     >
-                        Your commitment to self-improvement is inspiring
+                        {analysisText || "May Allah reward you for your efforts. Keep up the good work!"}
                     </motion.p>
                 </motion.div>
 
-                {/* Call-to-Action Cards */}
+                {/* Weekly Rank Card */}
                 <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5, duration: 0.5 }}
                     style={{
+                        background: 'rgba(255, 255, 255, 0.15)',
+                        backdropFilter: 'blur(10px)',
+                        borderRadius: '15px',
+                        padding: '25px',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '15px',
-                        width: '100%'
+                        alignItems: 'center',
+                        width: '100%',
+                        border: '1px solid rgba(255, 255, 255, 0.3)'
                     }}
                 >
-                    {/* Notifications Card */}
                     <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.5, duration: 0.5 }}
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.7, type: "spring", stiffness: 200 }}
                         style={{
-                            background: 'rgba(255, 255, 255, 0.1)',
-                            backdropFilter: 'blur(10px)',
-                            borderRadius: '15px',
-                            padding: '20px',
+                            background: 'rgba(255, 255, 255, 0.2)',
+                            borderRadius: '50%',
+                            width: '80px',
+                            height: '80px',
                             display: 'flex',
+                            justifyContent: 'center',
                             alignItems: 'center',
-                            gap: '15px',
-                            cursor: 'pointer',
-                            border: '1px solid rgba(255, 255, 255, 0.2)'
+                            marginBottom: '15px',
+                            border: '2px solid rgba(255, 255, 255, 0.5)'
                         }}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
                     >
-                        <Bell size={24} color="white" />
-                        <div>
-                            <h3 style={{ color: 'white', fontWeight: '500' }}>Stay Updated</h3>
-                            <p style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '14px' }}>
-                                Turn on notifications for daily motivation
-                            </p>
-                        </div>
+                        <h1 style={{
+                            fontSize: '36px',
+                            color: 'white',
+                            fontWeight: 'bold',
+                            textShadow: '1px 1px 3px rgba(0, 0, 0, 0.2)'
+                        }}>
+                            {rank || '-'}
+                        </h1>
                     </motion.div>
-
-                    {/* Share Card */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.7, duration: 0.5 }}
-                        style={{
-                            background: 'rgba(255, 255, 255, 0.1)',
-                            backdropFilter: 'blur(10px)',
-                            borderRadius: '15px',
-                            padding: '20px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '15px',
-                            cursor: 'pointer',
-                            border: '1px solid rgba(255, 255, 255, 0.2)'
-                        }}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                    >
-                        <Share2 size={24} color="white" />
-                        <div>
-                            <h3 style={{ color: 'white', fontWeight: '500' }}>Share With Friends</h3>
-                            <p style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '14px' }}>
-                                Help others discover their potential
-                            </p>
-                        </div>
-                    </motion.div>
-                </motion.div>
-
-                {/* Inspirational Quote */}
-                <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1, duration: 0.5 }}
-                    style={{
-                        fontSize: '16px',
+                    <h3 style={{
                         color: 'white',
-                        textAlign: 'center',
-                        fontStyle: 'italic',
-                        opacity: 0.9,
-                        marginTop: '20px'
-                    }}
-                >
-                    "Every small step you take brings you closer to your goals"
-                </motion.p>
-            </motion.div>
-
-            {/* Bottom Message */}
-            <motion.div
-                style={{
-                    position: 'absolute',
-                    bottom: '40px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    textAlign: 'center'
-                }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.3, duration: 0.4 }}
-            >
-                <p style={{
-                    fontSize: '16px',
-                    color: 'white',
-                    opacity: 0.8
-                }}>
-                    See you tomorrow! ✨
-                </p>
+                        fontWeight: '600',
+                        fontSize: '20px',
+                        marginBottom: '5px'
+                    }}>
+                        Your Weekly Rank
+                    </h3>
+                    <p style={{
+                        color: 'rgba(255, 255, 255, 0.9)',
+                        fontSize: '16px',
+                        textAlign: 'center'
+                    }}>
+                        {rank ?
+                            `You ranked #${rank} this week. Amazing progress!` :
+                            "Keep completing tasks to earn your rank!"}
+                    </p>
+                </motion.div>
             </motion.div>
         </motion.div>
     );
