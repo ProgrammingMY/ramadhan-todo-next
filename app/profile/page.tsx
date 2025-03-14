@@ -79,7 +79,8 @@ export default function Profile() {
   }, []);
 
   const filteredSettings = newSettings.filter(setting =>
-    setting.id !== 'install' || !isStandalone
+    (setting.id !== 'install' || !isStandalone) &&
+    (setting.id !== 'story' || (user && !user.isAnonymous))
   );
 
   const handleLogout = () => {
