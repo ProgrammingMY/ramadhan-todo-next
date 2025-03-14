@@ -6,7 +6,7 @@ import InstallPrompt from "../_components/install-prompt";
 import LoginModal from "../_components/login-modal";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/_components/theme-switcher";
-import { Bell, ChevronRight, Download, Info, MessageSquare, Sun, Trophy } from "lucide-react";
+import { Bell, ChevronRight, Download, Info, MessageSquare, MoonStar, Sun } from "lucide-react";
 import { User } from "@/lib/types";
 import About from "@/_components/about";
 import NotificationManager from "@/_components/notification-manager";
@@ -15,6 +15,7 @@ import PictureEdit from "@/_components/profile/picture-edit";
 import { useUser } from "@/_context/user-context";
 import FeedbackForm from "@/_components/feedback/feedback-form";
 import StoryViewer from "@/_components/story/story-viewer";
+import StoryMenu from "@/_components/story/story-menu";
 
 const settings = [
   {
@@ -57,15 +58,18 @@ export default function Profile() {
   const [isStandalone, setIsStandalone] = useState(false);
   const { setUser: setUserContext, handlePeriodChange, handleMonthProgressChange } = useUser();
 
+  // for story viewer
   const [showStory, setShowStory] = useState(false);
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
 
   // Add this to your settings array
   const newSettings = [
     {
-      title: "Your Progress Story",
-      icon: <Trophy />,
+      title: "Your Ramadan Recap",
+      icon: <MoonStar />,
       id: "story",
-      content: <Button onClick={() => setShowStory(true)}>View Your Story</Button>
+      content: <StoryMenu setShowStory={setShowStory} setStartDate={setStartDate} setEndDate={setEndDate} />
     },
     ...settings
   ];
@@ -99,7 +103,7 @@ export default function Profile() {
 
   return (
     <div className="p-6 max-w-2xl mx-auto flex flex-col gap-6">
-      {showStory && <StoryViewer onClose={() => setShowStory(false)} />}
+      {showStory && <StoryViewer startDate={startDate} endDate={endDate} onClose={() => setShowStory(false)} />}
       {!user || user.isAnonymous ? (
         // Not logged in view
         <div className="mt-14">
