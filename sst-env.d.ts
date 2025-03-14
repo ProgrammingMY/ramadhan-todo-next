@@ -17,6 +17,10 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
+    "GEMINI_API": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
     "SUNNAH_CLOUDFLARE_ZONE": {
       "type": "sst.sst.Secret"
       "value": string

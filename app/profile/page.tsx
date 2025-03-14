@@ -66,7 +66,7 @@ export default function Profile() {
   // Add this to your settings array
   const newSettings = [
     {
-      title: "Your Ramadan Recap",
+      title: "Ramadan Recap",
       icon: <MoonStar />,
       id: "story",
       content: <StoryMenu setShowStory={setShowStory} setStartDate={setStartDate} setEndDate={setEndDate} />

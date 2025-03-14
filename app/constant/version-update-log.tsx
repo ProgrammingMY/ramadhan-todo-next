@@ -15,5 +15,13 @@ export const VERSION_UPDATE_LOG = {
             "Check profile to check total menstruation days",
             "Check your garden to see your menstruation days",
         ],
+    },
+    "1.3": {
+        subject: "Weekly Ramadan Recap ✨",
+        changes: [
+            "View your weekly Ramadan achievements in a Spotify Wrapped styled",
+            "Track how many sunnah acts you've performed throughout the week",
+            "Receive personalized AI-powered advice based on your activities",
+        ]
     }
 };
