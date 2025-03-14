@@ -20,6 +20,7 @@ export default $config({
     const cloudflare_zone = new sst.Secret("CLOUDFLARE_ZONE");
     const sunnah_cloudflare_zone = new sst.Secret("SUNNAH_CLOUDFLARE_ZONE");
     const cron_auth_token = new sst.Secret("CRON_AUTH_TOKEN");
+    const gemini_api = new sst.Secret("GEMINI_API");
 
     const stage = $app.stage;
 
@@ -30,6 +31,7 @@ export default $config({
         runtime: "nodejs20.x",
         environment: {
           CRON_AUTH_TOKEN: cron_auth_token.value,
+          GEMINI_API: gemini_api.value,
         }
       },
     })
@@ -37,6 +39,7 @@ export default $config({
     new sst.aws.Nextjs("ramadhan-todo-next", {
       environment: {
         DATABASE_URL: db_conn.value,
+        GEMINI_API: gemini_api.value,
       },
       domain: {
         name: stage === "production" ? "ramadhan.programmingmy.com" : `${stage}.programmingmy.com`,
