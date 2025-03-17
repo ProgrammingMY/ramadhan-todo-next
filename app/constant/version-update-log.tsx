@@ -23,5 +23,12 @@ export const VERSION_UPDATE_LOG = {
             "Track how many sunnah acts you've performed throughout the week",
             "Receive personalized AI-powered advice based on your activities",
         ]
+    },
+    "1.3.1": {
+        subject: "What's New in Ramadan Garden?",
+        changes: [
+            "Changed font for doa harian to make it more readable",
+            "Added new doa. Doa Memohon Keampunan, Doa Kebaikan Dunia Akhirat, Bacaan dalam Sujud Tilawah",
+        ]
     }
 };
