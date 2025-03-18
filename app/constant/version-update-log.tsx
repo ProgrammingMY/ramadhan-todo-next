@@ -30,5 +30,12 @@ export const VERSION_UPDATE_LOG = {
             "Changed font for doa harian to make it more readable",
             "Added new doa. Doa Memohon Keampunan, Doa Kebaikan Dunia Akhirat, Bacaan dalam Sujud Tilawah",
         ]
+    },
+    "1.3.2": {
+        subject: "Bug Fixes",
+        changes: [
+            "Fixed bug where notification is not working",
+            "You can enable notification in profile page for reminder",
+        ]
     }
 };

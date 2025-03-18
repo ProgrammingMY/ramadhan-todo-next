@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { VERSION_UPDATE_LOG } from "@/constant/version-update-log";
 
-const CURRENT_VERSION = "1.3.1";
+const CURRENT_VERSION = "1.3.2";
 
 export default function VersionDialog() {
     const [open, setOpen] = useState(false);
@@ -33,7 +33,7 @@ export default function VersionDialog() {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>New Doa Harian Update! 🪴</DialogTitle>
+                    <DialogTitle>What's New in Ramadan Garden?</DialogTitle>
                     <DialogDescription asChild>
                         <div className="space-y-3 pt-3">
                             <p>{VERSION_UPDATE_LOG[CURRENT_VERSION].subject}</p>
