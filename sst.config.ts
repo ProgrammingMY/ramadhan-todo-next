@@ -18,7 +18,6 @@ export default $config({
   async run() {
     const db_conn = new sst.Secret("DATABASE_URL");
     const cloudflare_zone = new sst.Secret("CLOUDFLARE_ZONE");
-    const sunnah_cloudflare_zone = new sst.Secret("SUNNAH_CLOUDFLARE_ZONE");
     const cron_auth_token = new sst.Secret("CRON_AUTH_TOKEN");
     const gemini_api = new sst.Secret("GEMINI_API");
 
@@ -49,16 +48,19 @@ export default $config({
       }
     });
 
-    new sst.aws.Nextjs("sunnah-garden-next", {
-      environment: {
-        DATABASE_URL: db_conn.value,
-      },
-      domain: {
-        name: stage === "production" ? "app.sunnahgarden.my" : `${stage}.sunnahgarden.my`,
-        dns: sst.cloudflare.dns({
-          zone: sunnah_cloudflare_zone.value,
-        }),
-      }
-    });
+    if (stage === "production") {
+      const sunnah_cloudflare_zone = new sst.Secret("SUNNAH_CLOUDFLARE_ZONE");
+      new sst.aws.Nextjs("sunnah-garden-next", {
+        environment: {
+          DATABASE_URL: db_conn.value,
+        },
+        domain: {
+          name: stage === "production" ? "app.sunnahgarden.my" : `${stage}.sunnahgarden.my`,
+          dns: sst.cloudflare.dns({
+            zone: sunnah_cloudflare_zone.value,
+          }),
+        }
+      });
+    }
   },
 });

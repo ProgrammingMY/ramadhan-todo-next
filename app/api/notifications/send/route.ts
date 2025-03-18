@@ -36,17 +36,31 @@ export async function POST(request: Request) {
         payload.icon = "/icons/icon-512x512.png";
         payload.badge = "/icons/icon-512x512.png";
 
-        // Send notification to all endpoints
-        await Promise.all(
+        // Send notification to all endpoints independently
+        const results = await Promise.allSettled(
             subscriptions.map(async (sub) => {
-                await webpush.sendNotification(
-                    JSON.parse(sub.subscription),
-                    JSON.stringify(payload),
-                );
+                try {
+                    await webpush.sendNotification(
+                        JSON.parse(sub.subscription),
+                        JSON.stringify(payload),
+                    );
+                    return { success: true, subscription: sub.id };
+                } catch (error) {
+                    console.error(`Failed to send notification to subscription ${sub.id}:`, error);
+                    return { success: false, subscription: sub.id, error };
+                }
             })
         );
 
-        return NextResponse.json({ success: true });
+        const successCount = results.filter(result =>
+            result.status === 'fulfilled' && result.value.success
+        ).length;
+
+        return NextResponse.json({
+            success: true,
+            sent: successCount,
+            total: subscriptions.length
+        });
     } catch (error) {
         console.error('Error sending notification:', error);
         return NextResponse.json(
