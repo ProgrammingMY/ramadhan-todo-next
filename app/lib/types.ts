@@ -22,3 +22,13 @@ export interface User {
   isAnonymous: boolean;
   gender?: string;
 }
+
+export interface UserStats {
+  name: string;
+  userId: string;
+  startDate: string;
+  mode: "weekly" | "monthly";
+  totalTasksCompleted: number;
+  totalPerfectDays: number;
+  strugglingTasks: Array<{ name: string; completionRate: string }>;
+}

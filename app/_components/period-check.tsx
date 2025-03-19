@@ -1,7 +1,7 @@
 import { fetchIsPeriod } from "@/_action/fetchIsPeriod";
 import { useUser } from "@/_context/user-context";
 import { Switch } from "@/components/ui/switch";
-import { User } from "@/libs/types";
+import { User } from "@/lib/types";
 import { Moment } from "moment-hijri";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";

@@ -2,7 +2,7 @@
 async function handler() {
     const payload = JSON.stringify({
         title: "Peringatan",
-        body: "Mari kita lengkapi checklist sunnah Ramadan kita untuk hari ini",
+        body: "Sudahkah anda melengkapkan checklist sunnah Ramadan kita untuk hari ini?",
         data: {
             url: "https://ramadhan.programmingmy.com",
             id: "1",
@@ -13,7 +13,7 @@ async function handler() {
     const authHeader = process.env.CRON_AUTH_TOKEN;
 
     try {
-        const response = await fetch("https://ramadhan.programmingmy.com/api/notifications/send", {
+        const response = await fetch("https://app.sunnahgarden.my/api/notifications/send", {
             method: "POST",
             body: JSON.stringify({ message: payload }),
             headers: {

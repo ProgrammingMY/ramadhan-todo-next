@@ -1,7 +1,7 @@
 import { hijriToday } from "@/constant/hijri";
 import { DEFAULT_TODOS } from "@/constant/todo";
-import { calculateCompletionRate } from "@/libs/completion-rate";
-import { TaskProgress } from "@/libs/types";
+import { calculateCompletionRate } from "@/lib/completion-rate";
+import { TaskProgress } from "@/lib/types";
 
 export const getMonthProgress = (tasks: TaskProgress[], periodDates: Record<string, boolean>) => {
     const firstDay = hijriToday().startOf("iMonth");

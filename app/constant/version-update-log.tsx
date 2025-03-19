@@ -15,5 +15,27 @@ export const VERSION_UPDATE_LOG = {
             "Check profile to check total menstruation days",
             "Check your garden to see your menstruation days",
         ],
+    },
+    "1.3": {
+        subject: "Weekly Ramadan Recap ✨",
+        changes: [
+            "View your weekly Ramadan achievements in a Spotify Wrapped styled",
+            "Track how many sunnah acts you've performed throughout the week",
+            "Receive personalized AI-powered advice based on your activities",
+        ]
+    },
+    "1.3.1": {
+        subject: "What's New in Ramadan Garden?",
+        changes: [
+            "Changed font for doa harian to make it more readable",
+            "Added new doa. Doa Memohon Keampunan, Doa Kebaikan Dunia Akhirat, Bacaan dalam Sujud Tilawah",
+        ]
+    },
+    "1.3.2": {
+        subject: "Bug Fixes",
+        changes: [
+            "Fixed bug where notification is not working",
+            "You can enable notification in profile page for reminder",
+        ]
     }
 };

@@ -1,4 +1,4 @@
-import { User } from "@/libs/types";
+import { User } from "@/lib/types";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";

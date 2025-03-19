@@ -85,6 +85,13 @@
       "when": 1741837953875,
       "tag": "0011_workable_prowler",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1741922398923,
+      "tag": "0012_amazing_korath",
+      "breakpoints": true
     }
   ]
 }

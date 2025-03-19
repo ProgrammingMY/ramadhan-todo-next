@@ -7,7 +7,7 @@
         ],
         "group": "Bacaan dalam solat",
         "arab": [
-            "اللَّهُ أَكْبَرْ كَبِيرًا، وَالْحَمْدُ لِلَّهِ كَثِيرًا، وَسُبْحَانَ اللَّهِ بُكْرَةً وَأَصِيلًا",
+            "اللَّهُ أَكْبَرْ كَبِيرًا وَالْحَمْدُ لِلَّهِ كَثِيرًا وَسُبْحَانَ اللَّهِ بُكْرَةً وَأَصِيلًا",
             "وَجَّهْتُ وَجْهِيَ لِلَّذِي فَطَرَ السَّمَوَاتِ وَالْأَرْضَ",
             "حَنِيفًا مُسْلِمًا وَمَا أَنَا مِنَ الْمُشْرِكِينَ",
             "إنَّ صَلَاتِي وَنُسُكِي وَمَحْيَايَ وَمَمَاتِي لِلَّهِ رَبِّ الْعَالَمِينَ",
@@ -40,13 +40,13 @@
         ],
         "group": "Bacaan dalam solat",
         "arab": [
-            "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِیْمِ",
-            "اَلْحَمْدُ لِلّٰهِ رَبِّ الْعٰلَمِیْنَ",
-            "الرَّحْمٰنِ الرَّحِیْمِ",
-            "مٰلِكِ یَوْمِ الدِّیْنِ",
-            "اِیَّاكَ نَعْبُدُ وَ اِیَّاكَ نَسْتَعِیْنُ",
-            "اِهْدِنَا الصِّرَاطَ الْمُسْتَقِیْمَ",
-            "صِرَاطَ الَّذِیْنَ اَنْعَمْتَ عَلَیْهِمْ غَیْرِ الْمَغْضُوْبِ عَلَیْهِمْ وَ لَا الضَّآلِّیْنَ"
+            "بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ",
+            "ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَـٰلَمِينَ",
+            "ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ",
+            "مَـٰلِكِ يَوْمِ ٱلدِّينِ",
+            "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
+            "ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ",
+            "صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ"
         ],
         "rumi": [
             "Bismillah hir-rohmaa nir-rohim",
@@ -511,7 +511,7 @@
         ],
         "group": "Doa Harian",
         "arab": [
-            "رَبِّ ٱشْرَحْ لِى صَدْرِى وَيَسِّرْ لِىٓ أَمْرِى وَٱحْلُلْ عُقْدَةً مِّن لِّسَانِى يَفْقَهُوا۟ قَوْلِى"
+            "رَبِّ ٱشْرَحْ لِى صَدْرِى وَيَسِّرْ لِىٓ أَمْرِى وَٱحْلُلْ عُقْدَةً مِّن لِّسَانِى يَفْقَهُوا قَوْلِى"
         ],
         "rumi": [
             "Rabbisyrah li sadri wa yassir li amri wahlul 'uqdatam mil lisani yafqahu qauli"
@@ -541,7 +541,7 @@
             "اَللَّهُمَّ بَدِّدْ شَمْلَهُمْ وَ فَرِّقْ جَمْعَهُمْ",
             "وَ شَتِّتْ كَلِمَتَهُمْ وَ زَلْزِلْ أَقْدَامَهُمْ",
             "وَ سَلِّطْ عَلَيهِمْ كَلْبًا مِنْ كِلَابِكَ",
-            "يَا قَهَّارُ ، يَا جَبَّارُ ، يَا مُنْتَقِيمُ ، يَا اللهُ",
+            "يَا قَهَّارُ  يَا جَبَّارُ  يَا مُنْتَقِيمُ  يَا اللهُ",
             "اَللَّهُمَّ يَا مُنْزِلَ الكِتَابِ يَا مُجْرِىَ السَّحَابِ",
             "يَا هَازِمَ الأَحْزَبِ اِهْزِمْهُمْ وَانْصُرْنَا عَلَيْهِمْ"
         ],
@@ -709,9 +709,9 @@
         ],
         "group": "Wirid selepas solat",
         "arab": [
-            "33x ﺳُﺒْﺤَﺎﻥَ ﺍﻟﻠﻪ",
-            "33x ﺍﻟْﺤَﻤْﺪُ ﻟِﻠَّﻪ",
-            "33x ﺍﻟﻠﻪُ ﺍَﻛْﺒَﺮْ"
+            "سُبْحَانَ ٱللَّهِ",
+            "ٱلْحَمْدُ لِلَّهِ",
+            "ٱللَّهُ أَكْبَرُ"
         ],
         "rumi": [
             "SubhanAllah",
@@ -737,7 +737,7 @@
         ],
         "group": "Doa Harian",
         "arab": [
-            "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِیْمِ"
+            "بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ"
         ],
         "rumi": [
             "Bismillah hir-rohmaa nir-rohim"
@@ -1332,7 +1332,9 @@
             "syaitan"
         ],
         "group": "Zikir",
-        "arab": ["لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ، وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَىْءٍ قَدِيرٌ"],
+        "arab": [
+            "لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ، وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَىْءٍ قَدِيرٌ"
+        ],
         "rumi": [
             "La ilaha illallahu wahdahu la sharika lah, lahul mulku wa lahul hamdu wa huwa 'ala kulli shai in qadir"
         ],
@@ -1341,5 +1343,98 @@
         ],
         "rujukan": "Kelebihan zikir ini. 1. Pahala seperti memerdekakan 10 orang hamba. 2. Mendapat 100 kebaikan dan dijauhkan 100 keburukan 3. Dilindungi daripada syaitan dari pagi hingga ke petang ",
         "link": "https://sunnah.com/riyadussalihin:1410"
+    },
+    {
+        "id": "47",
+        "doa": "Sujud Tilawah",
+        "tag": [
+            "sajadah",
+            "tilawah",
+            "sujud"
+        ],
+        "group": "Bacaan dalam solat",
+        "arab": [
+            "سَجَدَ وَجْهِيَ لِلَّذِيْ خَلَقَهُ وَصَوَّرَهُ وَشَقَّ سَمْعَهُ وَبَصَرَهُ بِحَوْلِهِ وَقُوَّتِهِ فَتَبَارَكَ اللّٰهُ أَحْسَنُ اْلخَالِقِيْنَ"
+        ],
+        "rumi": [
+            "Sajada wajhiya lilladzii khalaqahu wa sawwarahu wa syaqqa sam'ahu wa bashorahu bihaulihii wa quwwatihii fatabaarakallahu ahsanul khooliqiin"
+        ],
+        "makna": [
+            "Aku sujudkan wajahku ini kepada Allah yang menciptanya dan membentuk rupanya, yang membuka pendengarannya dan penglihatannya dengan kekuasaannya dan penglihatannya dengan kekuasaanNya dan kudratNya. Maha Suci Allah, Dialah sebaik-baik pencipta kejadian."
+        ],
+        "rujukan": "Riwayat Muslim 575",
+        "link": "https://sunnah.com/muslim:575"
+    },
+    {
+        "id": "48",
+        "doa": "Doa Memohon Keampunan",
+        "tag": [
+            "ramadan",
+            "ramadhan",
+            "lailatul qadr",
+            "qiam",
+            "dosa",
+            "keampunan"
+        ],
+        "group": "Doa Harian",
+        "arab": [
+            "اللّٰهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي"
+        ],
+        "rumi": [
+            "Allahumma innaka 'afuwwun tuhibbul 'afwa fa'fu 'anni"
+        ],
+        "makna": [
+            "Ya Allah Ya Tuhan Kami, sesungguhnya Engkau Maha Pengampun dan amat suka akan keampunan, maka berikanlah keampunan kepadaku"
+        ],
+        "rujukan": "Riwayat al-Tirmizi 3513",
+        "link": "https://sunnah.com/tirmidhi:3513"
+    },
+    {
+        "id": "49",
+        "doa": "Sayyidul Istighfar",
+        "tag": [
+            "istighfar",
+            "dosa",
+            "lailatul qadr",
+            "ramadan",
+            "ramadhan",
+            "keampunan"
+        ],
+        "group": "Zikir",
+        "arab": [
+            "اللَّهُمَّ أَنْتَ رَبِّي لاَ إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ لَكَ بِذَنْبِي فَاغْفِرْ لِي، فَإِنَّهُ لاَ يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ"
+        ],
+        "rumi": [
+            "Allahumma anta rabbi laa ilaaha illaanta, khalqatni waa anaa 'abduka, waa anaa 'alaa 'ahdika wa wa'dika ma astata'tu, 'auzu bika, min sharri ma sana'tu, wa abu'u laka bi ni'matika 'alaa yaa, wabu'u laka bi zanabi faghfir li, fiannahoo laa yaghfiru luzunnoba illaanta"
+        ],
+        "makna": [
+            "Ya Allah, Engkau adalah Rabbku, tidak ada Tuhan yang berhak disembah dengan benar melainkan Engkau. Engkau yang menciptakan aku dan aku adalah hamba-Mu. Aku di atas perjanjian-Mu dan janji-Mu sesuai dengan kemampuanku. Aku berlindung kepada-Mu dari keburukan perbuatanku, aku mengakui nikmat-Mu kepadaku dan aku mengakui dosaku kepada-Mu, maka ampunilah aku. Hal ini kerana, tiada yang dapat mengampuni dosa melainkan Engkau."
+        ],
+        "rujukan": "Riwayat al-Bukhari 6306",
+        "link": "https://sunnah.com/bukhari:6306"
+    },
+    {
+        "id": "50",
+        "doa": "Doa Memohon Kebaikan Dunia Akhirat",
+        "tag": [
+            "dunia",
+            "akhirat",
+            "lailatul qadr",
+            "ramadan",
+            "ramadhan",
+            "kebaikan"
+        ],
+        "group": "Doa Harian",
+        "arab": [
+            "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّار"
+        ],
+        "rumi": [
+            "Rabbana atina fid-dunya hasanatan wa fil-akhirati hasanatan waqina 'azaban-nar"
+        ],
+        "makna": [
+            "Wahai Tuhan kami, anugerahkanlah kepada kami kebaikan di dunia dan kebaikan di akhirat dan peliharalah kami dari seksa api neraka."
+        ],
+        "rujukan": "Surah Al-Baqarah: 201",
+        "link": "https://quran.com/ms/al-baqarah/201"
     }
 ]

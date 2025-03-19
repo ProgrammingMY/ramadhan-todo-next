@@ -1,5 +1,5 @@
 import { useReward } from 'react-rewards';
-import { Todo } from '../libs/types';
+import { Todo } from '../lib/types';
 
 const TodoItem = ({ todo, onToggle }: { todo: Todo; onToggle: (id: number) => void }) => {
     const { reward, isAnimating } = useReward(`reward-${todo.id}`, "confetti", {

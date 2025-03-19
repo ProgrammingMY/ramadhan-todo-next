@@ -1,4 +1,4 @@
-import { DayProgress } from "@/libs/types";
+import { DayProgress } from "@/lib/types";
 import { useUser } from "@/_context/user-context";
 import { JSX } from "react";
 

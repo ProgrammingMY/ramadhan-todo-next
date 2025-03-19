@@ -1,6 +1,6 @@
 "use client";
 
-import { notoNaskhArabic } from "@/lib/fonts";
+import { uthmaniQuran } from "@/lib/fonts";
 import { ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -73,7 +73,7 @@ export default function DuaList() {
             {expandedId === dua.id && (
               <div key={dua.id} className="p-4 border-t">
                 {dua.arab.map((arab) => (
-                  <p className={`text-right text-2xl mb-4 ${notoNaskhArabic.className}`}>{arab}</p>
+                  <p className={`text-right text-2xl mb-4 ${uthmaniQuran.className}`}>{arab}</p>
                 ))}
                 {dua.rumi.map((rumi) => (
                   <p className="text-sm mb-2 italic">{rumi}</p>

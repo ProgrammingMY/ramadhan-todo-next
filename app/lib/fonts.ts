@@ -1,4 +1,5 @@
-import { Quicksand, Noto_Naskh_Arabic } from "next/font/google";
+import { Quicksand } from "next/font/google";
+import localFont from "next/font/local"
 
 export const quicksand = Quicksand({
   subsets: ["latin"],
@@ -6,8 +7,8 @@ export const quicksand = Quicksand({
   display: "swap",
 });
 
-export const notoNaskhArabic = Noto_Naskh_Arabic({
-  subsets: ["arabic"],
-  weight: ["400", "500", "600", "700"],
+export const uthmaniQuran = localFont({
+  src: "../../public/fonts/uthmanicHafs.otf",
   display: "swap",
+  variable: "--font-arabic",
 });

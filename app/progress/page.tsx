@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { TaskProgress, User } from "../libs/types";
-import { DayProgress } from "../libs/types";
+import { TaskProgress, User } from "../lib/types";
+import { DayProgress } from "../lib/types";
 import Image from "next/image";
 import level1 from "/public/flowers/1.png";
 import level2 from "/public/flowers/2.png";

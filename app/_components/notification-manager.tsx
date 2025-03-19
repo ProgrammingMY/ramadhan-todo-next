@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { User } from "@/libs/types";
+import { User } from "@/lib/types";
 import { Info, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -91,8 +91,6 @@ export default function NotificationManager() {
                     userVisibleOnly: true,
                     applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!),
                 });
-
-                console.log("Push subscription created", sub);
 
                 if (!sub) {
                     throw new Error('Failed to create push subscription');
