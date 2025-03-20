@@ -80,7 +80,8 @@ export default function Profile() {
 
   const filteredSettings = newSettings.filter(setting =>
     (setting.id !== 'install' || !isStandalone) &&
-    (setting.id !== 'story' || (user && !user.isAnonymous))
+    (setting.id !== 'story' || (user && !user.isAnonymous)) &&
+    (setting.id !== 'notifications' || (user && !user.isAnonymous))
   );
 
   const handleLogout = () => {
