@@ -39,9 +39,8 @@ export const VERSION_UPDATE_LOG = {
         ]
     },
     "1.4.1": {
-        subject: "What's New in Ramadan Garden?",
+        subject: "Lihat handbook untuk persiapan 10 hari terakhir ramadan",
         changes: [
-            "Added new doa. Doa Memohon Keampunan, Doa Kebaikan Dunia Akhirat, Bacaan dalam Sujud Tilawah",
         ]
     }
 };

@@ -19,15 +19,15 @@ interface DhikirItem {
 const dhikirList: DhikirItem[] = [
     {
         id: "subhanallah",
-        title: "Subhanallah",
-        arabic: "سُبْحَانَ اللهِ",
+        title: "Tasbih",
+        arabic: "سُبْحَانَ ٱللَّهِ",
         transliteration: "Subhanallah",
         translation: "Maha Suci Allah",
         count: 33
     },
     {
         id: "alhamdulillah",
-        title: "Alhamdulillah",
+        title: "Tahmid",
         arabic: "الْحَمْدُ لِلَّهِ",
         transliteration: "Alhamdulillah",
         translation: "Segala Puji Hanya Bagi Allah",
@@ -35,11 +35,18 @@ const dhikirList: DhikirItem[] = [
     },
     {
         id: "allahuakbar",
-        title: "Allahu Akbar",
-        arabic: "اللهُ أَكْبَرُ",
+        title: "Takbir",
+        arabic: "ٱللَّهُ أَكْبَرُ",
         transliteration: "Allahu Akbar",
         translation: "Allah Maha Besar",
         count: 34
+    },
+    {
+        id: "lailahaillallah",
+        title: "Tahlil",
+        arabic: "لَا إِلَهَ إِلَّا اللَّهُ",
+        transliteration: "Lailahaillallah",
+        translation: "Tidak ada tuhan selain Allah",
     },
     {
         id: "istighfar",
@@ -96,7 +103,7 @@ export default function Zikir() {
     return (
         <div className="p-6 max-w-2xl mx-auto flex flex-col gap-6">
             <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold">Dhikir & Selawat</h1>
+                <h1 className="text-3xl font-bold">Zikir & Selawat</h1>
             </div>
 
             <div className="grid gap-4">
