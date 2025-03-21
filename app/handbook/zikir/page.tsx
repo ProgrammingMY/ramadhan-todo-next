@@ -39,7 +39,7 @@ const dhikirList: DhikirItem[] = [
         arabic: "ٱللَّهُ أَكْبَرُ",
         transliteration: "Allahu Akbar",
         translation: "Allah Maha Besar",
-        count: 34
+        count: 33
     },
     {
         id: "lailahaillallah",
