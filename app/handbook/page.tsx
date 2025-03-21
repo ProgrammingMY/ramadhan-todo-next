@@ -8,38 +8,39 @@ import {
     ChevronRight,
     MessageCircle,
     History,
+    Moon,
 } from "lucide-react";
 import Link from "next/link";
 
 const handbookItems = [
     {
-        title: "Daily Duas (Doa Harian)",
+        title: "Doa Harian",
         icon: <MessageCircle />,
         id: "daily-duas",
-        description: "Collection of authentic daily supplications from the Sunnah",
+        description: "Collection of authentic daily duas",
         path: "/handbook/doa"
     },
     {
-        title: "Dhikr (Zikir)",
+        title: "Zikir & Selawat",
         icon: <Book />,
         id: "dhikr",
-        description: "Morning and evening remembrances and other important adhkar",
+        description: "Morning and evening remembrances",
         path: "/handbook/zikir"
     },
     {
         title: "Prayer Times",
         icon: <Clock />,
         id: "prayer-times",
-        description: "Prayer schedule and guidance on proper prayer according to Sunnah",
+        description: "Prayer schedule from JAKIM",
         path: "/handbook/prayer-times"
     },
     {
-        title: "Stories of Prophets",
-        icon: <History />,
-        id: "prophets",
-        description: "Authentic narratives about the prophets mentioned in the Quran and Sunnah",
-        path: "/handbook/sirah"
-    }
+        title: "Lailatul Qadr",
+        icon: <Moon />,
+        id: "laitul-qadr",
+        description: "Preparation for Lailatul Qadr, the most blessed night of the year",
+        path: "/handbook/lailatul-qadr"
+    },
 ];
 
 export default function Handbook() {

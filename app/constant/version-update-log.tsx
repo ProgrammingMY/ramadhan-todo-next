@@ -37,5 +37,11 @@ export const VERSION_UPDATE_LOG = {
             "Fixed bug where notification is not working",
             "You can enable notification in profile page for reminder",
         ]
+    },
+    "1.4.1": {
+        subject: "What's New in Ramadan Garden?",
+        changes: [
+            "Added new doa. Doa Memohon Keampunan, Doa Kebaikan Dunia Akhirat, Bacaan dalam Sujud Tilawah",
+        ]
     }
 };
