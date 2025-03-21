@@ -6,22 +6,22 @@ export default function LailatulQadr() {
     const articles = [
         {
             id: 1,
-            title: "Cara Untuk Mudah Bangun untuk Qiamulail",
+            title: "Hadis-hadis yang berkaitan dengan Lailatul Qadr",
             href: "/handbook/lailatul-qadr/1",
         },
         {
             id: 2,
-            title: "Zikir untuk Qiamulail",
+            title: "Zikir untuk Lailatul Qadr",
             href: "/handbook/zikir",
         },
         {
             id: 3,
-            title: "Doa-doa Yang Digalakkan",
+            title: "Doa-doa yang digalakkan",
             href: "/handbook/lailatul-qadr/3",
         },
         {
             id: 4,
-            title: "Amalan yang Digalakkan",
+            title: "Solat yang digalakkan",
             href: "/handbook/lailatul-qadr/4",
         },
     ];

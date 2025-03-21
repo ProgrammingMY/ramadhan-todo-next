@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { VERSION_UPDATE_LOG } from "@/constant/version-update-log";
-import { AlertTriangle } from "lucide-react";
+import { Moon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const CURRENT_VERSION = "1.4.1";
@@ -29,20 +29,18 @@ export default function VersionDialog() {
             setOpen(true);
             localStorage.setItem("lastSeenVersion", CURRENT_VERSION);
         }
-
-        setOpen(true);
     }, []);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <div className="flex justify-center w-full mb-4">
-                    <div className="w-16 h-16 flex items-center justify-center bg-amber-500/80 rounded-full">
-                        <AlertTriangle className="h-8 w-8 text-white" />
+                    <div className="w-16 h-16 flex items-center justify-center bg-slate-300 dark:bg-slate-800 rounded-full">
+                        <Moon className="h-8 w-8 " />
                     </div>
                 </div>
                 <DialogHeader>
-                    <DialogTitle className="text-center text-2xl font-bold">Persiapan 10 Hari Terakhir Ramadan</DialogTitle>
+                    <DialogTitle className="text-center text-2xl font-bold">Persiapan 10 Hari Terakhir Ramadan 💫</DialogTitle>
                     <DialogDescription asChild>
                         <div className="space-y-3 pt-3">
                             <p>{VERSION_UPDATE_LOG[CURRENT_VERSION].subject}</p>
