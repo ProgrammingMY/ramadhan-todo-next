@@ -1,0 +1,38 @@
+[
+    {
+        "id": "1",
+        "title": "Solat Tahajjud",
+        "niat": "اُصَلِّي سُنَّةَ التَهَجُّدِ رَكْعَتَيْنِ لِلَّهِ تَعَالَى",
+        "maksud": "Sahaja aku sembahyang sunat Tahajjud dua rakaat kerana Allah Taala"
+    },
+    {
+        "id": "2",
+        "title": "Solat Taubat",
+        "niat": "أُصَلِّي سُنَّةَ التَوبَةِ رَكَعَتَيْنِ لِلّهَِ تَعالىَ",
+        "maksud": "Sahaja aku sembahyang sunat Taubat dua rakaat kerana Allah Taala"
+    },
+    {
+        "id": "3",
+        "title": "Solat Hajat",
+        "niat": "أُصَلِّي سُنَّةَ الحَاجَةِ رَكْعَتَيْنِ لِلَّهِ تَعاَلَى",
+        "maksud": "Sahaja aku sembahyang sunat Hajat dua rakaat kerana Allah Taala"
+    },
+    {
+        "id": "4",
+        "title": "Solat Tasbih",
+        "niat": "اُصَلِّي سُنَّةَ التَّسْبِيْح رَكَعَتَيْنِ لِلَّه تَعَالى",
+        "maksud": "Sahaja aku sembahyang sunat Tasbih dua rakaat kerana Allah Taala"
+    },
+    {
+        "id": "5",
+        "title": "Solat Witir",
+        "niat": "أُصَلِّى سُنَّةَ الوِتْرِ رَكْعَتَيْنِ لِلَّهِ تَعَالَى",
+        "maksud": "Sahaja aku sembahyang sunat Witir dua rakaat kerana Allah Taala"
+    },
+    {
+        "id": "6",
+        "title": "Solat Witir 1 Rakaat",
+        "niat": "أُصَلِّي سُنَّةَ الْوِتْرِ رَكْعَةً لِلَّهِ تَعَالَى",
+        "maksud": "Sahaja aku sembahyang sunat Witir satu rakaat kerana Allah Taala"
+    }
+]

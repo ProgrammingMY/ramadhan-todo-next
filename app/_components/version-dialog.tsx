@@ -11,12 +11,14 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { VERSION_UPDATE_LOG } from "@/constant/version-update-log";
+import { Moon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-const CURRENT_VERSION = "1.3.2";
+const CURRENT_VERSION = "1.4.1";
 
 export default function VersionDialog() {
     const [open, setOpen] = useState(false);
-
+    const router = useRouter();
     useEffect(() => {
         // Check for version announcement after onboarding check
         const hasSeenOnboarding = localStorage.getItem("hasSeenOnboarding");
@@ -32,8 +34,13 @@ export default function VersionDialog() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
+                <div className="flex justify-center w-full mb-4">
+                    <div className="w-16 h-16 flex items-center justify-center bg-slate-300 dark:bg-slate-800 rounded-full">
+                        <Moon className="h-8 w-8 " />
+                    </div>
+                </div>
                 <DialogHeader>
-                    <DialogTitle>What's New in Ramadan Garden?</DialogTitle>
+                    <DialogTitle className="text-center text-2xl font-bold">Persiapan 10 Hari Terakhir Ramadan 💫</DialogTitle>
                     <DialogDescription asChild>
                         <div className="space-y-3 pt-3">
                             <p>{VERSION_UPDATE_LOG[CURRENT_VERSION].subject}</p>
@@ -47,7 +54,10 @@ export default function VersionDialog() {
                 </DialogHeader>
                 <DialogFooter>
                     <Button
-                        onClick={() => setOpen(false)}
+                        onClick={() => {
+                            setOpen(false);
+                            router.push("/handbook");
+                        }}
                         className="w-full"
                     >
                         Got it

@@ -37,5 +37,10 @@ export const VERSION_UPDATE_LOG = {
             "Fixed bug where notification is not working",
             "You can enable notification in profile page for reminder",
         ]
+    },
+    "1.4.1": {
+        subject: "Lihat handbook untuk persiapan 10 hari terakhir ramadan",
+        changes: [
+        ]
     }
 };

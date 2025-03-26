@@ -1,0 +1,74 @@
+[
+    {
+        "id": "48",
+        "doa": "Doa Khusus untuk Lailatul Qadr",
+        "tag": [
+            "ramadan",
+            "ramadhan",
+            "lailatul qadr",
+            "qiam",
+            "dosa",
+            "keampunan"
+        ],
+        "group": "Doa Harian",
+        "arab": [
+            "اللّٰهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي"
+        ],
+        "rumi": [
+            "Allahumma innaka 'afuwwun tuhibbul 'afwa fa'fu 'anni"
+        ],
+        "makna": [
+            "Ya Allah Ya Tuhan Kami, sesungguhnya Engkau Maha Pengampun dan amat suka akan keampunan, maka berikanlah keampunan kepadaku"
+        ],
+        "rujukan": "Daripada 'Aisyah RA, beliau berkata aku telah bertanya, wahai Rasulullah, Beritahulah kepadaku sekiranya aku mengetahui malam manakah lailatulqadar, apakah doa yang sepatutnya aku pohon? Baginda bersabda, berdoalah dengan doa ini",
+        "link": "https://sunnah.com/tirmidhi:3513"
+    },
+    {
+        "id": "49",
+        "doa": "Sayyidul Istighfar",
+        "tag": [
+            "istighfar",
+            "dosa",
+            "lailatul qadr",
+            "ramadan",
+            "ramadhan",
+            "keampunan"
+        ],
+        "group": "Zikir",
+        "arab": [
+            "اللَّهُمَّ أَنْتَ رَبِّي لاَ إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ لَكَ بِذَنْبِي فَاغْفِرْ لِي، فَإِنَّهُ لاَ يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ"
+        ],
+        "rumi": [
+            "Allahumma anta rabbi laa ilaaha illaanta, khalqatni waa anaa 'abduka, waa anaa 'alaa 'ahdika wa wa'dika ma astata'tu, 'auzu bika, min sharri ma sana'tu, wa abu'u laka bi ni'matika 'alaa yaa, wabu'u laka bi zanabi faghfir li, fiannahoo laa yaghfiru luzunnoba illaanta"
+        ],
+        "makna": [
+            "Ya Allah, Engkau adalah Rabbku, tidak ada Tuhan yang berhak disembah dengan benar melainkan Engkau. Engkau yang menciptakan aku dan aku adalah hamba-Mu. Aku di atas perjanjian-Mu dan janji-Mu sesuai dengan kemampuanku. Aku berlindung kepada-Mu dari keburukan perbuatanku, aku mengakui nikmat-Mu kepadaku dan aku mengakui dosaku kepada-Mu, maka ampunilah aku. Hal ini kerana, tiada yang dapat mengampuni dosa melainkan Engkau."
+        ],
+        "rujukan": "Riwayat al-Bukhari 6306",
+        "link": "https://sunnah.com/bukhari:6306"
+    },
+    {
+        "id": "50",
+        "doa": "Doa Memohon Kebaikan Dunia Akhirat",
+        "tag": [
+            "dunia",
+            "akhirat",
+            "lailatul qadr",
+            "ramadan",
+            "ramadhan",
+            "kebaikan"
+        ],
+        "group": "Doa Harian",
+        "arab": [
+            "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّار"
+        ],
+        "rumi": [
+            "Rabbana atina fid-dunya hasanatan wa fil-akhirati hasanatan waqina 'azaban-nar"
+        ],
+        "makna": [
+            "Wahai Tuhan kami, anugerahkanlah kepada kami kebaikan di dunia dan kebaikan di akhirat dan peliharalah kami dari seksa api neraka."
+        ],
+        "rujukan": "Surah Al-Baqarah: 201",
+        "link": "https://quran.com/ms/al-baqarah/201"
+    }
+]

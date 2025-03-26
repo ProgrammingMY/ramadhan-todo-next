@@ -40,6 +40,10 @@ export const metadata: Metadata = {
     shortcut: "/favicon.ico",
     apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180" }],
   },
+  other: {
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "default",
+  }
 };
 
 // change theme color depending on the theme
@@ -58,7 +62,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className={`${quicksand.className}`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
