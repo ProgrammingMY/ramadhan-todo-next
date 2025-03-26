@@ -140,7 +140,7 @@ export default function Profile() {
           {filteredSettings.map((setting) => (
             <div
               key={setting.id}
-              className="bg-card border border-slate-200 dark:border-slate-700 rounded-md shadow-md overflow-hidden"
+              className="bg-card rounded-md shadow-md overflow-hidden"
             >
               <div
                 className="p-4 cursor-pointer hover:bg-primary/10 flex justify-between items-center"
@@ -154,7 +154,7 @@ export default function Profile() {
                   }`} />
               </div>
               {expandedSettingId === setting.id && (
-                <div className="p-4 border-t border-slate-200 dark:border-slate-700">
+                <div className="p-4 border-t border-slate-300 dark:border-slate-500">
                   {setting.content}
                 </div>
               )}

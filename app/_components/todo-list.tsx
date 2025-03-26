@@ -194,7 +194,7 @@ export function TodoList() {
   };
 
   return (
-    <div className="p-4 space-y-4 relative">
+    <div className="space-y-4 relative">
       {/* Add date navigation */}
       <DateSelection
         selectedDate={selectedDate}
@@ -209,13 +209,6 @@ export function TodoList() {
           user={user}
         />
       )}
-      {/* {!isOnline && (
-        <div className="bg-yellow-100 border-l-4 border-yellow-500 p-3 mb-4 rounded text-yellow-700">
-          <p className="font-medium">
-            You're offline. Changes will be saved locally.
-          </p>
-        </div>
-      )} */}
 
       <div className="relative min-h-[400px]"> {/* Add this wrapper div with min-height */}
         {isLoading && (

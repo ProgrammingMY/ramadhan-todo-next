@@ -32,7 +32,7 @@ export default function DateSelection({
                 <ChevronLeftIcon className="w-4 h-4" />
             </Button>
             <div className="flex flex-col items-center">
-                <div className="text-primary font-bold text-lg">
+                <div className="text-slate-700 dark:text-slate-200 font-bold text-lg">
                     {selectedDate.iDate()}
                     {" "}
                     {HIJRI_MONTHS[selectedDate.iMonth()]}
