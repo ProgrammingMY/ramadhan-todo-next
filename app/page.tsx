@@ -8,55 +8,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useEffect, useState } from "react";
 import VersionDialog from "./_components/version-dialog";
 import FeedbackPrompt from "./_components/feedback/feedback-prompt";
-import { Bell, Book, Volume2, Compass, Gift, Grid, Sprout, Flower } from "lucide-react"; // Import icons
+import { Bell, Book, Volume2, Compass, Gift, Grid, Sprout, Flower, MapPin, LocateIcon } from "lucide-react"; // Import icons
 import { Progress } from "@/components/ui/progress";
-
-
-// Add this type for sunnah progress
-type SunnahProgress = {
-  name: string;
-  current: number;
-  total: number;
-  description: string;
-};
-const sunnahProgress: SunnahProgress[] = [
-  {
-    name: "Daily Dhikr",
-    current: 33,
-    total: 100,
-    description: "Morning & Evening adhkar"
-  },
-  {
-    name: "Duha Prayer",
-    current: 0,
-    total: 100,
-    description: "2-4 rakaat daily"
-  },
-  {
-    name: "Tahajjud",
-    current: 75,
-    total: 100,
-    description: "Night prayer"
-  },
-  {
-    name: "Fasting Monday",
-    current: 50,
-    total: 100,
-    description: "Weekly sunnah fast"
-  },
-  {
-    name: "Reading Quran",
-    current: 25,
-    total: 100,
-    description: "Daily reading goal"
-  },
-  {
-    name: "Good Deeds",
-    current: 60,
-    total: 100,
-    description: "Daily acts of kindness"
-  }
-];
+import { Button } from "./components/ui/button";
 
 
 export default function Page() {
@@ -89,7 +43,7 @@ export default function Page() {
   return (
     <div className="max-w-md mx-auto min-h-screen bg-gradient-to-b from-emerald-600 to-emerald-100 dark:bg-gradient-to-b dark:from-slate-900 dark:to-slate-900 relative overflow-hidden">
       {/* Stars background - add via CSS */}
-      <div className="absolute inset-0 bg-[url('/stars.png')] opacity-30" />
+      <div className="absolute inset-0 opacity-30" />
 
       {/* Main Content */}
       <div className="relative">
@@ -121,25 +75,27 @@ export default function Page() {
 
         {/* Main Card */}
         <div className="bg-background rounded-t-[2.5rem] min-h-screen p-6">
+          {/*Location Section*/}
+          <div className="py-2">
+            <div className="flex justify-between items-center">
+              <Button variant="ghost" className="flex items-center gap-2 bg-card rounded-full py-1 px-4">
+                <LocateIcon className="h-4 w-4" />
+                <p className="text-foreground text-sm font-semibold">Putrajaya</p>
+              </Button>
+            </div>
+          </div>
           {/* Prayer Times */}
           <div className="flex justify-between mb-8">
             {[
-              { name: "Fajr", time: "5:25", image: "/prayer-times/fajr.jpg" },
-              { name: "Dhuhr", time: "1:30", image: "/prayer-times/dhuhr.jpg" },
-              { name: "Asr", time: "4:45", image: "/prayer-times/asr.jpg" },
+              { name: "Subuh", time: "5:25", image: "/prayer-times/fajr.jpg" },
+              { name: "Zohor", time: "1:30", image: "/prayer-times/dhuhr.jpg" },
+              { name: "Asar", time: "4:45", image: "/prayer-times/asr.jpg" },
               { name: "Maghrib", time: "5:36", image: "/prayer-times/maghrib.jpg" },
-              { name: "Isha", time: "7:45", image: "/prayer-times/isha.jpg" },
+              { name: "Isyak", time: "7:45", image: "/prayer-times/isha.jpg" },
             ].map((prayer) => (
-              <div key={prayer.name} className="text-center">
-                <div className="w-14 h-14 rounded-full mb-1 overflow-hidden">
-                  <img
-                    src={prayer.image}
-                    alt={prayer.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+              <div key={prayer.name} className="flex flex-col items-center justify-center bg-card border border-emerald-200 dark:border-emerald-700 rounded-full p-2  w-20 h-20">
+                <h2 className="text-sm font-semibold">{prayer.name}</h2>
                 <p className="text-xs font-medium">{prayer.time}</p>
-                <p className="text-xs text-gray-600">{prayer.name}</p>
               </div>
             ))}
           </div>
@@ -171,6 +127,6 @@ export default function Page() {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
