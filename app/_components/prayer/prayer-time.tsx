@@ -9,10 +9,12 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 
 export function PrayerTimeComponent({
     prayerTimes,
-    setPrayerTimes
+    setPrayerTimes,
+    zone
 }: {
     prayerTimes: PrayerTime | null;
     setPrayerTimes: (prayerTimes: PrayerTime | null) => void;
+    zone: string;
 }) {
     const [isLoading, setIsLoading] = useState(true);
 
@@ -37,7 +39,7 @@ export function PrayerTimeComponent({
                 const formattedDate = `${String(today.getDate()).padStart(2, '0')}-${months[today.getMonth()]}-${today.getFullYear()}`;
                 console.log(formattedDate);
                 const response = await fetch(
-                    `${API_URL}?zone=WLY01&date=${formattedDate}`
+                    `${API_URL}?zone=${zone}&date=${formattedDate}`
                 );
 
                 if (!response.ok) {
@@ -54,7 +56,7 @@ export function PrayerTimeComponent({
         };
 
         fetchPrayerTimes();
-    }, []);
+    }, [zone]);
 
     if (isLoading) {
         return <div>Loading prayer times...</div>;

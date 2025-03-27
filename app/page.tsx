@@ -15,6 +15,7 @@ import { PrayerTimeComponent } from "./_components/prayer/prayer-time";
 import { PrayerTime } from "./lib/types";
 import { PrayerClock } from "./_components/prayer/prayer-clock";
 import { HIJRI_MONTHS, hijriToday } from "./constant/hijri";
+import { ZoneDialog } from "./_components/prayer/zone-dialog";
 
 
 export default function Page() {
@@ -22,6 +23,13 @@ export default function Page() {
   const [picture, setPicture] = useState<string>("");
   const [mounted, setMounted] = useState(false);
   const [prayerTimes, setPrayerTimes] = useState<PrayerTime | null>(null);
+  const [currentZone, setCurrentZone] = useState("WLY02"); // Default to Putrajaya
+
+  const handleZoneChange = (newZone: string) => {
+    setCurrentZone(newZone);
+    // Reset prayer times to trigger new fetch with new zone
+    setPrayerTimes(null);
+  };
 
 
   useEffect(() => {
@@ -81,14 +89,18 @@ export default function Page() {
           {/*Location Section*/}
           <div className="py-2">
             <div className="flex justify-between items-center">
-              <Button variant="ghost" className="flex items-center gap-2 bg-card rounded-full py-1 px-4">
-                <LocateIcon className="h-4 w-4" />
-                <p className="text-foreground text-sm font-semibold">Putrajaya</p>
-              </Button>
+              <ZoneDialog
+                currentZone={currentZone}
+                onZoneChange={handleZoneChange}
+              />
             </div>
           </div>
           {/* Prayer Times */}
-          <PrayerTimeComponent prayerTimes={prayerTimes} setPrayerTimes={setPrayerTimes} />
+          <PrayerTimeComponent
+            prayerTimes={prayerTimes}
+            setPrayerTimes={setPrayerTimes}
+            zone={currentZone}
+          />
 
           {/* Progress Bar */}
           <div className="space-y-4 mb-8 bg-card rounded-xl p-4 text-card-foreground shadow-lg">
