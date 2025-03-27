@@ -11,12 +11,18 @@ import FeedbackPrompt from "./_components/feedback/feedback-prompt";
 import { Bell, Book, Volume2, Compass, Gift, Grid, Sprout, Flower, MapPin, LocateIcon } from "lucide-react"; // Import icons
 import { Progress } from "@/components/ui/progress";
 import { Button } from "./components/ui/button";
+import { PrayerTimeComponent } from "./_components/prayer/prayer-time";
+import { PrayerTime } from "./lib/types";
+import { PrayerClock } from "./_components/prayer/prayer-clock";
+import { HIJRI_MONTHS, hijriToday } from "./constant/hijri";
 
 
 export default function Page() {
   const [username, setUsername] = useState<string>("");
   const [picture, setPicture] = useState<string>("");
   const [mounted, setMounted] = useState(false);
+  const [prayerTimes, setPrayerTimes] = useState<PrayerTime | null>(null);
+
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -61,16 +67,13 @@ export default function Page() {
               </div>
             </div>
             <div className="text-right">
-              <p className="text-slate-100 text-md font-semibold">15 Ramadan</p>
-              <p className="text-slate-200 text-xs font-semibold">1445 H</p>
+              <p className="text-slate-100 text-md font-semibold">{hijriToday().iDate() + " " + HIJRI_MONTHS[hijriToday().iMonth()]}</p>
+              <p className="text-slate-200 text-xs font-semibold">{hijriToday().iYear()} H</p>
             </div>
           </div>
 
           {/* Current Time */}
-          <div className="text-center my-8">
-            <h2 className="text-slate-100 text-5xl font-bold">1:57:10</h2>
-            <p className="text-slate-200 text-md font-semibold">Zohor 1:22 PM</p>
-          </div>
+          <PrayerClock prayerTimes={prayerTimes} />
         </div>
 
         {/* Main Card */}
@@ -85,20 +88,7 @@ export default function Page() {
             </div>
           </div>
           {/* Prayer Times */}
-          <div className="flex justify-between mb-8">
-            {[
-              { name: "Subuh", time: "5:25", image: "/prayer-times/fajr.jpg" },
-              { name: "Zohor", time: "1:30", image: "/prayer-times/dhuhr.jpg" },
-              { name: "Asar", time: "4:45", image: "/prayer-times/asr.jpg" },
-              { name: "Maghrib", time: "5:36", image: "/prayer-times/maghrib.jpg" },
-              { name: "Isyak", time: "7:45", image: "/prayer-times/isha.jpg" },
-            ].map((prayer) => (
-              <div key={prayer.name} className="flex flex-col items-center justify-center bg-card border border-emerald-200 dark:border-emerald-700 rounded-full p-2  w-20 h-20">
-                <h2 className="text-sm font-semibold">{prayer.name}</h2>
-                <p className="text-xs font-medium">{prayer.time}</p>
-              </div>
-            ))}
-          </div>
+          <PrayerTimeComponent prayerTimes={prayerTimes} setPrayerTimes={setPrayerTimes} />
 
           {/* Progress Bar */}
           <div className="space-y-4 mb-8 bg-card rounded-xl p-4 text-card-foreground shadow-lg">
