@@ -16,6 +16,7 @@ import { PrayerTime } from "./lib/types";
 import { PrayerClock } from "./_components/prayer/prayer-clock";
 import { HIJRI_MONTHS, hijriToday } from "./constant/hijri";
 import { ZoneDialog } from "./_components/prayer/zone-dialog";
+import { useUser } from "./_context/user-context";
 
 
 export default function Page() {
@@ -23,10 +24,10 @@ export default function Page() {
   const [picture, setPicture] = useState<string>("");
   const [mounted, setMounted] = useState(false);
   const [prayerTimes, setPrayerTimes] = useState<PrayerTime | null>(null);
-  const [currentZone, setCurrentZone] = useState("WLY02"); // Default to Putrajaya
+  const { zone, setZone } = useUser();
 
   const handleZoneChange = (newZone: string) => {
-    setCurrentZone(newZone);
+    setZone(newZone);
     // Reset prayer times to trigger new fetch with new zone
     setPrayerTimes(null);
   };
@@ -89,17 +90,13 @@ export default function Page() {
           {/*Location Section*/}
           <div className="py-2">
             <div className="flex justify-between items-center">
-              <ZoneDialog
-                currentZone={currentZone}
-                onZoneChange={handleZoneChange}
-              />
+              <ZoneDialog />
             </div>
           </div>
           {/* Prayer Times */}
           <PrayerTimeComponent
             prayerTimes={prayerTimes}
             setPrayerTimes={setPrayerTimes}
-            zone={currentZone}
           />
 
           {/* Progress Bar */}

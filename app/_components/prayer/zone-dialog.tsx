@@ -20,15 +20,13 @@ import { Button } from "@/components/ui/button";
 import { LocateIcon } from "lucide-react";
 import { useState, useMemo } from "react";
 import { ZONES } from "@/constant/zones";
+import { useUser } from "@/_context/user-context";
 
-interface ZoneDialogProps {
-    currentZone: string;
-    onZoneChange: (zoneId: string) => void;
-}
 
-export function ZoneDialog({ currentZone, onZoneChange }: ZoneDialogProps) {
+export function ZoneDialog() {
     const [isOpen, setIsOpen] = useState(false);
-    const currentZoneName = ZONES.find(zone => zone.id === currentZone)?.negeri || "Select Zone";
+    const { zone, setZone } = useUser();
+    const currentZoneName = ZONES.find(z => z.id === zone)?.negeri || "Select Zone";
 
     // Group zones by negeri
     const groupedZones = useMemo(() => {
@@ -42,7 +40,7 @@ export function ZoneDialog({ currentZone, onZoneChange }: ZoneDialogProps) {
     }, []);
 
     const handleZoneChange = (zoneId: string) => {
-        onZoneChange(zoneId);
+        setZone(zoneId);
         setIsOpen(false);
     };
 
@@ -52,7 +50,7 @@ export function ZoneDialog({ currentZone, onZoneChange }: ZoneDialogProps) {
                 <Button variant="ghost" className="flex items-center gap-2 bg-card rounded-full py-1 px-4">
                     <LocateIcon className="h-4 w-4 flex-shrink-0" />
                     <p className="text-foreground text-sm font-semibold truncate max-w-[150px]">
-                        {ZONES.find(zone => zone.id === currentZone)?.daerah || currentZoneName}
+                        {ZONES.find(z => z.id === zone)?.daerah || currentZoneName}
                     </p>
                 </Button>
             </DialogTrigger>
@@ -61,7 +59,7 @@ export function ZoneDialog({ currentZone, onZoneChange }: ZoneDialogProps) {
                     <DialogTitle>Choose Zone</DialogTitle>
                 </DialogHeader>
                 <div className="py-4 max-w-sm mx-auto">
-                    <Select value={currentZone} onValueChange={handleZoneChange}>
+                    <Select value={zone} onValueChange={handleZoneChange}>
                         <SelectTrigger className="max-w-full">
                             <SelectValue placeholder="Select zone" />
                         </SelectTrigger>

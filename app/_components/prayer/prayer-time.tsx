@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { PrayerTime } from "@/lib/types";
+import { useUser } from "@/_context/user-context";
 
 const API_URL = "https://solat.sunnahgarden.my/prayer-times";
 
@@ -10,13 +11,12 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 export function PrayerTimeComponent({
     prayerTimes,
     setPrayerTimes,
-    zone
 }: {
     prayerTimes: PrayerTime | null;
     setPrayerTimes: (prayerTimes: PrayerTime | null) => void;
-    zone: string;
 }) {
     const [isLoading, setIsLoading] = useState(true);
+    const { zone } = useUser();
 
     const formatTime = (epochTime: string) => {
         const timestamp = parseInt(epochTime);
@@ -73,10 +73,10 @@ export function PrayerTimeComponent({
             ].map((prayer) => (
                 <div
                     key={prayer.name}
-                    className="flex flex-col items-center justify-center bg-card border border-emerald-200 dark:border-emerald-700 rounded-full p-2 w-20 h-20"
+                    className="flex flex-col items-center justify-center bg-card border border-emerald-200 dark:border-emerald-700 rounded-full p-2 w-18 h-18 md:w-20 md:h-20"
                 >
-                    <h2 className="text-sm font-semibold">{prayer.name}</h2>
-                    <p className="text-xs mt-1">{prayer.time}</p>
+                    <h2 className="text-xs md:text-sm font-semibold">{prayer.name}</h2>
+                    <p className="text-[11px] md:text-xs mt-1">{prayer.time}</p>
                 </div>
             ))}
         </div>

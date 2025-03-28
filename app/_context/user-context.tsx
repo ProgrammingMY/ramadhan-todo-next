@@ -23,6 +23,8 @@ interface UserContextType {
   monthProgress: MonthProgress[];
   setMonthProgress: (progress: MonthProgress[]) => void;
   periodDates: PeriodDates;
+  zone: string;
+  setZone: (zone: string) => void;
   setPeriodDates: (dates: PeriodDates) => void;
   handlePeriodChange: (newPeriodDates: PeriodDates) => void;
   handleMonthProgressChange: (newMonthProgress: MonthProgress[]) => void;
@@ -34,6 +36,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [monthProgress, setMonthProgress] = useState<MonthProgress[]>([]);
   const [periodDates, setPeriodDates] = useState<PeriodDates>({});
+  const [zone, setZone] = useState<string>("WLY01");
 
   useEffect(() => {
     // Initialize user from localStorage
@@ -92,7 +95,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
         periodDates,
         setPeriodDates,
         handlePeriodChange,
-        handleMonthProgressChange
+        handleMonthProgressChange,
+        zone,
+        setZone
       }}
     >
       {children}
