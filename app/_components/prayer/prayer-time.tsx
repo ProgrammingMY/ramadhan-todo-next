@@ -76,7 +76,7 @@ export function PrayerTimeComponent({
                     className="flex flex-col items-center justify-center bg-card border border-emerald-200 dark:border-emerald-700 rounded-full p-2 w-18 h-18 md:w-20 md:h-20"
                 >
                     <h2 className="text-xs md:text-sm font-semibold">{prayer.name}</h2>
-                    <p className="text-[11px] md:text-xs mt-1">{prayer.time}</p>
+                    <p className="text-[0.6rem] md:text-xs mt-1">{prayer.time}</p>
                 </div>
             ))}
         </div>

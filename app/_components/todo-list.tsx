@@ -122,22 +122,6 @@ export function TodoList() {
 
   }, [selectedDate]);
 
-  // Add date navigation functions
-  const goToPreviousDay = () => {
-    setSelectedDate(prev => prev.clone().subtract(1, 'day'));
-  };
-
-  const goToNextDay = () => {
-    if (selectedDate.isAfter(hijriToday())) {
-      return;
-    }
-    setSelectedDate(prev => prev.clone().add(1, 'day'));
-  };
-
-  const goToToday = () => {
-    setSelectedDate(hijriToday());
-  };
-
   const toggleTodo = async (id: number) => {
     const newTodos = todos.map((todo) =>
       todo.id === id ? { ...todo, completed: !todo.completed } : todo
@@ -198,9 +182,7 @@ export function TodoList() {
       {/* Add date navigation */}
       <DateSelection
         selectedDate={selectedDate}
-        goToPreviousDay={goToPreviousDay}
-        goToNextDay={goToNextDay}
-        goToToday={goToToday}
+        setSelectedDate={setSelectedDate}
       />
       {user && user.gender === "female" && (
         <PeriodCheck
