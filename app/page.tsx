@@ -26,6 +26,8 @@ export default function Page() {
   const [prayerTimes, setPrayerTimes] = useState<PrayerTime | null>(null);
   const { zone, setZone } = useUser();
 
+  const [isPrayerTimesLoading, setIsPrayerTimesLoading] = useState(true);
+
   const handleZoneChange = (newZone: string) => {
     setZone(newZone);
     // Reset prayer times to trigger new fetch with new zone
@@ -82,7 +84,7 @@ export default function Page() {
           </div>
 
           {/* Current Time */}
-          <PrayerClock prayerTimes={prayerTimes} />
+          <PrayerClock prayerTimes={prayerTimes} isLoading={isPrayerTimesLoading} />
         </div>
 
         {/* Main Card */}
@@ -97,6 +99,8 @@ export default function Page() {
           <PrayerTimeComponent
             prayerTimes={prayerTimes}
             setPrayerTimes={setPrayerTimes}
+            isPrayerTimesLoading={isPrayerTimesLoading}
+            setIsPrayerTimesLoading={setIsPrayerTimesLoading}
           />
 
           {/* Progress Bar */}

@@ -59,8 +59,8 @@ const TodoItem = ({ todo, onToggle }: { todo: Todo; onToggle: (id: number) => vo
           className={`
               flex-1 text-md transition-all duration-200
               ${todo.completed
-              ? "text-emerald-800 dark:text-emerald-200 line-through opacity-75 font-bold"
-              : "text-slate-700 dark:text-slate-200 font-bold"
+              ? "text-emerald-800 dark:text-emerald-200 line-through opacity-75 font-semibold"
+              : "text-slate-700 dark:text-slate-200 font-semibold"
             }
             `}
         >

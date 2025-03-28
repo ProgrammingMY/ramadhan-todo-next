@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { PrayerTime } from "@/lib/types";
 import { useUser } from "@/_context/user-context";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const API_URL = "https://solat.sunnahgarden.my/prayer-times";
 
@@ -11,11 +12,14 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 export function PrayerTimeComponent({
     prayerTimes,
     setPrayerTimes,
+    setIsPrayerTimesLoading,
+    isPrayerTimesLoading,
 }: {
     prayerTimes: PrayerTime | null;
     setPrayerTimes: (prayerTimes: PrayerTime | null) => void;
+    setIsPrayerTimesLoading: (isLoading: boolean) => void;
+    isPrayerTimesLoading: boolean;
 }) {
-    const [isLoading, setIsLoading] = useState(true);
     const { zone } = useUser();
 
     const formatTime = (epochTime: string) => {
@@ -34,10 +38,11 @@ export function PrayerTimeComponent({
     useEffect(() => {
         const fetchPrayerTimes = async () => {
             try {
+                setIsPrayerTimesLoading(true);
                 // Get current date in DD-MM-YYYY format
                 const today = new Date();
                 const formattedDate = `${String(today.getDate()).padStart(2, '0')}-${months[today.getMonth()]}-${today.getFullYear()}`;
-                console.log(formattedDate);
+
                 const response = await fetch(
                     `${API_URL}?zone=${zone}&date=${formattedDate}`
                 );
@@ -51,15 +56,23 @@ export function PrayerTimeComponent({
             } catch (error) {
                 console.error('Error fetching prayer times:', error);
             } finally {
-                setIsLoading(false);
+                setIsPrayerTimesLoading(false);
             }
         };
 
         fetchPrayerTimes();
     }, [zone]);
 
-    if (isLoading) {
-        return <div>Loading prayer times...</div>;
+    if (isPrayerTimesLoading) {
+        return (
+            <div className="flex justify-between mb-8">
+                {Array.from({ length: 5 }).map((_, index) => (
+                    <div key={index} className="bg-card border border-emerald-200 dark:border-emerald-700 rounded-full p-2 w-18 h-18 md:w-20 md:h-20" >
+                        <Skeleton className="w-full h-full" />
+                    </div>
+                ))}
+            </div>
+        );
     }
 
     return (

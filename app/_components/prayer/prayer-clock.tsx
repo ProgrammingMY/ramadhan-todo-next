@@ -2,12 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { PrayerTime } from "@/lib/types";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface PrayerClockProps {
     prayerTimes: PrayerTime | null;
+    isLoading: boolean;
 }
 
-export function PrayerClock({ prayerTimes }: PrayerClockProps) {
+export function PrayerClock({ prayerTimes, isLoading }: PrayerClockProps) {
     const [countdown, setCountdown] = useState<string>("");
     const [nextPrayer, setNextPrayer] = useState<{ name: string; time: string } | null>(null);
 
@@ -69,6 +71,15 @@ export function PrayerClock({ prayerTimes }: PrayerClockProps) {
 
         return () => clearInterval(timer);
     }, [prayerTimes]);
+
+    if (!prayerTimes || !nextPrayer || !countdown || isLoading) {
+        return (
+            <div className="text-center my-8">
+                <Skeleton className="h-12 w-48 bg-emerald-700 mx-auto mb-2" />
+                <Skeleton className="h-4 w-32 bg-emerald-700 mx-auto" />
+            </div>
+        );
+    }
 
     return (
         <div className="text-center my-8">

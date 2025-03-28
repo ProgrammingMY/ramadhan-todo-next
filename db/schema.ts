@@ -1,3 +1,4 @@
+import { Category } from "@/lib/types";
 import { sql } from "drizzle-orm";
 import {
   boolean,
@@ -26,8 +27,8 @@ export const usersTable = pgTable("users", {
 export const tasksTable = pgTable("tasks", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar({ length: 255 }).notNull(),
-  displayOrder: integer().notNull(),
   isPeriodCan: boolean().default(true),
+  category: varchar({ length: 255 }).$type<Category>().default("recommended"),
 });
 
 // Table for daily user progress

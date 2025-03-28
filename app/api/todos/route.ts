@@ -22,6 +22,7 @@ export async function GET(request: NextRequest) {
       .select({
         id: tasksTable.id,
         text: tasksTable.name,
+        category: tasksTable.category,
         completed: progressTable.completed,
       })
       .from(tasksTable)
@@ -33,7 +34,6 @@ export async function GET(request: NextRequest) {
           eq(progressTable.date, date)
         )
       )
-      .orderBy(tasksTable.displayOrder);
 
     return NextResponse.json(results);
   } catch (error) {

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Todo, User } from "../lib/types";
-import { DEFAULT_TODOS } from "../constant/todo";
+import { Category, Todo, User } from "../lib/types";
+import { CATEGORIES, DEFAULT_TODOS } from "../constant/todo";
 import TodoItem from "./todo-item";
 import { getMonthProgress } from "@/lib/get-month-progress";
 import { toast } from "sonner";
@@ -14,15 +14,20 @@ import { useUser } from "@/_context/user-context";
 
 const PERIOD_TODOS = DEFAULT_TODOS.filter(todo => todo.isPeriodCan);
 
-
 export function TodoList() {
   const [todos, setTodos] = useState<Todo[]>(DEFAULT_TODOS);
-  // const [isOnline, setIsOnline] = useState(true);
+  const [activeCategory, setActiveCategory] = useState<Category>(CATEGORIES.RECOMMENDED);
+
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<User | null>(null);
   // date selection
   const [selectedDate, setSelectedDate] = useState(hijriToday());
-  const { periodDates } = useUser();
+  const { user, periodDates } = useUser();
+
+  // Add this function to filter todos by category
+  const getFilteredTodos = () => {
+    const filteredTodos = todos.filter(todo => todo.category === activeCategory);
+    return filteredTodos.length > 0 ? filteredTodos : filteredTodos;
+  };
 
 
   const handlePeriodChange = async (periodStatus: boolean) => {
@@ -42,7 +47,7 @@ export function TodoList() {
     try {
       setIsLoading(true);
 
-      if (navigator.onLine && user && !user.isAnonymous) {
+      if (user && !user.isAnonymous) {
         // Try to fetch from API first
         const { id, username } = user;
         const response = await fetch(
@@ -52,7 +57,6 @@ export function TodoList() {
         if (response.ok) {
           const data = await response.json();
           // if undefined, complete to false
-
           if (data.length === 0) {
             setTodos(DEFAULT_TODOS);
             return;
@@ -103,24 +107,12 @@ export function TodoList() {
   }
 
   useEffect(() => {
-    const userData = localStorage.getItem("user");
-    setUser(JSON.parse(userData as string));
-
     fetchTodos(selectedDate.format("iYYYY-iMM-iDD"));
-
-    // fetch isPeriod
-    // const isPeriod = localStorage.getItem("isPeriod");
-    // if (isPeriod) {
-    //   setTodos(periodTodos);
-    // } else {
-    //   fetchIsPeriod(selectedDate, user?.id as string).then(data => {
-    //     if (data) {
-    //       setTodos(periodTodos);
-    //     }
-    //   });
-    // }
-
   }, [selectedDate]);
+
+  useEffect(() => {
+    fetchTodos(selectedDate.format("iYYYY-iMM-iDD"));
+  }, []);
 
   const toggleTodo = async (id: number) => {
     const newTodos = todos.map((todo) =>
@@ -177,6 +169,7 @@ export function TodoList() {
     }
   };
 
+
   return (
     <div className="space-y-4 relative">
       {/* Add date navigation */}
@@ -184,6 +177,27 @@ export function TodoList() {
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
       />
+
+      {/* Add the new tabs UI */}
+      <div className="flex space-x-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
+        {Object.entries(CATEGORIES).map(([key, value]) => (
+          <button
+            key={value}
+            onClick={() => setActiveCategory(value)}
+            className={`
+              flex-1 px-4 py-2 rounded-md text-sm font-medium
+              transition-colors duration-200
+              ${activeCategory === value
+                ? "bg-white dark:bg-slate-700 shadow-sm"
+                : "text-slate-600 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-700/50"
+              }
+            `}
+          >
+            {key.charAt(0) + key.slice(1).toLowerCase()}
+          </button>
+        ))}
+      </div>
+
       {user && user.gender === "female" && (
         <PeriodCheck
           selectedDate={selectedDate}
@@ -201,7 +215,7 @@ export function TodoList() {
         )}
 
         <ul className="space-y-3">
-          {todos.map((todo) => (
+          {getFilteredTodos().map((todo) => (
             <TodoItem key={todo.id} todo={todo} onToggle={toggleTodo} />
           ))}
         </ul>

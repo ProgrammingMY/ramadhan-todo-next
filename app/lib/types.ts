@@ -1,3 +1,5 @@
+import { CATEGORIES } from "@/constant/todo";
+
 export interface DayProgress {
   date: string;
   completionRate: number;
@@ -13,6 +15,7 @@ export interface Todo {
   text: string;
   completed: boolean;
   isPeriodCan: boolean;
+  category: Category;
 }
 
 export interface User {
@@ -48,3 +51,5 @@ export interface PrayerTime {
   year: string;
   day: string;
 }
+
+export type Category = typeof CATEGORIES[keyof typeof CATEGORIES];
