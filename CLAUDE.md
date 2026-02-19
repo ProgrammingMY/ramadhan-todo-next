@@ -14,7 +14,6 @@ pnpm install
 
 # Development server
 pnpm dev              # Regular dev server
-pnpm dev:pwa          # Dev server with HTTPS (required for PWA features like push notifications)
 
 # Database operations
 pnpm db:generate      # Generate Drizzle schema types after schema changes
@@ -35,7 +34,6 @@ pnpm lint             # Run ESLint
 - **Tailwind CSS 4.0.8** for styling
 - **Radix UI** for primitive components
 - **SST** for deployment to AWS/Cloudflare
-- **Serwist** for service worker/PWA functionality
 - **Google Gemini API** for AI analysis
 
 ### Directory Structure
@@ -108,7 +106,6 @@ public/
 
 ### PWA & Offline Strategy
 
-- Service worker via Serwist (`app/sw.ts`)
 - Offline page at `app/~offline/page.tsx`
 - localStorage caching for data persistence
 - API sync when connection restored

@@ -2,7 +2,7 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 
 const APP_NAME = "NJS App";
-const APP_DESCRIPTION = "Next.js + Serwist PWA";
+const APP_DESCRIPTION = "Sunnah Garden PWA";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

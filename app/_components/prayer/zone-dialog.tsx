@@ -88,11 +88,11 @@ export function ZoneDialog() {
             if (error.code === 1) {
                 toast.error("Location permission denied. Please allow location access.");
             } else if (error.code === 2) {
-                toast.error("Unable to determine your location. Please try again.");
+                toast.error("Location unavailable. Please wait a few minutes and try again, or select your zone manually.");
             } else if (error.code === 3) {
                 toast.error("Location request timed out. Please try again.");
             } else {
-                toast.error("Failed to get your location. Please enable location services.");
+                toast.error("Failed to get your location. Please select your zone manually.");
             }
         } finally {
             setIsLocating(false);

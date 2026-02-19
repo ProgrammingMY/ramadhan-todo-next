@@ -18,7 +18,7 @@
     "paths": {
       "@/*": ["app/*"]
     },
-    "types": ["@serwist/next/typings"],
+    "types": [],
     "plugins": [
       {
         "name": "next"

@@ -41,7 +41,7 @@ export default function NotificationManager() {
         setIsStandalone(window.matchMedia('(display-mode: standalone)').matches);
 
         // check if service worker is supported
-        if (typeof window !== "undefined" && "serviceWorker" in navigator && window.serwist !== undefined) {
+        if (typeof window !== "undefined" && "serviceWorker" in navigator) {
             // run only in browser
             navigator.serviceWorker.ready.then((reg) => {
                 reg.pushManager.getSubscription().then((sub) => {

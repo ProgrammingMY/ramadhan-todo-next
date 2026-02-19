@@ -35,19 +35,17 @@ export default $config({
       },
     });
 
-    if (stage === "production") {
-      const sunnah_cloudflare_zone = new sst.Secret("SUNNAH_CLOUDFLARE_ZONE");
-      new sst.aws.Nextjs("sunnah-garden-next", {
-        environment: {
-          DATABASE_URL: db_conn.value,
-        },
-        domain: {
-          name: stage === "production" ? "app.sunnahgarden.my" : `${stage}.sunnahgarden.my`,
-          dns: sst.cloudflare.dns({
-            zone: sunnah_cloudflare_zone.value,
-          }),
-        }
-      });
-    }
+    const sunnah_cloudflare_zone = new sst.Secret("SUNNAH_CLOUDFLARE_ZONE");
+    new sst.aws.Nextjs("sunnah-garden-next", {
+      environment: {
+        DATABASE_URL: db_conn.value,
+      },
+      domain: stage === "production" ? {
+        name: "app.sunnahgarden.my",
+        dns: sst.cloudflare.dns({
+          zone: sunnah_cloudflare_zone.value,
+        }),
+      } : undefined,
+    });
   },
 });

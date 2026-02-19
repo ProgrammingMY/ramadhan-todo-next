@@ -22,6 +22,14 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
+    "SUNNAH_CLOUDFLARE_ZONE": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "sunnah-garden-next": {
+      "type": "sst.aws.Nextjs"
+      "url": string
+    }
   }
 }
 /// <reference path="sst-env.d.ts" />

@@ -24,7 +24,6 @@ A modern web application built with Next.js to help users track and manage their
 - **Authentication**: Custom implementation with bcrypt
 - **AI Integration**: Google Generative AI
 - **Deployment**: SST (Serverless Stack)
-- **PWA**: Serwist
 
 ## Getting Started
 
@@ -62,10 +61,6 @@ pnpm db:seed
 pnpm dev
 ```
 
-For PWA development:
-```bash
-pnpm dev:pwa
-```
 
 ### Building for Production
 

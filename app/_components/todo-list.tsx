@@ -188,7 +188,7 @@ export function TodoList({ onTodosChange }: TodoListProps) {
       />
 
       {/* Add the new tabs UI */}
-      {/* <div className="flex space-x-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
+      <div className="flex space-x-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
         {Object.entries(CATEGORIES).map(([key, value]) => (
           <button
             key={value}
@@ -205,7 +205,7 @@ export function TodoList({ onTodosChange }: TodoListProps) {
             {key.charAt(0) + key.slice(1).toLowerCase()}
           </button>
         ))}
-      </div> */}
+      </div>
 
       {user && user.gender === "female" && (
         <PeriodCheck
