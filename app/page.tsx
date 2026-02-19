@@ -1,29 +1,25 @@
 "use client";
 
-
-import OnboardingModal from "./_components/onboarding-modal";
 import { TodoList } from "./_components/todo-list";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useEffect, useState } from "react";
-import VersionDialog from "./_components/version-dialog";
-import FeedbackPrompt from "./_components/feedback/feedback-prompt";
-import { Bell, Book, Volume2, Compass, Gift, Grid, Sprout, Flower, MapPin, LocateIcon } from "lucide-react"; // Import icons
+import { Sprout, Flower } from "lucide-react"; // Import icons
 import { Progress } from "@/components/ui/progress";
-import { Button } from "./components/ui/button";
 import { PrayerTimeComponent } from "./_components/prayer/prayer-time";
-import { PrayerTime } from "./lib/types";
+import { PrayerTime, Todo } from "./lib/types";
 import { PrayerClock } from "./_components/prayer/prayer-clock";
 import { HIJRI_MONTHS, hijriToday } from "./constant/hijri";
 import { ZoneDialog } from "./_components/prayer/zone-dialog";
 import { useUser } from "./_context/user-context";
-
+import { DEFAULT_TODOS } from "./constant/todo";
 
 export default function Page() {
   const [username, setUsername] = useState<string>("");
   const [picture, setPicture] = useState<string>("");
   const [mounted, setMounted] = useState(false);
   const [prayerTimes, setPrayerTimes] = useState<PrayerTime | null>(null);
+  const [todos, setTodos] = useState<Todo[]>(DEFAULT_TODOS);
   const { zone, setZone } = useUser();
 
   const [isPrayerTimesLoading, setIsPrayerTimesLoading] = useState(true);
@@ -33,7 +29,6 @@ export default function Page() {
     // Reset prayer times to trigger new fetch with new zone
     setPrayerTimes(null);
   };
-
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -55,7 +50,6 @@ export default function Page() {
   if (!mounted) {
     return null;
   }
-
 
   return (
     <div className="max-w-md mx-auto min-h-screen bg-gradient-to-b from-emerald-600 to-emerald-100 dark:bg-gradient-to-b dark:from-slate-900 dark:to-slate-900 relative overflow-hidden">
@@ -116,7 +110,7 @@ export default function Page() {
                 </div>
               </div>
               <Progress
-                value={35}
+                value={Math.min((todos.filter(todo => todo.completed).length / 10) * 100, 100)}
                 className="h-3 bg-emerald-50 dark:bg-emerald-800 border-emerald-200 dark:border-emerald-700 border"
                 indicatorClassName="bg-gradient-to-r from-emerald-300 to-emerald-500 dark:from-emerald-600 dark:to-emerald-400"
               />
@@ -126,10 +120,10 @@ export default function Page() {
           {/* Recommended Sunnah Section */}
           <div className="mt-6">
             <h3 className="text-lg font-medium mb-4">Recommended Sunnah</h3>
-            <TodoList />
+            <TodoList onTodosChange={setTodos} />
           </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 }

@@ -28,6 +28,7 @@ export const tasksTable = pgTable("tasks", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar({ length: 255 }).notNull(),
   isPeriodCan: boolean().default(true),
+  displayOrder: integer().notNull().default(0),
   category: varchar({ length: 255 }).$type<Category>().default("recommended"),
 });
 

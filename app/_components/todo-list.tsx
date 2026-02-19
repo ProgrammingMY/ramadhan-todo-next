@@ -14,7 +14,11 @@ import { useUser } from "@/_context/user-context";
 
 const PERIOD_TODOS = DEFAULT_TODOS.filter(todo => todo.isPeriodCan);
 
-export function TodoList() {
+interface TodoListProps {
+    onTodosChange: (todos: Todo[]) => void;
+}
+
+export function TodoList({ onTodosChange }: TodoListProps) {
   const [todos, setTodos] = useState<Todo[]>(DEFAULT_TODOS);
   const [activeCategory, setActiveCategory] = useState<Category>(CATEGORIES.RECOMMENDED);
 
@@ -29,12 +33,12 @@ export function TodoList() {
     return filteredTodos.length > 0 ? filteredTodos : filteredTodos;
   };
 
-
   const handlePeriodChange = async (periodStatus: boolean) => {
     // filter the todos that are period can 
     if (periodStatus) {
       const periodTodos = todos.filter((todo: Todo) => PERIOD_TODOS.some(t => t.id === todo.id));
       setTodos(periodTodos);
+      onTodosChange(periodTodos);
 
       // Save to localStorage
       localStorage.setItem("todos", JSON.stringify(periodTodos));
@@ -59,6 +63,7 @@ export function TodoList() {
           // if undefined, complete to false
           if (data.length === 0) {
             setTodos(DEFAULT_TODOS);
+            onTodosChange(DEFAULT_TODOS);
             return;
           }
 
@@ -72,8 +77,10 @@ export function TodoList() {
 
           if (periodDates[selectedDate.format("iYYYY-iMM-iDD")]) {
             setTodos(periodTodos);
+            onTodosChange(periodTodos);
           } else {
             setTodos(updatedTodos);
+            onTodosChange(updatedTodos);
           }
 
           // Cache the data
@@ -88,7 +95,9 @@ export function TodoList() {
       const savedTodos = localStorage.getItem("todos");
 
       if (lastSavedDate === date && savedTodos) {
-        setTodos(JSON.parse(savedTodos));
+        const parsedTodos = JSON.parse(savedTodos);
+        setTodos(parsedTodos);
+        onTodosChange(parsedTodos);
       } else {
         // localStorage.setItem("todos", JSON.stringify(todos));
         localStorage.setItem("lastSavedDate", date);
@@ -101,6 +110,7 @@ export function TodoList() {
         id: index + 1,
       }));
       setTodos(newTodos);
+      onTodosChange(newTodos);
     } finally {
       setIsLoading(false);
     }
@@ -119,6 +129,7 @@ export function TodoList() {
       todo.id === id ? { ...todo, completed: !todo.completed } : todo
     );
     setTodos(newTodos);
+    onTodosChange(newTodos);
 
     // Save to localStorage as backup
     localStorage.setItem("todos", JSON.stringify(newTodos));
@@ -161,14 +172,12 @@ export function TodoList() {
           throw new Error("Failed to update todo");
         }
 
-
       } catch (error) {
         console.error("Error updating todo:", error);
         toast.error("Failed to update todo");
       }
     }
   };
-
 
   return (
     <div className="space-y-4 relative">
@@ -179,7 +188,7 @@ export function TodoList() {
       />
 
       {/* Add the new tabs UI */}
-      <div className="flex space-x-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
+      {/* <div className="flex space-x-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
         {Object.entries(CATEGORIES).map(([key, value]) => (
           <button
             key={value}
@@ -196,7 +205,7 @@ export function TodoList() {
             {key.charAt(0) + key.slice(1).toLowerCase()}
           </button>
         ))}
-      </div>
+      </div> */}
 
       {user && user.gender === "female" && (
         <PeriodCheck

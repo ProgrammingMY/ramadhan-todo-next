@@ -9,7 +9,7 @@ export default $config({
       home: "aws",
       providers: {
         aws: {
-          profile: "hakim-tech",
+          profile: "hakimtech",
         },
         cloudflare: true
       }
@@ -33,22 +33,7 @@ export default $config({
           GEMINI_API: gemini_api.value,
         }
       },
-    })
-
-    if (stage !== "production") {
-      new sst.aws.Nextjs("ramadhan-todo-next", {
-        environment: {
-          DATABASE_URL: db_conn.value,
-          GEMINI_API: gemini_api.value,
-        },
-        domain: {
-          name: "ramadhan.programmingmy.com",
-          dns: sst.cloudflare.dns({
-            zone: cloudflare_zone.value,
-          }),
-        }
-      });
-    }
+    });
 
     if (stage === "production") {
       const sunnah_cloudflare_zone = new sst.Secret("SUNNAH_CLOUDFLARE_ZONE");

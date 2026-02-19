@@ -17,14 +17,16 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { LocateIcon } from "lucide-react";
+import { LocateIcon, Loader2 } from "lucide-react";
 import { useState, useMemo } from "react";
 import { ZONES } from "@/constant/zones";
 import { useUser } from "@/_context/user-context";
-
+import { getZoneFromCoordinates } from "@/lib/utils";
+import { toast } from "sonner";
 
 export function ZoneDialog() {
     const [isOpen, setIsOpen] = useState(false);
+    const [isLocating, setIsLocating] = useState(false);
     const { zone, setZone } = useUser();
     const currentZoneName = ZONES.find(z => z.id === zone)?.negeri || "Select Zone";
 
@@ -44,6 +46,59 @@ export function ZoneDialog() {
         setIsOpen(false);
     };
 
+    const handleGetLocation = async () => {
+        setIsLocating(true);
+        try {
+            console.log('[handleGetLocation] Requesting location...');
+
+            // Request location permission
+            const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(
+                    resolve,
+                    reject,
+                    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                );
+            });
+
+            console.log('[handleGetLocation] Position received:', {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                accuracy: position.coords.accuracy
+            });
+
+            // Get zone from coordinates
+            const zoneId = await getZoneFromCoordinates(
+                position.coords.latitude,
+                position.coords.longitude
+            );
+
+            console.log('[handleGetLocation] Zone ID:', zoneId);
+
+            if (zoneId) {
+                setZone(zoneId);
+                setIsOpen(false);
+                toast.success("Location detected successfully!");
+            } else {
+                toast.error("Could not determine zone from your location. Please select manually.");
+            }
+        } catch (error: any) {
+            console.error("[handleGetLocation] Error:", error);
+
+            // Handle specific geolocation errors
+            if (error.code === 1) {
+                toast.error("Location permission denied. Please allow location access.");
+            } else if (error.code === 2) {
+                toast.error("Unable to determine your location. Please try again.");
+            } else if (error.code === 3) {
+                toast.error("Location request timed out. Please try again.");
+            } else {
+                toast.error("Failed to get your location. Please enable location services.");
+            }
+        } finally {
+            setIsLocating(false);
+        }
+    };
+
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
@@ -59,27 +114,42 @@ export function ZoneDialog() {
                     <DialogTitle>Choose Zone</DialogTitle>
                 </DialogHeader>
                 <div className="py-4 max-w-sm mx-auto">
-                    <Select value={zone} onValueChange={handleZoneChange}>
-                        <SelectTrigger className="max-w-full">
-                            <SelectValue placeholder="Select zone" />
-                        </SelectTrigger>
-                        <SelectContent className="max-h-[300px] max-w-sm mx-auto bg-card">
-                            {Object.entries(groupedZones).map(([negeri, zones]) => (
-                                <SelectGroup key={negeri}>
-                                    <SelectLabel className="font-semibold">{negeri}</SelectLabel>
-                                    {zones.map((zone) => (
-                                        <SelectItem
-                                            key={zone.id}
-                                            value={zone.id}
-                                            className="pl-6"
-                                        >
-                                            {zone.daerah}
-                                        </SelectItem>
-                                    ))}
-                                </SelectGroup>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                    <div className="flex flex-col gap-4">
+                        <Button
+                            variant="default"
+                            className="w-full"
+                            onClick={handleGetLocation}
+                            disabled={isLocating}
+                        >
+                            {isLocating ? (
+                                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                            ) : (
+                                <LocateIcon className="h-4 w-4 mr-2" />
+                            )}
+                            {isLocating ? "Detecting..." : "Use My Location"}
+                        </Button>
+                        <Select value={zone} onValueChange={handleZoneChange}>
+                            <SelectTrigger className="max-w-full">
+                                <SelectValue placeholder="Select zone" />
+                            </SelectTrigger>
+                            <SelectContent className="max-h-[300px] max-w-sm mx-auto bg-card">
+                                {Object.entries(groupedZones).map(([negeri, zones]) => (
+                                    <SelectGroup key={negeri}>
+                                        <SelectLabel className="font-semibold">{negeri}</SelectLabel>
+                                        {zones.map((zone) => (
+                                            <SelectItem
+                                                key={zone.id}
+                                                value={zone.id}
+                                                className="pl-6"
+                                            >
+                                                {zone.daerah}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectGroup>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
                 </div>
             </DialogContent>
         </Dialog>

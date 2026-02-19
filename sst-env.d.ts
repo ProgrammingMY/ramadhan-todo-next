@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /* deno-fmt-ignore-file */
+/* biome-ignore-all lint: auto-generated */
 
 declare module "sst" {
   export interface Resource {
@@ -20,18 +21,6 @@ declare module "sst" {
     "GEMINI_API": {
       "type": "sst.sst.Secret"
       "value": string
-    }
-    "SUNNAH_CLOUDFLARE_ZONE": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "ramadhan-todo-next": {
-      "type": "sst.aws.Nextjs"
-      "url": string
-    }
-    "sunnah-garden-next": {
-      "type": "sst.aws.Nextjs"
-      "url": string
     }
   }
 }
